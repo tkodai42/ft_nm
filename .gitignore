@@ -1,0 +1,11 @@
+*.o
+*.a
+a.out
+
+# libft
+.bonus
+objs
+
+.DS_Store
+
+*.swp
