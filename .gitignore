@@ -2,7 +2,9 @@
 *.a
 a.out
 
-# libft
+# nm
+ft_nm
+
 .bonus
 objs
 
