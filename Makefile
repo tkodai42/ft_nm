@@ -8,6 +8,20 @@ CC = gcc
 
 INCLUDES = includes
 
+CPPFLAGS = -Wall -Werror -Wextra
+CPPFLAGS += -I $(INCLUDES)
+
+#---------------#
+##### LIBFT #####
+#---------------#
+
+LIBFT_PATH	+= libft
+LIBFT_NAME	+= libft.a
+
+CPPFLAGS	+= -I $(LIBFT_PATH)/includes
+LDFLAGS		+= -L $(LIBFT_PATH)
+LDLIBS		+= -lft
+
 #-------------------#
 ##### MANDATORY #####
 #-------------------#
@@ -31,13 +45,12 @@ DEPS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.d))
 #DEPS_BONUS = $(addprefix $(OBJ_DIR)/, $(SRC_BONUS:.c=.d))
 
 
-CFLAGS = -Wall -Werror -Wextra
-CFLAGS += -I $(INCLUDES)
+
 
 all			: $(NAME)
 
-$(NAME)		: $(OBJS)
-		$(CC) -o $(NAME) $(OBJS)
+$(NAME)		: $(LIBFT_PATH)/$(LIBFT_NAME) $(OBJS)
+		$(CC) $(LDFLAGS) $(LDLIBS) $(OBJS) -o $(NAME)
 
 #.bonus:	$(NAME) $(OBJS_BONUS)
 #		ar rcs $(NAME) $(OBJS_BONUS)
@@ -46,16 +59,26 @@ $(NAME)		: $(OBJS)
 #bonus: .bonus
 
 $(OBJ_DIR)/%.o	: %.c
-	@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
-	$(CC) $(CFLAGS) -o $@ -c $<
+	@mkdir -p `dirname $@`
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ -c $<
+
+#@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
+
+$(OBJ_DIR):
+	echo $@
+	echo "-----"
 
 clean			:
 	rm -rf $(OBJ_DIR)
 
 fclean			: clean
+	$(MAKE) -C $(LIBFT_PATH) fclean
 	rm -f $(NAME)
 
 re				: fclean all
+
+$(LIBFT_PATH)/$(LIBFT_NAME):
+	$(MAKE) -C $(LIBFT_PATH) bonus
 
 define F
 	@echo ====== TEST $(1) ======
