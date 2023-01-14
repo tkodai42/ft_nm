@@ -92,4 +92,7 @@ xs := $(shell find main -type f -name "*.c")
 test			: all
 	$(foreach x,$(xs),$(call F, $(x)))
 
+run:
+	./$(NAME) ./parse_files/ELF/hello
+
 .PHONY:	all clean fclean all
