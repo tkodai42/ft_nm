@@ -15,6 +15,9 @@
 #include "ft_nm.h"
 #include <string.h>
 
+char	file_path[] = "./elf";
+char	*g_strtab;
+
 void	error_exit(char *str)
 {
 	ft_putstr(str);
@@ -31,7 +34,6 @@ int		open_file(int argc, char *argv[])
 	return fd;
 }
 
-
 int		get_file_size(int fd)
 {
 	struct stat sb;
@@ -40,7 +42,7 @@ int		get_file_size(int fd)
 	printf("FILE SIZE: %lld\n", sb.st_size);
 	return sb.st_size;
 }
-/*
+
 void	show_elf64_shdr(Elf64_Shdr *shdr)
 {
 	printf("\nSection header: %p\n", shdr);
@@ -63,7 +65,7 @@ void	show_elf64_shdrs(Elf64_Ehdr *ehdr)
 		show_elf64_shdr(shdr);
 	}
 }
-*/
+
 void	show_elf64_header(Elf64_Ehdr *ehdr)
 {
 	printf("\nFile header: %p\n", ehdr);
@@ -84,48 +86,115 @@ void	show_elf64_header(Elf64_Ehdr *ehdr)
 }
 
 
-void	get_file_header(t_ft_nm *data)
+void	get_file_header(int fd)
 {
-	data->file_size = get_file_size(data->fd);
-	data->head = mmap(NULL, data->file_size, PROT_READ, MAP_SHARED, data->fd, 0);
+	long long	_file_size = get_file_size(fd);
+	void		*head = mmap(NULL, _file_size, PROT_READ, MAP_SHARED, fd, 0);
+	g_head = head;
 
-	printf("head: %p\n", data->head);
+	printf("head: %p\n", head);
 
-	Elf64_Ehdr* ehdr = (Elf64_Ehdr*)data->head;
+	Elf64_Ehdr* ehdr = (Elf64_Ehdr*)head;
 
 	show_elf64_header(ehdr);
-	//show_elf64_shdrs(ehdr);
+	show_elf64_shdrs(ehdr);
 
 	return ;
+	printf("e_phoff: %llx\n", ehdr->e_phoff);
+	printf("e_phnum: %d\n", ehdr->e_phnum);
 
-}
+	Elf64_Phdr *phd = head + ehdr->e_phoff;
 
-void	set_shstrndx_64(t_ft_nm *data)
-{
-	Elf64_Ehdr* ehdr = (Elf64_Ehdr*)data->head;
-	Elf64_Shdr *shdr = data->head + ehdr->e_shoff +
-						(ehdr->e_shstrndx * ehdr->e_shentsize);
-	
-	data->shstrndx = data->head + shdr->sh_offset;
-	printf("%llu\n", shdr->sh_entsize);
+	printf("phd: %p\n", phd);
 
-	printf("%s\n", data->shstrndx);
-	for (int i = 0; i < ehdr->e_shnum; i++)
-	{
-		shdr = data->head + ehdr->e_shoff + (ehdr->e_shentsize * i);
-		printf("[%d] %s\n", i, data->shstrndx + shdr->sh_name);
+	// LOADセグメントの内容だけ表示する
+	// readelfの結果と同じになる
+	for (int i = 0; i < ehdr->e_phnum; i++) {
+		if (phd[i].p_type == PT_LOAD) {
+			printf("%d: %llx, %llx, %llx, %llx, %llx, %llx, %llx\n",
+					i,
+					(uint64_t)phd[i].p_offset,
+					(uint64_t)phd[i].p_vaddr,
+					(uint64_t)phd[i].p_paddr,
+					(uint64_t)phd[i].p_filesz,
+					(uint64_t)phd[i].p_memsz,
+					(uint64_t)phd[i].p_flags,
+					(uint64_t)phd[i].p_align);
+		}
 	}
+
+	Elf64_Shdr* shder = head + ehdr->e_shoff;
+
+	char *name = (char*)head + shder->sh_name;
+
+	ft_putstr(name);
 }
 
 int		main(int argc, char *argv[])
 {
-	int			fd;
-	t_ft_nm		data;
+	int		fd;
 
 	fd = open_file(argc, argv);
 	if (fd == -1)
 		error_exit("Error: open\n");
-	data.fd = fd;
-	get_file_header(&data);
-	set_shstrndx_64(&data);
+	get_file_header(fd);
 }
+
+/*
+int		main(int argc, char *argv[])
+{
+	int		fd;
+
+	if (argc != 2)
+		fd = open(file_path, O_RDWR);
+	else
+		fd = open(argv[1], O_RDWR);
+
+	int		ret = read(fd, buf, BUFFER_SIZE);
+
+	buf[ret] = '0';
+
+	for (int i = 0; i < 200; i++)
+	{
+		if (i % 8 == 0)
+			printf("%d: ", i * 8);
+		printf("[%x]", buf[i]);
+		if (i % 8 == 7)
+			printf("\n");
+	}
+
+	printf("\n");
+
+	for (int i = 0; i < 200; i++)
+	{
+		if (i % 8 == 0)
+			printf("%d: ", i * 8);
+		printf("[%d]", buf[i]);
+		if (i % 8 == 7)
+			printf("\n");
+	}
+
+	printf("\n");
+
+	for (int i = 0; i < 200; i++)
+	{
+		if (i % 8 == 0)
+			printf("%d: ", i * 8);
+		printf("[%c]", buf[i]);
+		if (i % 8 == 7)
+			printf("\n");
+	}
+
+	//int		size = 0;
+
+	close(fd);
+	if (argc != 2)
+		fd = open(file_path, O_RDWR);
+	else
+		fd = open(argv[1], O_RDWR);
+ 
+	char str[] = "12345";
+
+	printf("%d\n", ft_strlen(str));
+}
+*/
