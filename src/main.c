@@ -115,6 +115,56 @@ void	set_shstrndx_64(t_ft_nm *data)
 		shdr = data->head + ehdr->e_shoff + (ehdr->e_shentsize * i);
 		printf("[%d] %s\n", i, data->shstrndx + shdr->sh_name);
 	}
+	
+	//set symtab
+	for (int i = 0; i < ehdr->e_shnum; i++)
+	{
+		shdr = data->head + ehdr->e_shoff + (ehdr->e_shentsize * i);
+		//printf("set sym [%d]: %d\n", i, shdr->sh_type);
+		if (shdr->sh_type == SHT_STRTAB)
+			data->strtab_index = i;
+		if (shdr->sh_type == SHT_SYMTAB)
+			data->symtab_index = i;
+	}
+	//show symbol
+	Elf64_Shdr *symbol_section = data->head + ehdr->e_shoff +
+				(ehdr->e_shentsize * 27);
+				//(ehdr->e_shentsize * data->symtab_index);
+	Elf64_Shdr *strtab_section = data->head + ehdr->e_shoff +
+				(ehdr->e_shentsize * 28);
+				//(ehdr->e_shentsize * data->strtab_index);
+	char *str_head = data->head + strtab_section->sh_offset;
+	for (unsigned long long i = 0; i < strtab_section->sh_size; i++)
+	{
+		//symbol = data->head + symbol_sec->sh_offset + (sizeof(Elf64_Sym) * i);
+		//printf("[%llu] \n", i);
+		printf("%c", *(str_head + i));
+		if (*(str_head + i) == 0)
+			printf("\n");
+	}
+
+	Elf64_Sym  *symbol;
+	int index = 0;
+	for (unsigned long long i = 0; i < symbol_section->sh_size; i += sizeof(Elf64_Sym))
+	{
+		symbol = data->head + symbol_section->sh_offset + i;
+		//printf("[%d] %d", index, symbol->st_name);
+		if (symbol->st_name != 0)// && symbol->st_value != 0)
+		{
+			printf("%016llx ", symbol->st_value);
+			printf("info:%d", symbol->st_info);
+			printf("[%d %d]", ELF64_ST_BIND(symbol->st_info),
+							ELF64_ST_TYPE(symbol->st_info));
+			//printf("[%d]", ELF64_ST_VISIBILITY(symbol->st_other)),
+			printf("[%d]", symbol->st_other),
+			printf("[%s]", (str_head + symbol->st_name));
+			printf(" st_shndx: %d", symbol->st_shndx);
+			
+			printf("\n");
+		}
+		index++;
+	}
+
 }
 
 int		main(int argc, char *argv[])
@@ -128,4 +178,5 @@ int		main(int argc, char *argv[])
 	data.fd = fd;
 	get_file_header(&data);
 	set_shstrndx_64(&data);
+	//get_symbol_table_
 }

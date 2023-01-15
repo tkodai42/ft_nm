@@ -13,6 +13,8 @@ typedef struct	s_ft_nm
 	//option flag
 	
 	char		*shstrndx;
+	int			strtab_index;
+	int			symtab_index;
 
 }				t_ft_nm;
 
