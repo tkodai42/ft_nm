@@ -11,6 +11,7 @@ char	*ft_itoa(int num);
 void	ft_putnbr(int num);
 char	*ft_strdup(const char *str);
 void	ft_puthex(int num, int digit, int big);
+int		ft_strcmp(const char *s1, const char *s2);
 
 /****************************/
 /*********** BONUD **********/
