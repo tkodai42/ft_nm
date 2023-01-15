@@ -7,6 +7,10 @@
 
 int		ft_strlen(const char *str);
 int		ft_putstr(const char *str);
+char	*ft_itoa(int num);
+void	ft_putnbr(int num);
+char	*ft_strdup(const char *str);
+void	ft_puthex(int num, int digit, int big);
 
 /****************************/
 /*********** BONUD **********/
