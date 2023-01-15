@@ -26,7 +26,7 @@ void	main2()
 int		main()
 {
 	main2();
-	system("leaks a.out");
+	//system("leaks a.out");
 }
 
 

@@ -60,6 +60,7 @@ define F
 	@echo ====== TEST $(1) ======
 	@gcc -I includes libft.a $(1)
 	@./a.out
+	@echo
 
 endef
 
