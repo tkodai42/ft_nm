@@ -23,10 +23,12 @@ void	main2()
 	printf("\n");
 
 	// ===== LIST =====
+	printf("rev 0: ");
 	ft_list_sort(&head, ft_list_comp_func_ptr_int, 0);
 	ft_list_show(head, ft_list_show_func_ptr_int);
 	printf("\n");
 
+	printf("rev 1: ");
 	ft_list_sort(&head, ft_list_comp_func_ptr_int, 1);
 	ft_list_show(head, ft_list_show_func_ptr_int);
 	printf("\n");

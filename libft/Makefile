@@ -66,7 +66,7 @@ endef
 
 xs := $(shell find main -type f -name "*.c")
 
-test			: all
+test			: bonus
 	$(foreach x,$(xs),$(call F, $(x)))
 
 .PHONY:	all clean fclean all

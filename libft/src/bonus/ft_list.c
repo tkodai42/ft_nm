@@ -139,8 +139,11 @@ void	ft_list_sort(t_list_node **lst, int (*comp)(void*, void*), int is_rev)
 	index = 0;
 	while (index + 1 < size)
 	{
-		if ((is_rev && comp(ary[index]->content, ary[index + 1]->content)) ||
-			(!is_rev && comp(ary[index + 1]->content, ary[index]->content)))
+		(void)is_rev;
+		//if ((is_rev && comp(ary[index]->content, ary[index + 1]->content)) ||
+		//	(!is_rev && comp(ary[index + 1]->content, ary[index]->content)))
+		if ((!is_rev && comp(ary[index]->content, ary[index + 1]->content) > 0) ||
+			(is_rev && comp(ary[index + 1]->content, ary[index]->content) > 0))
 		{
 			tmp = ary[index];
 			ary[index] = ary[index + 1];

@@ -5,6 +5,37 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+/*******************************/
+/*********** COLOR *************/
+/*******************************/
+
+#define ES_RESET		"\e[0"
+
+//#define ES_BRINK		"\e[5m"
+
+#define ES_WORD_BAKCK	"\e[30m"
+#define ES_WORD_RED		"\e[31m"
+#define ES_WORD_GREEN	"\e[32m"
+#define ES_WORD_YELLOW	"\e[33m"
+#define ES_WORD_BLUE	"\e[34m"
+#define ES_WORD_MAGENTA	"\e[35m"
+#define ES_WORD_CYAN	"\e[36m"
+#define ES_WORD_WHITE	"\e[37m"
+
+#define ES_BACK_BAKCK	"\e[40m"
+#define ES_BACK_RED		"\e[41m"
+#define ES_BACK_GREEN	"\e[42m"
+#define ES_BACK_YELLOW	"\e[43m"
+#define ES_BACK_BLUE	"\e[44m"
+#define ES_BACK_MAGENTA	"\e[45m"
+#define ES_BACK_CYAN	"\e[46m"
+#define ES_BACK_WHITE	"\e[47m"
+
+
+/*******************************/
+/*********** LIBFT *************/
+/*******************************/
+
 int		ft_strlen(const char *str);
 int		ft_putstr(const char *str);
 char	*ft_itoa(int num);

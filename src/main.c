@@ -1,19 +1,6 @@
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include "libft.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <sys/mman.h>
-#include <stdint.h>
-#include "elf.h"
-#include "../includes/elf.h"
 #include "ft_nm.h"
-#include <string.h>
+//#include "elf.h"
+#include "../includes/elf.h"
 
 void	error_exit(char *str)
 {
@@ -100,6 +87,36 @@ void	get_file_header(t_ft_nm *data)
 
 }
 
+void	show_sh_node(void *content)
+{
+	t_sh_node *node = (t_sh_node*)content;
+	Elf64_Sym  *symbol = node->nm_ptr->head + node->sh_offset;
+	
+	if (symbol->st_value == 0)
+	{
+		for (int i = 0; i < 17; i++)
+			printf(" ");
+	}
+	else
+		printf("%016llx ", symbol->st_value);
+	printf(" %s\n", (node->nm_ptr->prog_name_ptr + symbol->st_name));
+}
+
+int		sort_sh_node(void *c1, void *c2)
+{
+	t_sh_node *node1 = (t_sh_node*)c1;
+	t_sh_node *node2 = (t_sh_node*)c2;
+
+	Elf64_Sym  *symbol1 = node1->nm_ptr->head + node1->sh_offset;
+	Elf64_Sym  *symbol2 = node2->nm_ptr->head + node2->sh_offset;
+
+	char	*str1 = node1->nm_ptr->prog_name_ptr + symbol1->st_name;
+	char	*str2 = node2->nm_ptr->prog_name_ptr + symbol2->st_name;
+
+//	printf("%s %s\n", str1, str2);
+	return ft_strcmp(str1, str2);
+}
+
 void	set_shstrndx_64(t_ft_nm *data)
 {
 	Elf64_Ehdr* ehdr = (Elf64_Ehdr*)data->head;
@@ -134,6 +151,7 @@ void	set_shstrndx_64(t_ft_nm *data)
 				(ehdr->e_shentsize * 28);
 				//(ehdr->e_shentsize * data->strtab_index);
 	char *str_head = data->head + strtab_section->sh_offset;
+	data->prog_name_ptr = str_head;
 	for (unsigned long long i = 0; i < strtab_section->sh_size; i++)
 	{
 		//symbol = data->head + symbol_sec->sh_offset + (sizeof(Elf64_Sym) * i);
@@ -161,10 +179,36 @@ void	set_shstrndx_64(t_ft_nm *data)
 			printf(" st_shndx: %d", symbol->st_shndx);
 			
 			printf("\n");
+			
 		}
 		index++;
 	}
 
+
+	//add
+	t_list_node	*head = NULL;
+	for (unsigned long long i = 0; i < symbol_section->sh_size; i += sizeof(Elf64_Sym))
+	{
+		symbol = data->head + symbol_section->sh_offset + i;
+		//printf("[%d] %d", index, symbol->st_name);
+		if (symbol->st_name != 0)// && symbol->st_value != 0)
+		{
+			t_sh_node	*new_node = malloc(sizeof(t_sh_node));
+
+			new_node->nm_ptr = data;
+			new_node->sh_offset = symbol_section->sh_offset + i;
+			ft_list_add_back_raw(&head, (void*)new_node);	
+		}
+	}
+	
+
+	ft_list_show(head, show_sh_node);
+	printf("\n ===== nomal =====\n");
+	ft_list_sort(&head, sort_sh_node, 0);
+	ft_list_show(head, show_sh_node);
+	printf("\n ===== rev =====\n");
+	ft_list_sort(&head, sort_sh_node, 1);
+	ft_list_show(head, show_sh_node);
 }
 
 int		main(int argc, char *argv[])
