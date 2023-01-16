@@ -87,6 +87,56 @@ void	get_file_header(t_ft_nm *data)
 
 }
 
+void	print_symbol_bind(int num)
+{
+/*
+STB_LOCAL	0
+STB_GLOBAL	1
+STB_WEAK	2
+STB_LOOS	10
+STB_HIOS	12
+STB_LOPROC	13
+STB_HIPROC	15
+*/ 
+	num = ELF64_ST_BIND(num);
+	if (num == STB_LOCAL)
+		printf("LOCAL :");
+	if (num == STB_GLOBAL)
+		printf("GLOBAL:");
+	if (num == STB_WEAK)
+		printf("WEAK  :");
+}
+
+void	print_symbol_type(int num)
+{
+/*
+STT_NOTYPE	0
+STT_OBJECT	1
+STT_FUNC	2
+STT_SECTION	3
+STT_FILE	4
+STT_COMMON	5
+STT_TLS	6
+STT_LOOS	10
+STT_HIOS	12
+STT_LOPROC	13
+STT_HIPROC	15
+*/
+	num = ELF64_ST_TYPE(num);
+	if (num == STT_NOTYPE)
+		printf("STT_NOTYPE  ");
+	else if (num == STT_OBJECT)
+		printf("STT_OBJECT  ");
+	else if (num == STT_FUNC)
+		printf("STT_FUNC    ");
+	else if (num == STT_SECTION)
+		printf("STT_SECTION ");
+	else if (num == STT_FILE)
+		printf("STT_FILE    ");
+	else
+		printf("            ");
+}
+
 void	show_sh_node(void *content)
 {
 	t_sh_node *node = (t_sh_node*)content;
@@ -99,7 +149,35 @@ void	show_sh_node(void *content)
 	}
 	else
 		printf("%016llx ", symbol->st_value);
-	printf(" %s\n", (node->nm_ptr->prog_name_ptr + symbol->st_name));
+	int ret = printf(" %s ", (node->nm_ptr->prog_name_ptr + symbol->st_name));
+
+	ret = 35 - ret;
+	for (int i = 0; i < ret; i++)
+		printf(" "); 
+	print_symbol_bind(symbol->st_info);
+	print_symbol_type(symbol->st_info);
+	//printf("gl:%d ", symbol->st_info);
+	//printf("[%d %d]", ELF64_ST_BIND(symbol->st_info),
+	//						ELF64_ST_TYPE(symbol->st_info));
+	printf("[%d]", symbol->st_other);
+
+	//data
+	Elf64_Ehdr* ehdr = (Elf64_Ehdr*)node->nm_ptr->head;
+	Elf64_Shdr *shdr = node->nm_ptr->head + ehdr->e_shoff +
+		(ehdr->e_shstrndx * ehdr->e_shentsize);
+	
+	if (symbol->st_shndx < ehdr->e_shnum)
+	{
+		shdr = node->nm_ptr->head + ehdr->e_shoff + (ehdr->e_shentsize * symbol->st_shndx);
+		printf("type:%d ", shdr->sh_type);
+		printf("%s", node->nm_ptr->shstrndx + shdr->sh_name);
+		
+	}
+	else
+		printf(": %d", symbol->st_shndx);
+
+	//printf(" ndx: %d", symbol->st_shndx);
+	printf("\n");
 }
 
 int		sort_sh_node(void *c1, void *c2)
