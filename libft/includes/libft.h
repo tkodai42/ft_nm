@@ -69,6 +69,7 @@ void	ft_list_show(t_list_node *l, void (*s)(void*));
 void	ft_list_sort(t_list_node **l, int (*c)(void*, void*), int r);
 //show func ptr
 void	ft_list_show_func_ptr_int(void *c);
+void	ft_list_show_func_ptr_str(void *c);
 //comp func ptr
 int		ft_list_comp_func_ptr_int(void *c1, void *c2);
 

@@ -97,6 +97,10 @@ void	ft_list_show_func_ptr_int(void *c)
 	printf("[%d]", (int)c);
 }
 
+void	ft_list_show_func_ptr_str(void *c)
+{
+	printf("[%s]", (char*)c);
+}
 
 
 void	ft_list_show(t_list_node *head, void (*show)(void*))
