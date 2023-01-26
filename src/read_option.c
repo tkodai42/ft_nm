@@ -7,7 +7,7 @@ void	print_arg_error(t_ft_nm *ft_nm, t_option *op, int bit, const char *message)
 	{
 		ft_putstr("ft_nm: for the ");
 		ft_putstr(message);
-		ft_putstr(": may only occur zero or one times!\n");
+		ft_putstr(" option: may only occur zero or one times!\n");
 		op->option_error = 1;
 	}
 	else
@@ -31,15 +31,15 @@ int		scan_arg_as_option(t_ft_nm *ft_nm, t_option *op, char *arg)
 	while (*arg)
 	{
 		if (*arg == 'a')
-			print_arg_error(ft_nm, op, OPTION_BIT_a, "-debug-syms option");
+			print_arg_error(ft_nm, op, OPTION_BIT_a, "-debug-syms");
 		else if (*arg == 'g')
 			op->option_bit |= OPTION_BIT_g;
 		else if (*arg == 'u')
-			print_arg_error(ft_nm, op, OPTION_BIT_u, "-undefined-only option");
+			print_arg_error(ft_nm, op, OPTION_BIT_u, "-undefined-only");
 		else if (*arg == 'r')
-			print_arg_error(ft_nm, op, OPTION_BIT_r, "-reverse-sort option");
+			print_arg_error(ft_nm, op, OPTION_BIT_r, "-reverse-sort");
 		else if (*arg == 'p')
-			print_arg_error(ft_nm, op, OPTION_BIT_p, "-no-sort option");
+			print_arg_error(ft_nm, op, OPTION_BIT_p, "-no-sort");
 		else
 			return 1;
 		arg++;
@@ -56,7 +56,6 @@ void	scan_arg_as_file(t_ft_nm *ft_nm, t_option *op, char *arg)
 
 	ft_list_add_back_raw(&ft_nm->file_list, arg);
 
-	(void)ft_nm;
 	(void)op;
 
 }
@@ -92,13 +91,10 @@ void	set_option(t_ft_nm *ft_nm, int index, char *argv[])
 	while (argv[index])
 	{
 		scan_arg(ft_nm, &op, argv[index]);
-
-		//if (op.duplicate_bit)
-		//	return ;
 		index++;
 	}
-
-	(void)ft_nm;
+	if (op.option_error == 1)
+		ft_nm->status = 1;
 }
 
 
@@ -106,20 +102,10 @@ const char	default_input_file[] = "parse_files/ELF/hello";
 
 void	read_option(t_ft_nm *ft_nm, int argc, char *argv[])
 {
-	//set default file name
-	if (argc == 1)
-	{
-		ft_nm->file_name = (char*)default_input_file;
-		return ;
-	}
-	
-	// loop argv
+	(void)argc;
+
 	set_option(ft_nm, 1, argv);
 
-	ft_list_show(ft_nm->file_list, ft_list_show_func_ptr_str);
-
-	(void)ft_nm;
-	(void)argc;
-	(void)argv;
-
+	if (ft_nm->file_list == NULL)
+		ft_list_add_back_raw(&ft_nm->file_list, (char*)default_input_file);
 }

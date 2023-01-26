@@ -12,6 +12,7 @@
 #include <sys/mman.h>
 #include <stdint.h>
 #include <string.h>
+#include <errno.h>
 
 #include "./elf.h"
 #include "elf.h"
@@ -42,15 +43,27 @@ typedef struct	s_option
 
 }				t_option;
 
+typedef struct	s_elf_64
+{
+	void		*head;
+	Elf64_Ehdr	*ehdr;		//ELF header
+	Elf64_Shdr	*shdr_head;	//section header head ptr
+	Elf64_Shdr	*shdr_header_table;
+}				t_elf_64;
 
 typedef struct	s_ft_nm
 {
 	int			status;
 	void		*head;
 
+	//type?
+	int			machine_type;
+	int			elf_format_size; //1 or 2 to signify 32- or 64-bit format
+
 	//read file
-	int			fd;
 	char		*file_name;
+	int			file_size;
+
 	
 	//
 	t_list_node	*file_list;
@@ -80,5 +93,13 @@ typedef struct	s_sh_node
 
 
 void	read_option(t_ft_nm *n, int ar, char **argv);
+void	open_file(t_ft_nm *n);
+void	execute(t_ft_nm *n);
+void	nm_solve(t_ft_nm *n);
+int		is_valid_address(t_ft_nm *ft_nm, void *ptr);
+
+//scan 64
+void	scan_elf_header_64(t_ft_nm *ft_nm, t_elf_64 *ehdr);
+void	scan_section_header_64(t_ft_nm *f, t_elf_64 *e);
 
 #endif

@@ -9,11 +9,13 @@
 /*********** COLOR *************/
 /*******************************/
 
-#define ES_RESET		"\e[0"
+#define ES_RESET		"\e[0m"
 
 //#define ES_BRINK		"\e[5m"
+#define ES_BOLD			"\e[1m" //薄くなる
+#define ES_UNDERLINE	"\e[4m"
 
-#define ES_WORD_BAKCK	"\e[30m"
+#define ES_WORD_BLACK	"\e[30m"
 #define ES_WORD_RED		"\e[31m"
 #define ES_WORD_GREEN	"\e[32m"
 #define ES_WORD_YELLOW	"\e[33m"
@@ -22,7 +24,7 @@
 #define ES_WORD_CYAN	"\e[36m"
 #define ES_WORD_WHITE	"\e[37m"
 
-#define ES_BACK_BAKCK	"\e[40m"
+#define ES_BACK_BLACK	"\e[40m"
 #define ES_BACK_RED		"\e[41m"
 #define ES_BACK_GREEN	"\e[42m"
 #define ES_BACK_YELLOW	"\e[43m"
@@ -43,6 +45,8 @@ void	ft_putnbr(int num);
 char	*ft_strdup(const char *str);
 void	ft_puthex(int num, int digit, int big);
 int		ft_strcmp(const char *s1, const char *s2);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*strchr(const char *s, int c);
 
 /****************************/
 /*********** BONUD **********/
