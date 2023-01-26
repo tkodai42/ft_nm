@@ -2,9 +2,13 @@
 
 void	checker(const char *s1, const char *s2)
 {
-	int		ret = ft_strcmp(s1, s2);
+	int		ret;
 
-	printf("[%s] [%s]: %d\n", s1, s2, ret);
+	ret = ft_strcmp(s1, s2);
+	printf("mine: [%s] [%s]: %d\n", s1, s2, ret);
+	
+	ret	= strcmp(s1, s2);
+	printf("libc: [%s] [%s]: %d\n", s1, s2, ret);
 }
 
 int		main()

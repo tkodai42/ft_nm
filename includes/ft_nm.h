@@ -49,6 +49,14 @@ typedef struct	s_elf_64
 	Elf64_Ehdr	*ehdr;		//ELF header
 	Elf64_Shdr	*shdr_head;	//section header head ptr
 	Elf64_Shdr	*shdr_header_table;
+
+	Elf64_Shdr	*shdr_symbol;
+	Elf64_Shdr	*shdr_strtab;
+	Elf64_Sym	*sym_head;
+
+	char		*sh_name_tab_ptr;
+	char		*sym_name_tab_ptr;
+
 }				t_elf_64;
 
 typedef struct	s_ft_nm

@@ -7,6 +7,8 @@ int		is_valid_address(t_ft_nm *ft_nm, void *ptr)
 		return 1;
 	if (ptr - ft_nm->head > ft_nm->file_size)
 		return 1;
+	if (ptr < ft_nm->head)
+		return 1;
 	return 0;
 }
 
