@@ -35,10 +35,10 @@ int		set_section_header(t_ft_nm *ft_nm, t_elf_64 *d)
 	}
 	//check all section end
 	ft_nm->status = is_valid_address(ft_nm, ft_nm->head + d->ehdr->e_shoff +
-			(d->ehdr->e_shstrndx * (d->ehdr->e_shnum) - 1/* decrease 1 byte */));
+			(sizeof(Elf64_Shdr) * (d->ehdr->e_shnum)/* decrease 1 byte */));
 	if (ft_nm->status != 0)
 	{
-		printf("Error: section header end is over\n");
+		put_nm_error(ft_nm->file_name, "section table goes past the end of file");
 		return 1;
 	}
 
@@ -51,6 +51,7 @@ int		set_section_header(t_ft_nm *ft_nm, t_elf_64 *d)
 
 void	scan_elf_header_64(t_ft_nm *ft_nm, t_elf_64 *elf_data)
 {
+	printf(">> scan_elf_header_64\n");
 	//check header size
 	ft_nm->status = is_valid_address(ft_nm, ft_nm->head + sizeof(Elf64_Ehdr));
 	if (ft_nm->status != 0)
@@ -64,6 +65,5 @@ void	scan_elf_header_64(t_ft_nm *ft_nm, t_elf_64 *elf_data)
 	
 	if (set_section_header(ft_nm, elf_data) != 0)
 		return ;
-
 	scan_section_header_64(ft_nm, elf_data);
 }

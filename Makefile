@@ -80,17 +80,17 @@ re				: fclean all
 $(LIBFT_PATH)/$(LIBFT_NAME):
 	$(MAKE) -C $(LIBFT_PATH) bonus
 
-define F
-	@echo ====== TEST $(1) ======
-	@gcc -I includes libft.a $(1)
-	@./a.out
-
-endef
-
-xs := $(shell find main -type f -name "*.c")
-
-test			: all
-	$(foreach x,$(xs),$(call F, $(x)))
+#define F
+#	@echo ====== TEST $(1) ======
+#	@gcc -I includes libft.a $(1)
+#	@./a.out
+#
+#endef
+#
+#xs := $(shell find main -type f -name "*.c")
+#
+#test			: all
+#	$(foreach x,$(xs),$(call F, $(x)))
 
 run: $(NAME)
 	./$(NAME) ./parse_files/ELF/hello

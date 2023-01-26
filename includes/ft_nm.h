@@ -54,8 +54,8 @@ typedef struct	s_elf_64
 	Elf64_Shdr	*shdr_strtab;
 	Elf64_Sym	*sym_head;
 
-	char		*sh_name_tab_ptr;
-	char		*sym_name_tab_ptr;
+	char		*sh_name_tab_ptr;  //section header name table head ptr
+	char		*sym_name_tab_ptr; //symbol name table head ptr
 
 }				t_elf_64;
 
@@ -110,4 +110,7 @@ int		is_valid_address(t_ft_nm *ft_nm, void *ptr);
 void	scan_elf_header_64(t_ft_nm *ft_nm, t_elf_64 *ehdr);
 void	scan_section_header_64(t_ft_nm *f, t_elf_64 *e);
 
+
+//error
+void	put_nm_error(char *f, char *m);
 #endif

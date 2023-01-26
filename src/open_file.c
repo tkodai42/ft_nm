@@ -38,6 +38,7 @@ void	execute(t_ft_nm *ft_nm)
 	while (node)
 	{
 		current_file_ptr = (char*)node->content;
+		ft_nm->file_name = current_file_ptr;
 		//open_file
 		fd = open(current_file_ptr, O_RDWR);
 		if (fd == -1)
