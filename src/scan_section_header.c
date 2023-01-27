@@ -54,6 +54,7 @@ void	set_symbol_section(t_ft_nm *ft_nm, t_elf_64 *d)
 
 	shdr = d->shdr_head;
 
+	d->sh_name_tab_ptr = (char*)d->head + d->shdr_header_table->sh_offset;
 	for (int i = 0; i < d->ehdr->e_shnum; i++)
 	{
 		//check sh_name offset
@@ -66,7 +67,32 @@ void	set_symbol_section(t_ft_nm *ft_nm, t_elf_64 *d)
 			d->shdr_strtab = shdr;
 		shdr++;
 	}
+
+	//set symbol str head
+	d->sym_name_tab_ptr = (char*)d->head + d->shdr_strtab->sh_offset;
 	(void)ft_nm;
+}
+
+void	make_symbol_list(t_ft_nm *ft_nm, t_elf_64 *d)
+{
+	Elf64_Sym	*symbol;
+	//char		*str = d->sym_name_tab_ptr;
+
+	ft_nm->symbol_list = NULL;
+	symbol = d->sym_head;
+	for (unsigned long long i = 0; i * sizeof(Elf64_Sym) < d->shdr_symbol->sh_size; i++)
+	{
+		//if (symbol->st_name != 0)
+		//	printf("[%llu] %s\n", i, str + symbol->st_name);
+		t_sh_node_64 *new_node = malloc(sizeof(t_sh_node_64));
+
+		new_node->nm_ptr = ft_nm;
+		new_node->d = d;
+		new_node->symbol = symbol;
+		ft_list_add_back_raw(&ft_nm->symbol_list, (void*)new_node);
+		
+		symbol++;
+	}
 }
 
 void	scan_section_header_64(t_ft_nm *ft_nm, t_elf_64 *elf_data)
@@ -81,19 +107,16 @@ void	scan_section_header_64(t_ft_nm *ft_nm, t_elf_64 *elf_data)
 		printf("Error: section has invalid offset\n");
 		return ;
 	}
-	//set section name
-	elf_data->sh_name_tab_ptr = (char*)elf_data->head + elf_data->shdr_header_table->sh_offset;
-
 	//check duplicate
 
 	//set symbol str table and symbol table
 	set_symbol_section(ft_nm, elf_data);
 
-	//set symbol str head
-	elf_data->sym_name_tab_ptr = (char*)elf_data->head + elf_data->shdr_strtab->sh_offset;
+	make_symbol_list(ft_nm, elf_data);
 	
-	show_symbol_name(elf_data); //for debug;
+	//show_symbol_name(elf_data); //for debug;
 
+	ft_list_show(ft_nm->symbol_list, display_symbol_node_64);
 	(void)ft_nm;
 	(void)elf_data;
 }

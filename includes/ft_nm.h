@@ -76,6 +76,9 @@ typedef struct	s_ft_nm
 	//
 	t_list_node	*file_list;
 
+	//symbol
+	t_list_node	*symbol_list;
+
 	/*
 	void		*head;
 	int			fd;
@@ -93,11 +96,13 @@ typedef struct	s_ft_nm
 
 }				t_ft_nm;
 
-typedef struct	s_sh_node
+typedef struct	s_sh_node_64
 {
 	t_ft_nm				*nm_ptr;
-	unsigned long long	sh_offset;
-}				t_sh_node;
+	t_elf_64			*d;
+	Elf64_Sym			*symbol;
+	//unsigned long long	sh_offset;
+}				t_sh_node_64;
 
 
 void	read_option(t_ft_nm *n, int ar, char **argv);
@@ -110,6 +115,8 @@ int		is_valid_address(t_ft_nm *ft_nm, void *ptr);
 void	scan_elf_header_64(t_ft_nm *ft_nm, t_elf_64 *ehdr);
 void	scan_section_header_64(t_ft_nm *f, t_elf_64 *e);
 
+//symbol
+void	display_symbol_node_64(void *content);
 
 //error
 void	put_nm_error(char *f, char *m);
