@@ -82,15 +82,15 @@ void	make_symbol_list(t_ft_nm *ft_nm, t_elf_64 *d)
 	symbol = d->sym_head;
 	for (unsigned long long i = 0; i * sizeof(Elf64_Sym) < d->shdr_symbol->sh_size; i++)
 	{
-		//if (symbol->st_name != 0)
-		//	printf("[%llu] %s\n", i, str + symbol->st_name);
-		t_sh_node_64 *new_node = malloc(sizeof(t_sh_node_64));
+		if (symbol->st_name != 0 || (ft_nm->option.option_bit & OPTION_BIT_a))
+		{
+			t_sh_node_64 *new_node = malloc(sizeof(t_sh_node_64));
 
-		new_node->nm_ptr = ft_nm;
-		new_node->d = d;
-		new_node->symbol = symbol;
-		ft_list_add_back_raw(&ft_nm->symbol_list, (void*)new_node);
-		
+			new_node->nm_ptr = ft_nm;
+			new_node->d = d;
+			new_node->symbol = symbol;
+			ft_list_add_back_raw(&ft_nm->symbol_list, (void*)new_node);
+		}
 		symbol++;
 	}
 }
