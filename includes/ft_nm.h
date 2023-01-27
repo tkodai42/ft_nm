@@ -61,6 +61,10 @@ typedef struct	s_elf_64
 
 typedef struct	s_ft_nm
 {
+	//option
+	t_option	option;
+
+
 	int			status;
 	void		*head;
 
@@ -117,6 +121,7 @@ void	scan_section_header_64(t_ft_nm *f, t_elf_64 *e);
 
 //symbol
 void	display_symbol_node_64(void *content);
+int		sort_symbol_node_64(void *c1, void *c2);
 
 //error
 void	put_nm_error(char *f, char *m);

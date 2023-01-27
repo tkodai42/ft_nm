@@ -116,6 +116,16 @@ void	scan_section_header_64(t_ft_nm *ft_nm, t_elf_64 *elf_data)
 	
 	//show_symbol_name(elf_data); //for debug;
 
+
+	// ===== SORT =====
+	if (ft_nm->option.option_bit & OPTION_BIT_p)
+		;
+	else if (ft_nm->option.option_bit & OPTION_BIT_r)
+		ft_list_sort(&ft_nm->symbol_list, sort_symbol_node_64, 1);
+	else
+		ft_list_sort(&ft_nm->symbol_list, sort_symbol_node_64, 0);
+
+	// ===== DISPLAY =====
 	ft_list_show(ft_nm->symbol_list, display_symbol_node_64);
 	(void)ft_nm;
 	(void)elf_data;

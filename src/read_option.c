@@ -82,18 +82,16 @@ void	scan_arg(t_ft_nm *ft_nm, t_option *op, char *arg)
 
 void	set_option(t_ft_nm *ft_nm, int index, char *argv[])
 {
-	t_option	op;
-
-	op.option_bit = 0;
-	op.option_error = 0;
-	op.scan_bit = 0;
+	ft_nm->option.option_bit = 0;
+	ft_nm->option.option_error = 0;
+	ft_nm->option.scan_bit = 0;
 
 	while (argv[index])
 	{
-		scan_arg(ft_nm, &op, argv[index]);
+		scan_arg(ft_nm, &ft_nm->option, argv[index]);
 		index++;
 	}
-	if (op.option_error == 1)
+	if (ft_nm->option.option_error == 1)
 		ft_nm->status = 1;
 }
 
