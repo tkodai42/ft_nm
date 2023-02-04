@@ -44,13 +44,14 @@ int		ft_putstr(const char *str);
 char	*ft_itoa(int num);
 void	ft_putnbr(int num);
 char	*ft_strdup(const char *str);
+char	*ft_strjoin(const char *str, const char *s2);
 void	ft_puthex(int num, int digit, int big);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*strchr(const char *s, int c);
 
 /****************************/
-/*********** BONUD **********/
+/*********** BONUS **********/
 /****************************/
 
 void	ft_error_exit(int flag);

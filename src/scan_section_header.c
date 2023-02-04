@@ -99,7 +99,7 @@ void	scan_section_header_64(t_ft_nm *ft_nm, t_elf_64 *elf_data)
 {
 	printf(">> scan_section_header_64\n");
 
-	//show_section_name(elf_data); //for debug
+	show_section_name(elf_data); //for debug
 
 	//check offsets
 	if (check_all_section_offset(ft_nm, elf_data) != 0)

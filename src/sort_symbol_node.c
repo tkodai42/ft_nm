@@ -11,7 +11,7 @@ int		sort_symbol_node_64(void *c1, void *c2)
 	char			*str1 = node1->d->sym_name_tab_ptr + symbol1->st_name;
 	char			*str2 = node1->d->sym_name_tab_ptr + symbol2->st_name;
 
-	//cmp symbol name
+	//comp symbol name
 	int				ret = ft_strcmp(str1, str2);
 
 	if (ret != 0)
