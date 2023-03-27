@@ -36,14 +36,28 @@ char	*get_word(char **str, char *charset)
 		return NULL;
 	while (head != tail)
 		*dest++ = *head++;
-	*dest = 0;
+	*dest = '\0';
 	return save;
+}
+
+char **free_table(char **table, int size)
+{
+	int i = 0;
+
+	while (i < size)
+	{
+		free(table[i]);
+		i++;
+	}
+	free(table);
+	return NULL;
 }
 
 char **ft_split(char *str, char *charset)
 {
 	int		tab_count = 0;
 	char	**table;
+	int		i = 0;
 
 	if (!str || !charset)
 		return NULL;
@@ -52,12 +66,12 @@ char **ft_split(char *str, char *charset)
 	if (table == NULL)
 		return NULL;
 
-	int i = 0;
-
 	table[tab_count] = NULL;
 	while (i < tab_count)
 	{
 		table[i] = get_word(&str, charset);
+		if (table[i] == NULL)
+			return (free_table(table, i));
 		i++;
 	}
 	return table;
