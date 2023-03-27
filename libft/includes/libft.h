@@ -49,7 +49,8 @@ char	*ft_strjoin(const char *str, const char *s2);
 void	ft_puthex(int num, int digit, int big);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*strchr(const char *s, int c);
+char	*ft_strchr(const char *s, int c);
+char	**ft_split(char *str, char *charset);
 
 /****************************/
 /*********** BONUS **********/
