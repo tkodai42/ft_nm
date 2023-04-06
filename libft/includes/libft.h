@@ -52,6 +52,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strchr(const char *s, int c);
 char	**ft_split(char *str, char *charset);
+char	*ft_strtrim(const char *str, const char *set);
 
 /****************************/
 /*********** BONUS **********/
