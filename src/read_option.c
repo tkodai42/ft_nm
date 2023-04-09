@@ -1,6 +1,7 @@
 #include "../includes/ft_nm.h"
 #include "../includes/elf.h"
 
+//if exist duplicate option -> put error
 void	print_arg_error(t_ft_nm *ft_nm, t_option *op, int bit, const char *message)
 {
 	if (op->option_bit & bit)
