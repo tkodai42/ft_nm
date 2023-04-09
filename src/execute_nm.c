@@ -1,16 +1,6 @@
 #include "ft_nm.h"
 
-void	put_file_error(const char *file_path)
-{
-	ft_putstr_fd(ES_WORD_RED, 2);	
-	ft_putstr_fd(ES_BOLD, 2);	
-	ft_putstr_fd("error: ", 2);	
-	ft_putstr_fd(ES_RESET, 2);	
-	ft_putstr_fd(file_path, 2);	
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(strerror(errno), 2);
-	ft_putstr_fd(".\n", 2);
-}
+
 
 int		get_file_size(int fd)
 {
@@ -41,6 +31,7 @@ void	execute_nm(t_ft_nm *ft_nm)
 	while (node)
 	{
 		file_path = (char*)node->content;
+		ft_nm->file_name = file_path;
 		fd = open(file_path, O_RDONLY);
 		if (fd == -1)
 		{
@@ -54,11 +45,13 @@ void	execute_nm(t_ft_nm *ft_nm)
 			}
 			else
 			{
-			
+				set_end_offset(ft_nm);
+				nm_solve(ft_nm);			
 				munmap(ft_nm->file_head, ft_nm->file_size);
+				if (ft_nm->status != NM_STATUS_0)
+					put_nm_error(ft_nm);
 			}
 		}
-
 		node = node->next;
 		close(fd);
 	}

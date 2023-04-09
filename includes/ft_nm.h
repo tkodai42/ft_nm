@@ -24,6 +24,7 @@
 #define NM_STATUS_0					0
 #define NM_MALLOC_ERROR 			1
 #define NM_ARG_OPTION_ERROR			2
+#define NM_MEM_SEGFALULT			3
 
 enum	option_enum
 {
@@ -58,7 +59,9 @@ typedef struct		s_ft_nm
 	t_list_node		*file_list;
 
 	int				file_size;
+	char			*file_name;
 	void			*file_head;
+	void			*file_end;
 }					t_ft_nm;
 
 //read_option
@@ -66,5 +69,15 @@ void	read_option(t_ft_nm *ft_nm);
 
 //execute_nm
 void	execute_nm(t_ft_nm *ft_nm);
+
+//solve
+void	nm_solve(t_ft_nm *ft_nm);
+
+//error
+void	put_file_error(const char *f);
+void	set_end_offset(t_ft_nm *ft_nm);
+void	put_nm_error(t_ft_nm *ft_nm);
+int		is_valid_offset(t_ft_nm *f, void *ptr);
+void	set_end_offset(t_ft_nm *ft);
 
 #endif
