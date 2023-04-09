@@ -6,7 +6,7 @@
 /*   By: tkodai <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 20:21:33 by tkodai            #+#    #+#             */
-/*   Updated: 2023/04/09 20:36:01 by tkodai           ###   ########.fr       */
+/*   Updated: 2023/04/09 20:38:37 by tkodai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	scan_arg(t_ft_nm *ft_nm, char *arg)
 {DEBUG_PRINT;
 	(void)ft_nm;
+	(void)arg;
 	(void)arg;
 }
 
