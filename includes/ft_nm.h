@@ -49,13 +49,16 @@ typedef struct		s_option
 
 typedef struct		s_ft_nm
 {
-	int		argc;
-	char	**argv;
-	int		status;
+	int				argc;
+	char			**argv;
+	int				status;
 
 	t_option		option;
 
 	t_list_node		*file_list;
+
+	int				file_size;
+	void			*file_head;
 }					t_ft_nm;
 
 //read_option
