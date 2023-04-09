@@ -6,7 +6,7 @@
 /*   By: tkodai <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 20:21:33 by tkodai            #+#    #+#             */
-/*   Updated: 2023/04/09 20:56:09 by tkodai           ###   ########.fr       */
+/*   Updated: 2023/04/09 21:06:08 by tkodai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	scan_arg_as_file(t_ft_nm *ft_nm, char *file_name)
 
 void	scan_arg(t_ft_nm *ft_nm, char *arg)
 {DEBUG_PRINT;
-	printf("%s\n", arg);
 	
 	if (*arg == '-')//option
 	{
@@ -50,5 +49,9 @@ void	set_option(t_ft_nm *ft_nm)
 
 void	read_option(t_ft_nm *ft_nm)
 {DEBUG_PRINT;
+
 	set_option(ft_nm);
+
+	if (ft_nm->file_list == NULL)//no files -> default
+		scan_arg_as_file(ft_nm, DEFAULT_ARG_FILE);
 }
