@@ -42,6 +42,7 @@
 
 int		ft_strlen(const char *str);
 int		ft_putstr(const char *str);
+int		ft_putstr_fd(const char *str, int fd);
 int		ft_putchar(int str);
 char	*ft_itoa(int num);
 void	ft_putnbr(int num);

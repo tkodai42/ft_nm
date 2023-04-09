@@ -21,8 +21,9 @@
 #define DEBUG_PRINT printf("file: %s, func: %s (%d)\n", __FILE__, __func__, __LINE__);
 #define DEFAULT_ARG_FILE "./parse_file/ELF/hello"
 
-#define NM_STATUS_0		0
-#define NM_MALLOC_ERROR 1
+#define NM_STATUS_0					0
+#define NM_MALLOC_ERROR 			1
+#define NM_ARG_OPTION_ERROR			2
 
 enum	option_enum
 {
