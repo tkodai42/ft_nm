@@ -19,7 +19,7 @@
 #include "libft.h"
 
 #define DEBUG_PRINT printf("file: %s, func: %s (%d)\n", __FILE__, __func__, __LINE__);
-#define DEFAULT_ARG_FILE "./parse_file/ELF/hello"
+#define DEFAULT_ARG_FILE "./parse_files/ELF/hello"
 
 #define NM_STATUS_0					0
 #define NM_MALLOC_ERROR 			1
@@ -60,5 +60,8 @@ typedef struct		s_ft_nm
 
 //read_option
 void	read_option(t_ft_nm *ft_nm);
+
+//execute_nm
+void	execute_nm(t_ft_nm *ft_nm);
 
 #endif

@@ -17,6 +17,10 @@ int		main(int argc, char *argv[])
 
 	init_nm(&ft_nm, argc, argv);
 	read_option(&ft_nm);
+	if (ft_nm.status != NM_STATUS_0)
+		return 1;
+
+	execute_nm(&ft_nm);	
 
 	return ft_nm.status;
 }
