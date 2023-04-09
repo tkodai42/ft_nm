@@ -43,39 +43,42 @@ t_list_node	*ft_list_last(t_list_node *lst)
 	return (ret_list);
 }
 
-void	ft_list_add_back(t_list_node **lst, t_list_node *new)
+t_list_node	*ft_list_add_back(t_list_node **lst, t_list_node *new)
 {
 	t_list_node	*tmp;
 
 	if (lst == NULL)
-		return ;
+		return NULL;
 	if (*lst == NULL)
 	{
 		*lst = new;
-		return ;
+		return new;
 	}
 	tmp = ft_list_last(*lst);
 	tmp->next = new;
 	new->prev = tmp;
+	return new;
 }
 
-void	ft_list_add_back_raw(t_list_node **lst, void *content)
+t_list_node	*ft_list_add_back_raw(t_list_node **lst, void *content)
 {
 	t_list_node	*tmp;
 	t_list_node *new;
 
 	if (lst == NULL)
-		return ;
+		return NULL;
 	new = ft_list_new(content);
+	if (new == NULL)
+		return NULL;
 	if (*lst == NULL)
 	{
 		*lst = new;
-		return ;
+		return new;
 	}
 	tmp = ft_list_last(*lst);
 	tmp->next = new;
 	new->prev = tmp;
-
+	return new;
 }
 
 void	ft_list_clear(t_list_node **lst, void (*del)(void*))

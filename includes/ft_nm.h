@@ -24,6 +24,21 @@
 #define NM_STATUS_0		0
 #define NM_MALLOC_ERROR 1
 
+enum	option_enum
+{
+	OPTION_a,
+	OPTION_g,
+	OPTION_u,
+	OPTION_r,
+	OPTION_p
+};
+
+#define OPTION_BIT_a	(1 << OPTION_a)
+#define OPTION_BIT_g	(1 << OPTION_g)
+#define OPTION_BIT_u	(1 << OPTION_u)
+#define OPTION_BIT_r	(1 << OPTION_r)
+#define OPTION_BIT_p	(1 << OPTION_p)
+
 typedef struct		s_option
 {
 	int		flag_bit;
@@ -38,6 +53,8 @@ typedef struct		s_ft_nm
 	int		status;
 
 	t_option		option;
+
+	t_list_node		*file_list;
 }					t_ft_nm;
 
 //read_option
