@@ -25,6 +25,7 @@
 #define NM_MALLOC_ERROR 			1
 #define NM_ARG_OPTION_ERROR			2
 #define NM_MEM_SEGFALULT			3
+#define NM_HDR_ERROR				4
 
 enum	option_enum
 {
@@ -52,6 +53,7 @@ typedef struct		s_ft_nm
 {
 	int				argc;
 	char			**argv;
+
 	int				status;
 
 	t_option		option;
@@ -62,6 +64,7 @@ typedef struct		s_ft_nm
 	char			*file_name;
 	void			*file_head;
 	void			*file_end;
+
 }					t_ft_nm;
 
 //read_option

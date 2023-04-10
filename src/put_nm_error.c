@@ -40,7 +40,7 @@ void	put_nm_error_msg(const char *file_path, const char *msg)
 	ft_putstr_fd("error: ", 2);	
 	ft_putstr_fd(ES_RESET, 2);	
 	ft_putstr_fd(file_path, 2);	
-	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(" ", 2);
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd(".\n", 2);
 }
@@ -48,9 +48,13 @@ void	put_nm_error_msg(const char *file_path, const char *msg)
 void	put_nm_error(t_ft_nm *ft_nm)
 {
 	//???
-	put_nm_error_msg(ft_nm->file_name, "section table goes past the end of file\n");
+	if (ft_nm->status == NM_MEM_SEGFALULT)
+		put_nm_error_msg(ft_nm->file_name, "section table goes past the end of file");
+	else if (ft_nm->status == NM_HDR_ERROR)
+		put_nm_error_msg(ft_nm->file_name, "The file was not recognized as a valid object file");
+	else
+		put_nm_error_msg(ft_nm->file_name, "putain(unknown error)");
 
 	ft_nm->status = NM_STATUS_0;
-
 	//if malloc error -> dont reset to 0
 }

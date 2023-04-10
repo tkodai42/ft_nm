@@ -47,8 +47,7 @@ void	execute_nm(t_ft_nm *ft_nm)
 				/* munmap */
 				munmap(ft_nm->file_head, ft_nm->file_size);
 				if (ft_nm->status != NM_STATUS_0)
-					put_nm_error(ft_nm);
-				ft_nm->status = NM_STATUS_0;
+					put_nm_error(ft_nm); //put error and reset error flag
 			}
 			else //error
 			{
