@@ -55,6 +55,7 @@ typedef struct		s_ft_nm
 	char			**argv;
 
 	int				status;
+	int				is_64;
 
 	t_option		option;
 
