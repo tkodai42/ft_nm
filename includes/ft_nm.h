@@ -86,4 +86,11 @@ void	put_nm_error(t_ft_nm *ft_nm);
 int		is_valid_offset(t_ft_nm *f, void *ptr);
 void	set_end_offset(t_ft_nm *ft);
 
+//section
+void	*get_sections_offset(t_ft_nm *ft_nm);
+void	*get_section(t_ft_nm *ft_nm, int index);
+int		get_sections_size(t_ft_nm *ft_nm);
+
+
+
 #endif
