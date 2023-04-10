@@ -53,6 +53,9 @@ int		check_section_offset(t_ft_nm *ft_nm)
 		//TODO
 		//セクションのオフセットの位置が有効？
 		//セクションのオフセットからimage sizeが有効？
+		//const char *ptr = get_section_name(ft_nm, shdr_64);
+		//printf("%s\n", ptr);
+
 		shdr_64++;
 		section_index++;
 	}
@@ -70,10 +73,6 @@ void	scan_file_header(t_ft_nm *ft_nm, Elf64_Ehdr *ehdr_64)
 	if (scan_fh_magic_number_ELF(ft_nm, ehdr_64) == 0)
 		return ;
 
-	/* scan */
-	/* scan */
-	/* scan */
-	/* scan */
 	/* scan 32 or 64 */
 	if (set_bit_format(ft_nm, ehdr_64) == 0)
 		return ;

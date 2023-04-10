@@ -90,6 +90,7 @@ void	set_end_offset(t_ft_nm *ft);
 void	*get_sections_offset(t_ft_nm *ft_nm);
 void	*get_section(t_ft_nm *ft_nm, int index);
 int		get_sections_size(t_ft_nm *ft_nm);
+const char	*get_section_name(t_ft_nm *ft_nm, void *shdr);
 
 
 
