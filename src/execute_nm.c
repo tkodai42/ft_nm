@@ -1,7 +1,5 @@
 #include "ft_nm.h"
 
-
-
 int		get_file_size(int fd)
 {
 	struct stat		sb;
@@ -28,10 +26,12 @@ void	execute_nm(t_ft_nm *ft_nm)
 	char		*file_path;
 	int			fd;
 
+	//loop file list
 	while (node)
 	{
 		file_path = (char*)node->content;
 		ft_nm->file_name = file_path;
+		/* open */
 		fd = open(file_path, O_RDONLY);
 		if (fd == -1)
 		{
@@ -39,17 +39,20 @@ void	execute_nm(t_ft_nm *ft_nm)
 		}
 		else
 		{
-			if (set_mmap(ft_nm, fd) == -1)
-			{
-				put_file_error(file_path);
-			}
-			else
+			/* mmmap */
+			if (set_mmap(ft_nm, fd) != -1)
 			{
 				set_end_offset(ft_nm);
 				nm_solve(ft_nm);			
+				/* munmap */
 				munmap(ft_nm->file_head, ft_nm->file_size);
 				if (ft_nm->status != NM_STATUS_0)
 					put_nm_error(ft_nm);
+				ft_nm->status = NM_STATUS_0;
+			}
+			else //error
+			{
+				put_file_error(file_path);
 			}
 		}
 		node = node->next;
