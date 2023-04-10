@@ -10,7 +10,7 @@ void	set_end_offset(t_ft_nm *ft_nm)
 
 int		is_valid_offset(t_ft_nm *ft_nm, void *ptr)	
 {
-	if (ft_nm->file_end < ptr)
+	if (ft_nm->file_end < ptr || ptr < ft_nm->file_head)
 	{
 		ft_nm->status = NM_MEM_SEGFALULT;
 		return 0;
@@ -52,6 +52,8 @@ void	put_nm_error(t_ft_nm *ft_nm)
 		put_nm_error_msg(ft_nm->file_name, "section table goes past the end of file");
 	else if (ft_nm->status == NM_HDR_ERROR)
 		put_nm_error_msg(ft_nm->file_name, "The file was not recognized as a valid object file");
+	else if (ft_nm->status == NM_ERROR_MSG)
+		put_nm_error_msg(ft_nm->file_name, ft_nm->status_msg);
 	else
 		put_nm_error_msg(ft_nm->file_name, "putain(unknown error)");
 

@@ -26,6 +26,7 @@
 #define NM_ARG_OPTION_ERROR			2
 #define NM_MEM_SEGFALULT			3
 #define NM_HDR_ERROR				4
+#define NM_ERROR_MSG				5
 
 enum	option_enum
 {
@@ -55,6 +56,7 @@ typedef struct		s_ft_nm
 	char			**argv;
 
 	int				status;
+	const char		*status_msg;
 	int				is_64;
 
 	t_option		option;
