@@ -55,14 +55,13 @@ int		check_section_offset(t_ft_nm *ft_nm)
 		//セクションのオフセットからimage sizeが有効？
 		//const char *ptr = get_section_name(ft_nm, shdr_64);
 		//printf("%s\n", ptr);
+		//if (shdr_64->sh_type == SHT_STRTAB)
+		//	printf("tab\n");
 		shdr_64++;
 		section_index++;
 	}
-	
 	return 1;
 }
-
-
 
 void	scan_file_header(t_ft_nm *ft_nm, Elf64_Ehdr *ehdr_64)
 {			
@@ -80,7 +79,26 @@ void	scan_file_header(t_ft_nm *ft_nm, Elf64_Ehdr *ehdr_64)
 	/* check */
 	if (check_section_offset(ft_nm) == 0)
 		return ;
-	/* symbol check */
+}
+
+void	symtab_check(t_ft_nm *ft_nm)
+{
+	(void)ft_nm;
+	
+	Elf64_Shdr	*symbol_section = get_section_by_type(ft_nm, SHT_SYMTAB);
+	Elf64_Shdr	*symstr_section;
+	Elf64_Sym	*sym = ft_nm->file_head + symbol_section->sh_offset;
+	int			sym_index = 0;
+	int			sym_size = symbol_section->sh_size / sizeof(Elf64_Sym); 
+
+	symstr_section = get_section_by_name(ft_nm, ".strtab");
+
+	while (sym_index < sym_size)
+	{
+		//printf("%s\n", get_symbol_name(ft_nm, sym));
+		sym++;
+		sym_index++;
+	}
 }
 
 void	nm_solve(t_ft_nm *ft_nm)
@@ -90,6 +108,7 @@ void	nm_solve(t_ft_nm *ft_nm)
 	scan_file_header(ft_nm, ehdr);
 	if (ft_nm->status != NM_STATUS_0)
 		return ;
+	symtab_check(ft_nm);
 
 
 }

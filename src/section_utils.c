@@ -94,3 +94,34 @@ const char	*get_section_name(t_ft_nm *ft_nm, void *shdr)
 
 	return section_name_ptr;
 }
+
+void	*get_section_by_name(t_ft_nm *ft_nm, const char *name)
+{
+	Elf64_Shdr	*shdr_64 = get_sections_offset(ft_nm);
+	int			section_size = get_sections_size(ft_nm);
+	int			section_index = 0;
+	const char *sect_name;
+
+	while (section_index < section_size)
+	{
+		if (is_valid_offset(ft_nm, shdr_64) == 0)	
+			return NULL;
+		sect_name = get_section_name(ft_nm, shdr_64);
+		if (ft_strcmp(sect_name, name) == 0)
+			return shdr_64;
+		shdr_64++;
+		section_index++;
+	}
+	return NULL;
+}
+
+const char *get_symbol_name(t_ft_nm *ft_nm, void *sym)
+{
+	Elf64_Shdr	*symstr_section;
+
+	symstr_section = get_section_by_name(ft_nm, ".strtab");
+	if (((Elf64_Sym *)sym)->st_name == 0)
+		return NULL;
+	return ft_nm->file_head + symstr_section->sh_offset + ((Elf64_Sym *)sym)->st_name;
+}
+
