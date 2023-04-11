@@ -68,7 +68,17 @@ typedef struct		s_ft_nm
 	void			*file_head;
 	void			*file_end;
 
+	/* symbol list */
+	t_list_node		*symbol_list;
+
 }					t_ft_nm;
+
+typedef struct		s_sym_node64
+{
+	t_ft_nm		*ft_nm;
+	Elf64_Sym	*sym;
+	const char	*sym_name_ptr;
+}					t_sym_node64;
 
 //read_option
 void	read_option(t_ft_nm *ft_nm);
@@ -96,6 +106,6 @@ void	*get_section_by_name(t_ft_nm *ft_nm, const char *type);
 //symbol
 const char	*get_symbol_name(t_ft_nm *ft_nm, void *sym);
 
-
+void	display_symbol_node_64(void *content);
 
 #endif

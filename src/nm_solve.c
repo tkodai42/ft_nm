@@ -81,21 +81,24 @@ void	scan_file_header(t_ft_nm *ft_nm, Elf64_Ehdr *ehdr_64)
 		return ;
 }
 
-void	symtab_check(t_ft_nm *ft_nm)
+void	generate_symbol_list(t_ft_nm *ft_nm)
 {
-	(void)ft_nm;
-	
 	Elf64_Shdr	*symbol_section = get_section_by_type(ft_nm, SHT_SYMTAB);
-	Elf64_Shdr	*symstr_section;
 	Elf64_Sym	*sym = ft_nm->file_head + symbol_section->sh_offset;
 	int			sym_index = 0;
 	int			sym_size = symbol_section->sh_size / sizeof(Elf64_Sym); 
 
-	symstr_section = get_section_by_name(ft_nm, ".strtab");
-
+	ft_nm->symbol_list = NULL;
 	while (sym_index < sym_size)
 	{
+		/* generate node */
+		t_sym_node64	*node = malloc(sizeof(t_sym_node64));
+		/* set */
+		node->sym = sym;
+		node->ft_nm = ft_nm;
+		node->sym_name_ptr = get_symbol_name(ft_nm, sym);
 		//printf("%s\n", get_symbol_name(ft_nm, sym));
+		ft_list_add_back_raw(&ft_nm->symbol_list, (void*)node);
 		sym++;
 		sym_index++;
 	}
@@ -108,7 +111,9 @@ void	nm_solve(t_ft_nm *ft_nm)
 	scan_file_header(ft_nm, ehdr);
 	if (ft_nm->status != NM_STATUS_0)
 		return ;
-	symtab_check(ft_nm);
+	generate_symbol_list(ft_nm);
 
+	/* sort */
 
+	ft_list_show(ft_nm->symbol_list, display_symbol_node_64);
 }
