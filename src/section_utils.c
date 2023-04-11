@@ -18,7 +18,7 @@ void	*get_sections_offset(t_ft_nm *ft_nm)
 	}
 }
 
-void	*get_section(t_ft_nm *ft_nm, int index)
+void	*get_section_by_index(t_ft_nm *ft_nm, int index)
 {
 	if (ft_nm->is_64)
 	{
@@ -37,6 +37,7 @@ void	*get_section(t_ft_nm *ft_nm, int index)
 		return shdr_32;
 	}
 }
+
 
 int		get_sections_size(t_ft_nm *ft_nm)
 {
@@ -61,6 +62,25 @@ void	*get_shstrndx_section(t_ft_nm *ft_nm)
 
 	shdr_64 += ehdr_64->e_shstrndx;//need check
 	return shdr_64;
+}
+
+void	*get_section_by_type(t_ft_nm *ft_nm, unsigned int type)
+{
+	Elf64_Shdr	*shdr_64 = get_sections_offset(ft_nm);
+	int			section_size = get_sections_size(ft_nm);
+	int			section_index = 0;
+
+	//check all section
+	while (section_index < section_size)
+	{
+		if (is_valid_offset(ft_nm, shdr_64) == 0)	
+			return NULL;
+		if (shdr_64->sh_type == type)
+			return shdr_64;
+		shdr_64++;
+		section_index++;
+	}
+	return NULL;
 }
 
 const char	*get_section_name(t_ft_nm *ft_nm, void *shdr)

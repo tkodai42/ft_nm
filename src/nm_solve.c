@@ -55,10 +55,10 @@ int		check_section_offset(t_ft_nm *ft_nm)
 		//セクションのオフセットからimage sizeが有効？
 		//const char *ptr = get_section_name(ft_nm, shdr_64);
 		//printf("%s\n", ptr);
-
 		shdr_64++;
 		section_index++;
 	}
+	
 	return 1;
 }
 
@@ -80,6 +80,7 @@ void	scan_file_header(t_ft_nm *ft_nm, Elf64_Ehdr *ehdr_64)
 	/* check */
 	if (check_section_offset(ft_nm) == 0)
 		return ;
+	/* symbol check */
 }
 
 void	nm_solve(t_ft_nm *ft_nm)
