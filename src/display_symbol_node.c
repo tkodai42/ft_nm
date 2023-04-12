@@ -19,11 +19,10 @@ void	debug_print_symbol_bind(int bind)
 	else if (STB_HIPROC == bind)
 		printf(" |%10s", "STB_HIPROC");
 	else
-		printf(" |%10s", "STT_*****");
+		printf(" |%10s", "");
 	
 	//ft_putstr("] ");
 }
-
 
 void	debug_print_symbol_type(int type)
 {
@@ -52,8 +51,89 @@ void	debug_print_symbol_type(int type)
 		printf("%13s |", "STT_SPARC_REGISTER");
 	else if (STT_HIPROC == type)
 		printf("%13s |", "STT_HIPROC");
+	else
+		printf("%13s |", "");
 	
 	//ft_putstr("] ");
+}
+
+void	debug_print_section_type(int type)
+{
+	if (SHT_NULL == type)
+		printf("%14s |", "SHT_NULL");
+	else if (SHT_PROGBITS == type)
+		printf("%14s |", "SHT_PROGBITS");
+	else if (SHT_SYMTAB == type)
+		printf("%14s |", "SHT_SYMTAB");
+	else if (SHT_STRTAB == type)
+		printf("%14s |", "SHT_STRTAB");
+	else if (SHT_RELA == type)
+		printf("%14s |", "SHT_RELA");
+	else if (SHT_HASH == type)
+		printf("%14s |", "SHT_HASH");
+	else if (SHT_DYNAMIC == type)
+		printf("%14s |", "SHT_DYNAMIC");
+	else if (SHT_NOTE == type)
+		printf("%14s |", "SHT_NOTE");
+	else if (SHT_NOBITS == type)
+		printf("%14s |", "SHT_NOBITS");
+	else if (SHT_REL == type)
+		printf("%14s |", "SHT_REL");
+	else if (SHT_SHLIB == type)
+		printf("%14s |", "SHT_SHLIB");
+	else if (SHT_DYNSYM == type)
+		printf("%14s |", "SHT_DYNSYM");
+	else if (SHT_INIT_ARRAY == type)
+		printf("%14s |", "SHT_INIT_ARRAY");
+	else if (SHT_FINI_ARRAY == type)
+		printf("%14s |", "SHT_FINI_ARRAY");
+	else if (SHT_PREINIT_ARRAY == type)
+		printf("%14s |", "SHT_PREINIT_ARRAY");
+	else if (SHT_GROUP == type)
+		printf("%14s |", "SHT_GROUP");
+	else if (SHT_SYMTAB_SHNDX == type)
+		printf("%14s |", "SHT_SYMTAB_SHNDX");
+	else if (SHT_NUM == type)
+		printf("%14s |", "SHT_NUM");
+	else if (SHT_LOOS == type)
+		printf("%14s |", "SHT_LOOS");
+	else
+		printf("%14s |", "");
+			
+}
+
+void	debug_print_section_flags(unsigned int flag)
+{
+	if (SHF_WRITE == flag)
+		printf("%10s |", "SHF_WRITE");
+	else if (SHF_ALLOC == flag)
+		printf("%10s |", "SHF_ALLOC");
+	else if (SHF_EXECINSTR == flag)
+		printf("%10s |", "SHF_EXECINSTR");
+	else if (SHF_MERGE == flag) 
+		printf("%10s |", "SHF_MERGE");
+	else if (SHF_STRINGS == flag)
+		printf("%10s |", "SHF_STRINGS");
+	else if (SHF_INFO_LINK == flag)
+		printf("%10s |", "SHF_INFO_LINK");
+	else if (SHF_LINK_ORDER == flag)
+		printf("%10s |", "SHF_LINK_ORDER");
+	else if (SHF_OS_NONCONFORMING == flag)
+		printf("%10s |", "SHF_OS_NONCONFORMING");
+	else if (SHF_GROUP == flag)
+		printf("%10s |", "SHF_GROUP");
+	else if (SHF_TLS == flag)
+		printf("%10s |", "SHF_TLS");
+	else if (SHF_MASKOS == flag)
+		printf("%10s |", "SHF_MASKOS");
+	else if (SHF_MASKPROC == flag)
+		printf("%10s |", "SHF_MASKPROC");
+	else if (SHF_ORDERED == flag)
+		printf("%10s |", "SHF_ORDERED");
+	else if (SHF_EXCLUDE == flag)
+		printf("%10s |", "SHF_EXCLUDE");
+	else
+		printf("%10s |", "  ");
 }
 
 void	debug_func(t_sym_node64 *node)
@@ -94,7 +174,8 @@ void	display_symbol_node_64(void *content)
 	{
 		debug_print_symbol_bind(ELF64_ST_BIND(node->sym->st_info));
 		debug_print_symbol_type(ELF64_ST_TYPE(node->sym->st_info));
-		//debug_print_section_type(node->symbol);
+		debug_print_section_type(node->shdr ? node->shdr->sh_type : 0);
+		debug_print_section_flags(node->shdr ? node->shdr->sh_flags: 0);
 		fflush(stdout);
 	}
 
