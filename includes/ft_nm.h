@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <errno.h>
+#include <limits.h>
 
 #include "./elf.h"
 #include "elf.h"

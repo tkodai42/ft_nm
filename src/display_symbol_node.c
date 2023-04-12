@@ -175,8 +175,8 @@ void	display_symbol_node_64(void *content)
 	{
 		debug_print_symbol_bind(ELF64_ST_BIND(node->sym->st_info));
 		debug_print_symbol_type(ELF64_ST_TYPE(node->sym->st_info));
-		debug_print_section_type(node->shdr ? node->shdr->sh_type : 0);
-		debug_print_section_flags(node->shdr ? node->shdr->sh_flags: 0);
+		debug_print_section_type(node->shdr ? node->shdr->sh_type : INT_MAX);
+		debug_print_section_flags(node->shdr ? node->shdr->sh_flags: INT_MAX);
 		debug_func(node);
 		fflush(stdout);
 	}
