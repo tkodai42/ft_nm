@@ -89,6 +89,8 @@ const char	*get_section_name(t_ft_nm *ft_nm, void *shdr)
 	Elf64_Shdr	*shdr_section_names = get_shstrndx_section(ft_nm);
 	char		*section_name_ptr;
 
+	if (shdr == NULL || shdr_64->sh_name == 0)
+		return "";
 	section_name_ptr = ft_nm->file_head + shdr_section_names->sh_offset;
 	section_name_ptr += shdr_64->sh_name;
 
@@ -125,3 +127,15 @@ const char *get_symbol_name(t_ft_nm *ft_nm, void *sym)
 	return ft_nm->file_head + symstr_section->sh_offset + ((Elf64_Sym *)sym)->st_name;
 }
 
+void	*get_section_by_sym(t_ft_nm *ft_nm, void *sym_tmp)
+{
+	Elf64_Sym	*sym = sym_tmp;
+
+	int 		section_index = sym->st_shndx;
+	Elf64_Shdr	*section_shdr;
+
+	if (section_index == SHN_UNDEF || section_index == SHN_ABS)
+		return NULL;
+	else
+		return section_shdr = get_section_by_index(ft_nm, section_index);
+}

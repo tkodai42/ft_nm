@@ -95,8 +95,10 @@ void	generate_symbol_list(t_ft_nm *ft_nm)
 		t_sym_node64	*node = malloc(sizeof(t_sym_node64));
 		/* set */
 		node->sym = sym;
+		node->shdr = get_section_by_sym(ft_nm, sym);
 		node->ft_nm = ft_nm;
 		node->sym_name_ptr = get_symbol_name(ft_nm, sym);
+		node->shdr_name_ptr = get_section_name(ft_nm, node->shdr);
 		//printf("%s\n", get_symbol_name(ft_nm, sym));
 		ft_list_add_back_raw(&ft_nm->symbol_list, (void*)node);
 		sym++;

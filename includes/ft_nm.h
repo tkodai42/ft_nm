@@ -77,7 +77,9 @@ typedef struct		s_sym_node64
 {
 	t_ft_nm		*ft_nm;
 	Elf64_Sym	*sym;
+	Elf64_Shdr	*shdr;
 	const char	*sym_name_ptr;
+	const char	*shdr_name_ptr;
 }					t_sym_node64;
 
 //read_option
@@ -103,6 +105,7 @@ int		get_sections_size(t_ft_nm *ft_nm);
 const char	*get_section_name(t_ft_nm *ft_nm, void *shdr);
 void	*get_section_by_type(t_ft_nm *ft_nm, unsigned int type);
 void	*get_section_by_name(t_ft_nm *ft_nm, const char *type);
+void	*get_section_by_sym(t_ft_nm *ft_nm, void *sym);
 //symbol
 const char	*get_symbol_name(t_ft_nm *ft_nm, void *sym);
 
