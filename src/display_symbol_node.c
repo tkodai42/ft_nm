@@ -1,118 +1,85 @@
-#include "../includes/ft_nm.h"
+#include "ft_nm.h"
 #include "../includes/elf.h"
 
-void	print_symbol_bind(int num)
+
+void	debug_print_symbol_type(int type)
 {
-	num = ELF64_ST_BIND(num);
-	if (num == STB_LOCAL)
-		ft_putstr("L :");
-	if (num == STB_GLOBAL)
-		ft_putstr("G :");
-	if (num == STB_WEAK)
-		ft_putstr("W :");
+	ft_putstr(" [");
+	if (STT_NOTYPE == type)
+		ft_putstr("STT_NOTYPE");
+	else if (STT_OBJECT == type)
+		ft_putstr("STT_OBJECT");
+	else if (STT_FUNC == type)
+		ft_putstr("STT_FUNC");
+	else if (STT_SECTION == type)
+		ft_putstr("STT_SECTION");
+	else if (STT_FILE == type)
+		ft_putstr("STT_FILE");
+	else if (STT_COMMON == type)
+		ft_putstr("STT_COMMON");
+	else if (STT_TLS == type)
+		ft_putstr("STT_TLS");
+	else if (STT_LOOS == type)
+		ft_putstr("STT_LOOS");
+	else if (STT_HIOS == type)
+		ft_putstr("STT_HIOS");
+	else if (STT_LOPROC == type)
+		ft_putstr("STT_LOPROC");
+	else if (STT_SPARC_REGISTER == type)
+		ft_putstr("STT_SPARC_REGISTER");
+	else if (STT_HIPROC == type)
+		ft_putstr("STT_HIPROC");
+	
+	ft_putstr("] ");
 }
 
-void	print_symbol_type(int num)
+void	debug_func(t_sym_node64 *node)
 {
-	//#define STT_NOTYPE	0		/* Symbol type is unspecified */
-	//#define STT_OBJECT	1		/* Symbol is a data object */
-	//#define STT_FUNC		2		/* Symbol is a code object */
-	//#define STT_SECTION	3		/* Symbol associated with a section */
-	//#define STT_FILE		4		/* Symbol's name is file name */
-	//#define STT_COMMON	5		/* Symbol is a common data object */
-	//#define STT_TLS		6		/* Symbol is thread-local data object*/
-	//#define STT_NUM		7		/* Number of defined types.  */
-	//#define STT_LOOS		10		/* Start of OS-specific */
-	//#define STT_GNU_IFUNC	10		/* Symbol is indirect code object */
-	//#define STT_HIOS		12		/* End of OS-specific */
-	//#define STT_LOPROC	13		/* Start of processor-specific */
-	//#define STT_HIPROC	15		/* End of processor-specific */
 
-
-	num = ELF64_ST_TYPE(num);
-
-
-	if (num == STT_NOTYPE)
-		ft_putstr("NOTYPE ");
-	else if (num == STT_OBJECT)
-		ft_putstr("OBJECT ");
-	else if (num == STT_FUNC)
-		ft_putstr("FUNC   ");
-	else if (num == STT_SECTION)
-		ft_putstr("SECTION");
-	else if (num == STT_FILE)
-		ft_putstr("FILE   ");
-	else if (num == STT_LOPROC)
-		ft_putstr("LOPROC ");
-	else if (num == STT_HIPROC)
-		ft_putstr("HIPROC ");
-	else
-		ft_putstr("       ");
-
-	//==========
-
+	ft_putstr(" [");
+		
+	ft_putstr(get_section_name(node->ft_nm, node->shdr));
+	ft_putstr("] ");
 }
 
-
-
-char	get_symbol_type_64(t_sh_node_64 *node, Elf64_Sym *symbol)
+char	get_symbol(t_sym_node64 *node)
 {
-	char	c = '?';
+	if (ft_strcmp(".text", node->shdr_name_ptr) == 0)	
+		return 't';
+	if (ft_strcmp(".bss", node->shdr_name_ptr) == 0)	
+		return 'b';
+	if (ft_strcmp(".data", node->shdr_name_ptr) == 0)	
+		return 'd';
 
-	(void)node;
-	(void)symbol;
-	return c;
+	return ' ';
 }
 
-void	print_symbol(t_sh_node_64 *node, Elf64_Sym *symbol)
-{
-	char	c;
-
-	c = get_symbol_type_64(node, symbol);
-	//size + 'z' - 'Z';
-
-	ft_putchar(c);
-	ft_putchar(' ');
-}
-
+//0000000000001135 T main
 void	display_symbol_node_64(void *content)
 {
-	t_sh_node_64	*node = (t_sh_node_64*)content;
-	Elf64_Sym		*symbol = node->symbol;
+	t_sym_node64	*node = (t_sym_node64 *)content;
 	
-	//adress ?
-	//if (symbol->st_value != 0)
-		ft_puthex(symbol->st_value, 16, 0);
-	//else
-	//	ft_putstr("                "); //x16
-	ft_putstr(" ");
-	
-	//???
-	print_symbol(node, symbol);
+	//address => "0000000000001135"
+	ft_puthex(node->sym->st_value, 16, 0);
 
-	//symbol bind
-	print_symbol_bind(symbol->st_info);
+	//space => ' '
+	ft_putchar(' ');
 
-	//symbol type
-	print_symbol_type(symbol->st_info);
-	ft_putstr(":");
+	//symbol type => 'T'
+	ft_putchar(get_symbol(node));
+		
+	//space => ' '
+	ft_putchar(' ');
 
-	//symbol name
-	Elf64_Shdr	*shdr = node->d->shdr_head + symbol->st_shndx;
+	//symbol name => "main"
+	if (node->sym_name_ptr != NULL)
+		ft_putstr(node->sym_name_ptr);
 
-	ft_putstr("[");
-	if (symbol->st_shndx != SHN_ABS)//上限チェック
-		ft_putstr(node->d->sh_name_tab_ptr + shdr->sh_name);
-	ft_putstr("]");
-	
-	//section name
-	ft_putstr(" ");
-	if (node->symbol->st_name == 0)
+	if (1)
 	{
-		//if (symbol->st_shndx != SHN_ABS)//上限チェック
-		//	ft_putstr(node->d->sh_name_tab_ptr + shdr->sh_name);
+		debug_func(node);
+		debug_print_symbol_type(ELF64_ST_TYPE(node->sym->st_info));
 	}
-	else
-		ft_putstr(node->d->sym_name_tab_ptr + node->symbol->st_name);
-	ft_putstr("\n");
+
+	ft_putchar('\n');
 }

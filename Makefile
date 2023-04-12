@@ -8,7 +8,7 @@ CC = gcc
 
 INCLUDES = includes
 
-CPPFLAGS = -Wall -Werror -Wextra
+CPPFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 CPPFLAGS += -I $(INCLUDES)
 
 #---------------#
@@ -50,7 +50,7 @@ DEPS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.d))
 all			: $(NAME)
 
 $(NAME)		: $(LIBFT_PATH)/$(LIBFT_NAME) $(OBJS)
-		$(CC) $(LDFLAGS) $(LDLIBS) $(OBJS) -o $(NAME)
+		$(CC) -g -fsanitize=address $(LDFLAGS) $(LDLIBS) $(OBJS) -o $(NAME)
 
 #.bonus:	$(NAME) $(OBJS_BONUS)
 #		ar rcs $(NAME) $(OBJS_BONUS)

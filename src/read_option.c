@@ -1,25 +1,33 @@
-#include "../includes/ft_nm.h"
-#include "../includes/elf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_option.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkodai <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/09 20:21:33 by tkodai            #+#    #+#             */
+/*   Updated: 2023/04/09 21:42:55 by tkodai           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-//if exist duplicate option -> put error
-void	print_arg_error(t_ft_nm *ft_nm, t_option *op, int bit, const char *message)
+#include "ft_nm.h"
+
+void	set_option_bit(t_ft_nm *ft_nm, int bit, const char *message)
 {
-	if (op->option_bit & bit)
+	if (ft_nm->option.flag_bit & bit)
 	{
-		ft_putstr("ft_nm: for the ");
-		ft_putstr(message);
-		ft_putstr(" option: may only occur zero or one times!\n");
-		op->option_error = 1;
+		ft_putstr_fd("ft_nm: for the ", 2);
+		ft_putstr_fd(message, 2);
+		ft_putstr_fd(" option: may only occur zero or one times!\n", 2);
+		ft_nm->status = NM_ARG_OPTION_ERROR;
 	}
 	else
-		op->option_bit |= bit;
-
-	(void)ft_nm;
+		ft_nm->option.flag_bit |= bit;
 }
 
-int		scan_arg_as_option(t_ft_nm *ft_nm, t_option *op, char *arg)
+//arg[0] == '-'
+int		scan_arg_as_option(t_ft_nm *ft_nm, char *arg)
 {
-	int		hyphen_num = 0;
 	int		scan_success_num = 0;
 
 	while (*arg)
@@ -27,21 +35,21 @@ int		scan_arg_as_option(t_ft_nm *ft_nm, t_option *op, char *arg)
 		if (*arg != '-')
 			break ;
 		arg++;
-		hyphen_num++;
 	}
 	while (*arg)
 	{
 		if (*arg == 'a')
-			print_arg_error(ft_nm, op, OPTION_BIT_a, "-debug-syms");
+			set_option_bit(ft_nm, OPTION_BIT_a, "-debug-syms");
 		else if (*arg == 'g')
-			op->option_bit |= OPTION_BIT_g;
+			ft_nm->option.flag_bit |= OPTION_g;
 		else if (*arg == 'u')
-			print_arg_error(ft_nm, op, OPTION_BIT_u, "-undefined-only");
+			set_option_bit(ft_nm, OPTION_BIT_u, "-undefined-only");
 		else if (*arg == 'r')
-			print_arg_error(ft_nm, op, OPTION_BIT_r, "-reverse-sort");
+			set_option_bit(ft_nm, OPTION_BIT_r, "-reverse-sort");
 		else if (*arg == 'p')
-			print_arg_error(ft_nm, op, OPTION_BIT_p, "-no-sort");
-		else
+			set_option_bit(ft_nm, OPTION_BIT_p, "-no-sort");
+
+		else //unknown option
 			return 1;
 		arg++;
 		scan_success_num++;
@@ -51,60 +59,50 @@ int		scan_arg_as_option(t_ft_nm *ft_nm, t_option *op, char *arg)
 	return 0;
 }
 
-void	scan_arg_as_file(t_ft_nm *ft_nm, t_option *op, char *arg)
+void	scan_arg_as_file(t_ft_nm *ft_nm, char *file_name)
 {
-	printf("file: %s\n", arg);
-
-	ft_list_add_back_raw(&ft_nm->file_list, arg);
-
-	(void)op;
-
+	ft_list_add_back_raw(&ft_nm->file_list, file_name);
 }
 
-void	scan_arg(t_ft_nm *ft_nm, t_option *op, char *arg)
+void	scan_arg(t_ft_nm *ft_nm, char *arg)
 {
-	char	*arg_head = arg;
-
-	if (*arg == '-')
+	if (*arg == '-')//option
 	{
-		if (scan_arg_as_option(ft_nm, op, arg) == 1)//error
+		if (scan_arg_as_option(ft_nm, arg) == 1)//error
 		{
-			op->option_error = 1;
-			ft_putstr("ft_nm: Unknown command line argument '");
-			ft_putstr(arg_head);
-			ft_putstr("'.\n");
+			ft_nm->status = NM_ARG_OPTION_ERROR;
+			ft_putstr_fd("ft_nm: Unknown command line argument '", 2);		
+			ft_putstr_fd(arg, 2);
+			ft_putstr_fd("'.\n", 2);
 		}
 	}
-	else
+	else//scan file
 	{
-		scan_arg_as_file(ft_nm, op, arg);
+		scan_arg_as_file(ft_nm, arg);
 	}
 }
 
-void	set_option(t_ft_nm *ft_nm, int index, char *argv[])
+void	set_option(t_ft_nm *ft_nm)
 {
-	ft_nm->option.option_bit = 0;
-	ft_nm->option.option_error = 0;
+	int		index = 1;
+
+	//init option bits;
+	ft_nm->option.flag_bit = 0;
+	ft_nm->option.error = 0;
 	ft_nm->option.scan_bit = 0;
 
-	while (argv[index])
+	//loop args
+	while (ft_nm->argv[index])
 	{
-		scan_arg(ft_nm, &ft_nm->option, argv[index]);
+		scan_arg(ft_nm, ft_nm->argv[index]);
 		index++;
 	}
-	if (ft_nm->option.option_error == 1)
-		ft_nm->status = 1;
 }
 
-
-const char	default_input_file[] = "parse_files/ELF/hello";
-
-void	read_option(t_ft_nm *ft_nm, int argc, char *argv[])
+void	read_option(t_ft_nm *ft_nm)
 {
-	(void)argc;
+	set_option(ft_nm);
 
-	set_option(ft_nm, 1, argv);
-
-	if (ft_nm->file_list == NULL)
-		ft_list_add_back_raw(&ft_nm->file_list, (char*)default_input_file);
+	if (ft_nm->file_list == NULL)//no files -> default
+		scan_arg_as_file(ft_nm, DEFAULT_ARG_FILE);
 }

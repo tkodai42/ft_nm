@@ -42,6 +42,7 @@
 
 int		ft_strlen(const char *str);
 int		ft_putstr(const char *str);
+int		ft_putstr_fd(const char *str, int fd);
 int		ft_putchar(int str);
 char	*ft_itoa(int num);
 void	ft_putnbr(int num);
@@ -72,8 +73,8 @@ typedef struct	s_list_node
 }				t_list_node;
 
 int		ft_list_size(t_list_node *lst);
-void	ft_list_add_back(t_list_node **l, t_list_node *n);
-void	ft_list_add_back_raw(t_list_node **l, void *c);
+t_list_node		*ft_list_add_back(t_list_node **l, t_list_node *n);
+t_list_node		*ft_list_add_back_raw(t_list_node **l, void *c);
 void	ft_list_clear(t_list_node **l, void (*del)(void*));
 void	ft_list_show(t_list_node *l, void (*s)(void*));
 void	ft_list_sort(t_list_node **l, int (*c)(void*, void*), int r);
