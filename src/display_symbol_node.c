@@ -5,21 +5,21 @@ void	debug_print_symbol_bind(int bind)
 {
 	//ft_putstr(" [");
 	if (STB_LOCAL == bind)
-		printf(" |%10s", "STB_LOCAL");
+		printf(" %10s |", "STB_LOCAL");
 	else if (STB_GLOBAL == bind)
-		printf(" |%10s", "STB_GLOBAL");
+		printf(" %10s |", "STB_GLOBAL");
 	else if (STB_WEAK == bind)
-		printf(" |%10s", "STB_WEAK");
+		printf(" %10s |", "STB_WEAK");
 	else if (STB_LOOS == bind)
-		printf(" |%10s", "STB_LOOS");
+		printf(" %10s |", "STB_LOOS");
 	else if (STB_HIOS == bind)
-		printf(" |%10s", "STB_HIOS");
+		printf(" %10s |", "STB_HIOS");
 	else if (STB_LOPROC == bind)
-		printf(" |%10s", "STB_LOPROC");
+		printf(" %10s |", "STB_LOPROC");
 	else if (STB_HIPROC == bind)
-		printf(" |%10s", "STB_HIPROC");
+		printf(" %10s |", "STB_HIPROC");
 	else
-		printf(" |%10s", "");
+		printf(" %10s |", "");
 	
 	//ft_putstr("] ");
 }
@@ -28,31 +28,31 @@ void	debug_print_symbol_type(int type)
 {
 	//ft_putstr(" [");
 	if (STT_NOTYPE == type)
-		printf("%13s |", "STT_NOTYPE");
+		printf("%12s |", "STT_NOTYPE");
 	else if (STT_OBJECT == type)
-		printf("%13s |", "STT_OBJECT");
+		printf("%12s |", "STT_OBJECT");
 	else if (STT_FUNC == type)
-		printf("%13s |", "STT_FUNC");
+		printf("%12s |", "STT_FUNC");
 	else if (STT_SECTION == type)
-		printf("%13s |", "STT_SECTION");
+		printf("%12s |", "STT_SECTION");
 	else if (STT_FILE == type)
-		printf("%13s |", "STT_FILE");
+		printf("%12s |", "STT_FILE");
 	else if (STT_COMMON == type)
-		printf("%13s |", "STT_COMMON");
+		printf("%12s |", "STT_COMMON");
 	else if (STT_TLS == type)
-		printf("%13s |", "STT_TLS");
+		printf("%12s |", "STT_TLS");
 	else if (STT_LOOS == type)
-		printf("%13s |", "STT_LOOS");
+		printf("%12s |", "STT_LOOS");
 	else if (STT_HIOS == type)
-		printf("%13s |", "STT_HIOS");
+		printf("%12s |", "STT_HIOS");
 	else if (STT_LOPROC == type)
-		printf("%13s |", "STT_LOPROC");
+		printf("%12s |", "STT_LOPROC");
 	else if (STT_SPARC_REGISTER == type)
-		printf("%13s |", "STT_SPARC_REGISTER");
+		printf("%12s |", "STT_SPARC_REGISTER");
 	else if (STT_HIPROC == type)
-		printf("%13s |", "STT_HIPROC");
+		printf("%12s |", "STT_HIPROC");
 	else
-		printf("%13s |", "");
+		printf("%12s |", "");
 	
 	//ft_putstr("] ");
 }
@@ -139,10 +139,11 @@ void	debug_print_section_flags(unsigned int flag)
 void	debug_func(t_sym_node64 *node)
 {
 
-	ft_putstr(" [");
+	//ft_putstr(" [");
 		
-	ft_putstr(get_section_name(node->ft_nm, node->shdr));
-	ft_putstr("] ");
+	//ft_putstr(get_section_name(node->ft_nm, node->shdr));
+	printf("%13s |", get_section_name(node->ft_nm, node->shdr));
+	//ft_putstr("] ");
 }
 
 char	get_symbol(t_sym_node64 *node)
@@ -176,6 +177,7 @@ void	display_symbol_node_64(void *content)
 		debug_print_symbol_type(ELF64_ST_TYPE(node->sym->st_info));
 		debug_print_section_type(node->shdr ? node->shdr->sh_type : 0);
 		debug_print_section_flags(node->shdr ? node->shdr->sh_flags: 0);
+		debug_func(node);
 		fflush(stdout);
 	}
 
@@ -191,13 +193,6 @@ void	display_symbol_node_64(void *content)
 	//symbol name => "main"
 	if (node->sym_name_ptr != NULL)
 		ft_putstr(node->sym_name_ptr);
-
-	if (1)
-	{
-		debug_func(node);
-		//debug_print_symbol_type(ELF64_ST_TYPE(node->sym->st_info));
-		//debug_print_symbol_bind(ELF64_ST_BIND(node->sym->st_info));
-	}
 
 	ft_putchar('\n');
 }
