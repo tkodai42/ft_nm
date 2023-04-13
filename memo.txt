@@ -1,5 +1,0 @@
-U NOTYPE	""
-a SECTION	.comment
-? FILE		""
-r SECTION	.interp
-? 
