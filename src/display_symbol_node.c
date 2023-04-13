@@ -97,6 +97,8 @@ void	debug_print_section_type(int type)
 		printf("%14s |", "SHT_NUM");
 	else if (SHT_LOOS == type)
 		printf("%14s |", "SHT_LOOS");
+	else if (SHN_ABS == type)
+		printf("%14s |", "(SHN_ABS)");
 	else
 		printf("%14s |", "");
 			
@@ -104,36 +106,41 @@ void	debug_print_section_type(int type)
 
 void	debug_print_section_flags(unsigned int flag)
 {
-	if (SHF_WRITE == flag)
-		printf("%10s |", "SHF_WRITE");
-	else if (SHF_ALLOC == flag)
-		printf("%10s |", "SHF_ALLOC");
-	else if (SHF_EXECINSTR == flag)
-		printf("%10s |", "SHF_EXECINSTR");
-	else if (SHF_MERGE == flag) 
-		printf("%10s |", "SHF_MERGE");
-	else if (SHF_STRINGS == flag)
-		printf("%10s |", "SHF_STRINGS");
-	else if (SHF_INFO_LINK == flag)
-		printf("%10s |", "SHF_INFO_LINK");
-	else if (SHF_LINK_ORDER == flag)
-		printf("%10s |", "SHF_LINK_ORDER");
-	else if (SHF_OS_NONCONFORMING == flag)
-		printf("%10s |", "SHF_OS_NONCONFORMING");
-	else if (SHF_GROUP == flag)
-		printf("%10s |", "SHF_GROUP");
-	else if (SHF_TLS == flag)
-		printf("%10s |", "SHF_TLS");
-	else if (SHF_MASKOS == flag)
-		printf("%10s |", "SHF_MASKOS");
-	else if (SHF_MASKPROC == flag)
-		printf("%10s |", "SHF_MASKPROC");
-	else if (SHF_ORDERED == flag)
-		printf("%10s |", "SHF_ORDERED");
-	else if (SHF_EXCLUDE == flag)
-		printf("%10s |", "SHF_EXCLUDE");
-	else
-		printf("%10s |", "  ");
+	int		wrote_len = 0;
+
+	wrote_len = printf(" ");
+	if (SHF_WRITE & flag)
+		wrote_len += printf("%s ", "SHF_WRITE");
+	if (SHF_ALLOC & flag)
+		wrote_len += printf("%s ", "SHF_ALLOC");
+	if (SHF_EXECINSTR & flag)
+		wrote_len += printf("%s ", "SHF_EXECINSTR");
+	if (SHF_MERGE & flag) 
+		wrote_len += printf("%s ", "SHF_MERGE");
+	if (SHF_STRINGS & flag)
+		wrote_len += printf("%s ", "SHF_STRINGS");
+	if (SHF_INFO_LINK & flag)
+		wrote_len += printf("%s ", "SHF_INFO_LINK");
+	if (SHF_LINK_ORDER & flag)
+		wrote_len += printf("%s ", "SHF_LINK_ORDER");
+	if (SHF_OS_NONCONFORMING & flag)
+		wrote_len += printf("%s ", "SHF_OS_NONCONFORMING");
+	if (SHF_GROUP & flag)
+		wrote_len += printf("%s ", "SHF_GROUP");
+	if (SHF_TLS & flag)
+		wrote_len += printf("%s ", "SHF_TLS");
+	if (SHF_MASKOS & flag)
+		wrote_len += printf("%s ", "SHF_MASKOS");
+	if (SHF_MASKPROC & flag)
+		wrote_len += printf("%s ", "SHF_MASKPROC");
+	if (SHF_ORDERED & flag)
+		wrote_len += printf("%s ", "SHF_ORDERED");
+	if (SHF_EXCLUDE & flag)
+		wrote_len += printf("%s ", "SHF_EXCLUDE");
+	while (wrote_len < 25)
+		wrote_len += printf(" ");
+	printf("|");
+
 }
 
 void	debug_func(t_sym_node64 *node)
@@ -149,67 +156,70 @@ void	debug_func(t_sym_node64 *node)
 char	get_symbol(t_sym_node64 *node)
 {
 	int	bind = ELF64_ST_BIND(node->sym->st_info);
-	int type = ELF64_ST_TYPE(node->sym->st_info);
-	int shdr_type = -1;
-	int shdr_flag = -1;
+	//int type = ELF64_ST_TYPE(node->sym->st_info);
+	int shdr_type = SHN_ABS;
+	int shdr_flag = 0;
 
 	if (node->shdr)
 	{
 		shdr_type = node->shdr->sh_type;
 		shdr_flag = node->shdr->sh_flags;
 	}
-
+	
 	if (bind == STB_WEAK)
 	{
+		if (shdr_type == SHT_PROGBITS)
+			return 'W';
 		return 'w';
 	}
-	if (shdr_type == SHT_NOBITS)
+//	STT_OBJECT |  SHT_PROGBITS | SHF_WRITE SHF_ALLOC
+	if ((shdr_flag & SHF_WRITE && shdr_flag & SHF_ALLOC))
 	{
-		if (bind == STB_GLOBAL)
-			return 'B';
-		return 'b';
+		if (shdr_type == SHT_NOBITS)
+		{
+			if (bind == STB_GLOBAL)
+				return 'B';
+			return 'b';
+		}
+		if (shdr_type == SHT_PROGBITS || shdr_type == SHT_DYNAMIC)
+		{
+			if (bind == STB_GLOBAL)
+				return 'D';
+			return 'd';	
+		}
 	}
-	if (shdr_type == SHT_NULL)
+	if (shdr_type == SHN_ABS)
 	{
-		//if (bind == STB_GLOBAL) // ????? 
-			return 'U';
-		return 'u';
+		return 'a';//65521 SHN_ABS
 	}
-	if (shdr_type == -1)
-	{
-		return 'a';
-	}
+	//SHT_PROGBITS | SHF_ALLOC
 	if (shdr_type == SHT_PROGBITS && shdr_flag == SHF_ALLOC)
 	{
 		if (bind == STB_GLOBAL)
 			return 'R';
 		return 'r';
 	}
-	if (shdr_type == SHT_PROGBITS)
+	if (shdr_type == SHT_NULL)
 	{
-		//STT_OBJECT |  SHT_PROGBITS
-		//STT_NOTYPE |  SHT_PROGBITS
-		//
-		//
-		//	if (bind == STB_GLOBAL)
-		//		return 'D';
-		//	return 'd';
+		//if (bind == STB_GLOBAL) //????
+			return 'U';
+		//return 'u';
 	}
-	(void)type;
-
-	
-	/*
-	if (bind == STB_WEAK)
-		return 'w';
-
-	if (ft_strcmp(".text", node->shdr_name_ptr) == 0)	
+//	SHT_PROGBITS | SHF_ALLOC SHF_EXECINSTR
+	if (shdr_type == SHT_PROGBITS && shdr_flag & SHF_ALLOC && shdr_flag & SHF_EXECINSTR)
+	{
+		if (bind == STB_GLOBAL)
+			return 'T';
 		return 't';
-	if (ft_strcmp(".bss", node->shdr_name_ptr) == 0)	
-		return 'b';
-	if (ft_strcmp(".data", node->shdr_name_ptr) == 0)	
-		return 'd';
-	*/
-	return ' ';
+	}
+//	SHF_WRITE SHF_ALLOC
+	if (shdr_flag & SHF_WRITE && shdr_flag & SHF_ALLOC)
+	{
+		if (bind == STB_GLOBAL)
+			return 'T';
+		return 't';
+	}
+	return '?';
 }
 
 //0000000000001135 T main
@@ -220,12 +230,12 @@ void	display_symbol_node_64(void *content)
 	//address => "0000000000001135"
 	ft_puthex(node->sym->st_value, 16, 0);
 
-	if (1)//debug
+	if (NM_DEBUG)//debug
 	{
 		debug_print_symbol_bind(ELF64_ST_BIND(node->sym->st_info));
 		debug_print_symbol_type(ELF64_ST_TYPE(node->sym->st_info));
-		debug_print_section_type(node->shdr ? node->shdr->sh_type : INT_MAX);
-		debug_print_section_flags(node->shdr ? node->shdr->sh_flags: INT_MAX);
+		debug_print_section_type(node->shdr ? node->shdr->sh_type : SHN_ABS);
+		debug_print_section_flags(node->shdr ? node->shdr->sh_flags: 0);
 		debug_func(node);
 		fflush(stdout);
 	}
@@ -236,6 +246,8 @@ void	display_symbol_node_64(void *content)
 	//symbol type => 'T'
 	ft_putchar(get_symbol(node));
 		
+	if (NM_DEBUG) //debug
+		ft_putstr(" |");
 	//space => ' '
 	ft_putchar(' ');
 

@@ -29,6 +29,8 @@
 #define NM_HDR_ERROR				4
 #define NM_ERROR_MSG				5
 
+#define NM_DEBUG 1
+
 enum	option_enum
 {
 	OPTION_a,
