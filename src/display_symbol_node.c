@@ -115,6 +115,11 @@ int		is_hidden_symbol(t_sym_node64 *node)
 		if (symbol_type == 'a')
 			return 1;
 	}
+	if (NM_OPTION_g(node->ft_nm->option.flag_bit))
+	{
+		if (bind == STB_LOCAL)
+			return 1;
+	}
 	return 0;
 }
 

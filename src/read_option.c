@@ -6,7 +6,7 @@
 /*   By: tkodai <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 20:21:33 by tkodai            #+#    #+#             */
-/*   Updated: 2023/04/09 21:42:55 by tkodai           ###   ########.fr       */
+/*   Updated: 2023/04/14 03:37:36 by tkodai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		scan_arg_as_option(t_ft_nm *ft_nm, char *arg)
 		if (*arg == 'a')
 			set_option_bit(ft_nm, OPTION_BIT_a, "-debug-syms");
 		else if (*arg == 'g')
-			ft_nm->option.flag_bit |= OPTION_g;
+			ft_nm->option.flag_bit |= OPTION_BIT_g;
 		else if (*arg == 'u')
 			set_option_bit(ft_nm, OPTION_BIT_u, "-undefined-only");
 		else if (*arg == 'r')
