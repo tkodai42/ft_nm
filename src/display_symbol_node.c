@@ -156,7 +156,7 @@ void	debug_func(t_sym_node64 *node)
 char	get_symbol(t_sym_node64 *node)
 {
 	int	bind = ELF64_ST_BIND(node->sym->st_info);
-	//int type = ELF64_ST_TYPE(node->sym->st_info);
+	int type = ELF64_ST_TYPE(node->sym->st_info);
 	int shdr_type = SHN_ABS;
 	int shdr_flag = 0;
 
@@ -172,7 +172,6 @@ char	get_symbol(t_sym_node64 *node)
 			return 'W';
 		return 'w';
 	}
-//	STT_OBJECT |  SHT_PROGBITS | SHF_WRITE SHF_ALLOC
 	if ((shdr_flag & SHF_WRITE && shdr_flag & SHF_ALLOC))
 	{
 		if (shdr_type == SHT_NOBITS)
@@ -181,18 +180,29 @@ char	get_symbol(t_sym_node64 *node)
 				return 'B';
 			return 'b';
 		}
-		if (shdr_type == SHT_PROGBITS || shdr_type == SHT_DYNAMIC)
+		if (1) //linux
 		{
-			if (bind == STB_GLOBAL)
-				return 'D';
-			return 'd';	
+			if (shdr_type == SHT_PROGBITS || shdr_type == SHT_DYNAMIC || shdr_type == SHT_INIT_ARRAY || shdr_type == SHT_FINI_ARRAY)
+			{
+				if (bind == STB_GLOBAL)
+					return 'D';
+				return 'd';	
+			}
+		}
+		else //max os
+		{
+			if (shdr_type == SHT_PROGBITS || shdr_type == SHT_DYNAMIC)
+			{
+				if (bind == STB_GLOBAL)
+					return 'D';
+				return 'd';	
+			}
 		}
 	}
 	if (shdr_type == SHN_ABS)
 	{
 		return 'a';//65521 SHN_ABS
 	}
-	//SHT_PROGBITS | SHF_ALLOC
 	if (shdr_type == SHT_PROGBITS && shdr_flag == SHF_ALLOC)
 	{
 		if (bind == STB_GLOBAL)
@@ -205,19 +215,29 @@ char	get_symbol(t_sym_node64 *node)
 			return 'U';
 		//return 'u';
 	}
-//	SHT_PROGBITS | SHF_ALLOC SHF_EXECINSTR
+	if (1)//linux
+	{
+		if (shdr_flag & SHF_MERGE && shdr_flag & SHF_STRINGS)
+			return 'n';
+		if (type == STT_SECTION && shdr_type == SHT_PROGBITS && shdr_flag == 0)
+			return 'n';
+	}
 	if (shdr_type == SHT_PROGBITS && shdr_flag & SHF_ALLOC && shdr_flag & SHF_EXECINSTR)
 	{
 		if (bind == STB_GLOBAL)
 			return 'T';
 		return 't';
 	}
-//	SHF_WRITE SHF_ALLOC
 	if (shdr_flag & SHF_WRITE && shdr_flag & SHF_ALLOC)
 	{
 		if (bind == STB_GLOBAL)
 			return 'T';
 		return 't';
+	}
+	if (1) //linux
+	{
+		if ((shdr_flag == SHF_ALLOC) || (shdr_flag & SHF_ALLOC && shdr_flag & SHF_INFO_LINK))
+			return 'r';
 	}
 	return '?';
 }

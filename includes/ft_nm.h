@@ -30,6 +30,7 @@
 #define NM_ERROR_MSG				5
 
 #define NM_DEBUG 1
+#define NM_OS_IS_LINUX				1
 
 enum	option_enum
 {
