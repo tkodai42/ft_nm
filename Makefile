@@ -49,7 +49,7 @@ all			: $(NAME)
 $(OBJS)		: $(INCLUDES)/ft_nm.h
 
 $(NAME)		: $(LIBFT_PATH)/$(LIBFT_NAME) $(OBJS)
-		$(CC) -g -fsanitize=address $(LDFLAGS) $(LDLIBS) $(OBJS) -o $(NAME)
+		$(CC) -g -fsanitize=address $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME)
 
 #.bonus:	$(NAME) $(OBJS_BONUS)
 #		ar rcs $(NAME) $(OBJS_BONUS)
