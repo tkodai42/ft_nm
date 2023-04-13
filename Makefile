@@ -61,8 +61,6 @@ $(OBJ_DIR)/%.o	: %.c
 	@mkdir -p `dirname $@`
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ -c $<
 
-#@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
-
 $(OBJ_DIR):
 	echo $@
 	echo "-----"
