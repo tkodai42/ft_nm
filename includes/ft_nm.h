@@ -29,7 +29,7 @@
 #define NM_HDR_ERROR				4
 #define NM_ERROR_MSG				5
 
-#define NM_DEBUG 1
+#define NM_DEBUG					1
 #define NM_OS_IS_LINUX				1
 
 enum	option_enum
@@ -120,5 +120,11 @@ void	*get_section_by_sym(t_ft_nm *ft_nm, void *sym);
 const char	*get_symbol_name(t_ft_nm *ft_nm, void *sym);
 
 void	display_symbol_node_64(void *content);
+
+//debug
+void	debug_print_symbol_bind(int b);
+void	debug_print_symbol_type(int b);
+void	debug_print_section_type(int type);
+void	debug_print_section_flags(unsigned int flag);
 
 #endif
