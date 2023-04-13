@@ -7,6 +7,23 @@ void	ft_prf_init(t_ft_printf *data, const char *format)
 	data->format = format;
 }
 
+void	exec_c(t_ft_printf *data)
+{
+	if (data->specifiier_type == 'c')
+		
+}
+
+void	exec_specifier(t_ft_printf *data)
+{
+	if (*data->format == '\0')
+		return ;
+	data->specifiier_type = *data->format;//set format type
+	if (*data->format == 'c' || *data->format == '%')
+		exec_c(data);
+	
+	format++;
+}
+
 void	main_loop(t_ft_printf *data)
 {
 	while (*data->format)
@@ -16,9 +33,10 @@ void	main_loop(t_ft_printf *data)
 			data->wrote_len += write(1, data->format, 1);
 			data->format++;
 		}
-		else
+		else // *formet == '%'
 		{
-			data->format++;
+			data->format++;//skip '%'
+			data->exec_specifier(data);
 		}
 	}
 }
