@@ -149,7 +149,55 @@ void	debug_func(t_sym_node64 *node)
 char	get_symbol(t_sym_node64 *node)
 {
 	int	bind = ELF64_ST_BIND(node->sym->st_info);
+	int type = ELF64_ST_TYPE(node->sym->st_info);
+	int shdr_type = -1;
+	int shdr_flag = -1;
 
+	if (node->shdr)
+	{
+		shdr_type = node->shdr->sh_type;
+		shdr_flag = node->shdr->sh_flags;
+	}
+
+	if (bind == STB_WEAK)
+	{
+		return 'w';
+	}
+	if (shdr_type == SHT_NOBITS)
+	{
+		if (bind == STB_GLOBAL)
+			return 'B';
+		return 'b';
+	}
+	if (shdr_type == SHT_NULL)
+	{
+		//if (bind == STB_GLOBAL) // ????? 
+			return 'U';
+		return 'u';
+	}
+	if (shdr_type == -1)
+	{
+		return 'a';
+	}
+	if (type == STT_OBJECT && shdr_type == SHT_PROGBITS)
+	{
+		if (shdr_flag == SHF_ALLOC)
+		{
+			if (bind == STB_GLOBAL)
+				return 'R';
+			return 'r';
+		}
+		else
+		{
+			if (bind == STB_GLOBAL)
+				return 'D';
+			return 'd';
+		}
+	}
+	(void)type;
+
+	
+	/*
 	if (bind == STB_WEAK)
 		return 'w';
 
@@ -159,7 +207,7 @@ char	get_symbol(t_sym_node64 *node)
 		return 'b';
 	if (ft_strcmp(".data", node->shdr_name_ptr) == 0)	
 		return 'd';
-
+	*/
 	return ' ';
 }
 
