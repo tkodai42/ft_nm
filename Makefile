@@ -44,10 +44,9 @@ DEPS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.d))
 #OBJS_BONUS = $(addprefix $(OBJ_DIR)/, $(SRC_BONUS:.c=.o))
 #DEPS_BONUS = $(addprefix $(OBJ_DIR)/, $(SRC_BONUS:.c=.d))
 
-
-
-
 all			: $(NAME)
+
+$(OBJS)		: $(INCLUDES)/ft_nm.h
 
 $(NAME)		: $(LIBFT_PATH)/$(LIBFT_NAME) $(OBJS)
 		$(CC) -g -fsanitize=address $(LDFLAGS) $(LDLIBS) $(OBJS) -o $(NAME)
