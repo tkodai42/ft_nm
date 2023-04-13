@@ -1,7 +1,7 @@
 #include "ft_nm.h"
 
 void	init_nm(t_ft_nm *ft_nm, int argc, char **argv)
-{DEBUG_PRINT;
+{
 
 	ft_nm->status = NM_STATUS_0;
 	ft_nm->argc = argc;
@@ -11,7 +11,7 @@ void	init_nm(t_ft_nm *ft_nm, int argc, char **argv)
 }
 
 int		main(int argc, char *argv[])
-{DEBUG_PRINT;
+{
 	
 	t_ft_nm		ft_nm;
 
