@@ -127,6 +127,6 @@ void	nm_solve(t_ft_nm *ft_nm)
 	generate_symbol_list(ft_nm);
 
 	/* sort */
-
+	ft_symbol_list_sort(ft_nm);
 	ft_list_show(ft_nm->symbol_list, display_symbol_node_64);
 }

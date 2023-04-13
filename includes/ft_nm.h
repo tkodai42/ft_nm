@@ -127,4 +127,7 @@ void	debug_print_symbol_type(int b);
 void	debug_print_section_type(int type);
 void	debug_print_section_flags(unsigned int flag);
 
+//sort
+void	ft_symbol_list_sort(t_ft_nm *n);
+
 #endif
