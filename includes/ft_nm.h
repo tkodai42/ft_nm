@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <errno.h>
+#include <limits.h>
 
 #include "./elf.h"
 #include "elf.h"
@@ -27,6 +28,8 @@
 #define NM_MEM_SEGFALULT			3
 #define NM_HDR_ERROR				4
 #define NM_ERROR_MSG				5
+
+#define NM_DEBUG 1
 
 enum	option_enum
 {

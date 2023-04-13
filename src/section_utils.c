@@ -134,7 +134,8 @@ void	*get_section_by_sym(t_ft_nm *ft_nm, void *sym_tmp)
 	int 		section_index = sym->st_shndx;
 	Elf64_Shdr	*section_shdr;
 
-	if (section_index == SHN_UNDEF || section_index == SHN_ABS)
+	//if (section_index == SHN_UNDEF || section_index == SHN_ABS)
+	if (section_index == SHN_ABS)
 		return NULL;
 	else
 		return section_shdr = get_section_by_index(ft_nm, section_index);
