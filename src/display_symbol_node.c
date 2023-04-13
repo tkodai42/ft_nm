@@ -179,20 +179,21 @@ char	get_symbol(t_sym_node64 *node)
 	{
 		return 'a';
 	}
-	if (type == STT_OBJECT && shdr_type == SHT_PROGBITS)
+	if (shdr_type == SHT_PROGBITS && shdr_flag == SHF_ALLOC)
 	{
-		if (shdr_flag == SHF_ALLOC)
-		{
-			if (bind == STB_GLOBAL)
-				return 'R';
-			return 'r';
-		}
-		else
-		{
-			if (bind == STB_GLOBAL)
-				return 'D';
-			return 'd';
-		}
+		if (bind == STB_GLOBAL)
+			return 'R';
+		return 'r';
+	}
+	if (shdr_type == SHT_PROGBITS)
+	{
+		//STT_OBJECT |  SHT_PROGBITS
+		//STT_NOTYPE |  SHT_PROGBITS
+		//
+		//
+		//	if (bind == STB_GLOBAL)
+		//		return 'D';
+		//	return 'd';
 	}
 	(void)type;
 
