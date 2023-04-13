@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
 /*******************************/
 /*********** COLOR *************/
@@ -113,5 +114,20 @@ void	*queue_front(t_queue *q);
 void	*queue_back(t_queue *q);
 void	queue_push(t_queue *q, void *content);
 void	queue_pop(t_queue *q);
+
+/*******************************/
+/*********** FT_PRINTF *********/
+/*******************************/
+
+
+
+typedef struct	s_ft_printf
+{
+	int			wrote_len;
+	va_list		ap;
+	const char	*format;
+}				t_ft_printf;
+
+int		ft_printf(const char *format, ...);
 
 #endif
