@@ -47,6 +47,12 @@ enum	option_enum
 #define OPTION_BIT_r	(1 << OPTION_r)
 #define OPTION_BIT_p	(1 << OPTION_p)
 
+#define NM_OPTION_a(i)	(i & OPTION_BIT_a)
+#define NM_OPTION_g(i)	(i & OPTION_BIT_g)
+#define NM_OPTION_u(i)	(i & OPTION_BIT_u)
+#define NM_OPTION_r(i)	(i & OPTION_BIT_r)
+#define NM_OPTION_p(i)	(i & OPTION_BIT_p)
+
 typedef struct		s_option
 {
 	int		flag_bit;

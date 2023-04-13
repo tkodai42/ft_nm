@@ -143,16 +143,6 @@ void	debug_print_section_flags(unsigned int flag)
 
 }
 
-void	debug_func(t_sym_node64 *node)
-{
-
-	//ft_putstr(" [");
-		
-	//ft_putstr(get_section_name(node->ft_nm, node->shdr));
-	printf("%13s |", get_section_name(node->ft_nm, node->shdr));
-	//ft_putstr("] ");
-}
-
 char	get_symbol(t_sym_node64 *node)
 {
 	int	bind = ELF64_ST_BIND(node->sym->st_info);
@@ -242,13 +232,52 @@ char	get_symbol(t_sym_node64 *node)
 	return '?';
 }
 
+int		is_hidden_symbol(t_sym_node64 *node)
+{
+	char	symbol_type = get_symbol(node);
+	int		bind = ELF64_ST_BIND(node->sym->st_info);
+	int		type = ELF64_ST_TYPE(node->sym->st_info);
+
+
+	//delete (STB_LOCAL && STT_NOTYPE && SHT_NULL && U)
+	if (bind == STB_LOCAL && type == STT_NOTYPE && node->shdr && node->shdr->sh_type == SHT_NULL && symbol_type == 'U')
+		return 1;
+
+	if (NM_OPTION_u(node->ft_nm->option.flag_bit))
+	{
+		if (symbol_type == 'u' || symbol_type == 'U' || symbol_type == 'w')
+			;
+		else
+			return 1;
+	}
+	if (NM_OPTION_a(node->ft_nm->option.flag_bit) == 0)
+	{
+		if (ft_strlen(node->sym_name_ptr) == 0)
+			return 1;
+		if (symbol_type == 'a')
+			return 1;
+	}
+	return 0;
+}
+
 //0000000000001135 T main
 void	display_symbol_node_64(void *content)
 {
 	t_sym_node64	*node = (t_sym_node64 *)content;
+	char			symbol_type = get_symbol(node);
 	
+
+	if (is_hidden_symbol(node) == 1)
+		return ;
+
 	//address => "0000000000001135"
-	ft_puthex(node->sym->st_value, 16, 0);
+	if (node->sym->st_value == 0 && (node->shdr && node->shdr->sh_type == SHT_NULL))
+	{
+		for (int i = 0; i < 16; i++)
+			ft_putchar(' ');
+	}
+	else
+		ft_puthex(node->sym->st_value, 16, 0);
 
 	if (NM_DEBUG)//debug
 	{
@@ -256,7 +285,7 @@ void	display_symbol_node_64(void *content)
 		debug_print_symbol_type(ELF64_ST_TYPE(node->sym->st_info));
 		debug_print_section_type(node->shdr ? node->shdr->sh_type : SHN_ABS);
 		debug_print_section_flags(node->shdr ? node->shdr->sh_flags: 0);
-		debug_func(node);
+		printf("%13s |", get_section_name(node->ft_nm, node->shdr));
 		fflush(stdout);
 	}
 
@@ -264,7 +293,7 @@ void	display_symbol_node_64(void *content)
 	ft_putchar(' ');
 
 	//symbol type => 'T'
-	ft_putchar(get_symbol(node));
+	ft_putchar(symbol_type);
 		
 	if (NM_DEBUG) //debug
 		ft_putstr(" |");
