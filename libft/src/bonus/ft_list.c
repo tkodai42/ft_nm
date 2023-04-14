@@ -121,11 +121,11 @@ int		ft_list_comp_func_ptr_int(void *c1, void *c2)
 	return (int)c1 < (int)c2;
 }
 
-
 void	ft_list_sort(t_list_node **lst, int (*comp)(void*, void*), int is_rev)
 {
 	int			size;
 	int			index = 0;
+	int			swap_flag = 0;
 	t_list_node	*tmp;
 	t_list_node **ary;
 
@@ -133,6 +133,8 @@ void	ft_list_sort(t_list_node **lst, int (*comp)(void*, void*), int is_rev)
 		return ;
 	size = ft_list_size(*lst);
 	ary = malloc(sizeof(t_list_node) * size);
+	if (ary == NULL)
+		return ;
 
 	//--- fill ---
 	tmp = *lst;
@@ -146,11 +148,18 @@ void	ft_list_sort(t_list_node **lst, int (*comp)(void*, void*), int is_rev)
 	index = 0;
 	while (index + 1 < size)
 	{
-		(void)is_rev;
-		//if ((is_rev && comp(ary[index]->content, ary[index + 1]->content)) ||
-		//	(!is_rev && comp(ary[index + 1]->content, ary[index]->content)))
-		if ((!is_rev && comp(ary[index]->content, ary[index + 1]->content) > 0) ||
-			(is_rev && comp(ary[index + 1]->content, ary[index]->content) > 0))
+		swap_flag = 0;
+		if (is_rev == 0)
+		{
+			if (comp(ary[index]->content, ary[index + 1]->content) > 0)
+				swap_flag = 1;
+		}
+		else
+		{
+			if (comp(ary[index + 1]->content, ary[index]->content) > 0)
+				swap_flag = 1;
+		}
+		if (swap_flag == 1)
 		{
 			tmp = ary[index];
 			ary[index] = ary[index + 1];
