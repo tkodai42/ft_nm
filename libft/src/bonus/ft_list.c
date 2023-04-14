@@ -88,10 +88,12 @@ void	ft_list_clear(t_list_node **lst, void (*del)(void*))
 	while (*lst)
 	{
 		tmp_lst = *lst;
-		del((*lst)->content);
+		if (del != NULL)
+			del((*lst)->content);
 		*lst = tmp_lst->next;
 		free(tmp_lst);
 	}
+	*lst = NULL;
 }
 
 /* show function ptr */

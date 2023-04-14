@@ -22,5 +22,4 @@ void	ft_symbol_list_sort(t_ft_nm *ft_nm)
 		ft_list_sort(&ft_nm->symbol_list, sort_symbol_node, 1);//rev
 	else
 		ft_list_sort(&ft_nm->symbol_list, sort_symbol_node, 0);
-	system("leaks ft_nm");
 }

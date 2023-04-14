@@ -58,5 +58,4 @@ void	put_nm_error(t_ft_nm *ft_nm)
 		put_nm_error_msg(ft_nm->file_name, "putain(unknown error)");
 
 	ft_nm->status = NM_STATUS_0;
-	//if malloc error -> dont reset to 0
 }

@@ -31,6 +31,10 @@ void	execute_nm(t_ft_nm *ft_nm)
 	{
 		file_path = (char*)node->content;
 		ft_nm->file_name = file_path;
+		/* header */
+		//ft_putstr("\n");
+		ft_putstr(file_path);
+		ft_putstr(":\n");
 		/* open */
 		fd = open(file_path, O_RDONLY);
 		if (fd == -1)
