@@ -99,7 +99,7 @@ void	ft_list_clear(t_list_node **lst, void (*del)(void*))
 /* show function ptr */
 void	ft_list_show_func_ptr_int(void *c)
 {
-	printf("[%d]", (int)c);
+	printf("[%lld]", (long long)c);
 }
 
 void	ft_list_show_func_ptr_str(void *c)
@@ -120,7 +120,7 @@ void	ft_list_show(t_list_node *head, void (*show)(void*))
 /* comp function ptr */
 int		ft_list_comp_func_ptr_int(void *c1, void *c2)
 {
-	return (int)c1 < (int)c2;
+	return (long long)c1 < (long long)c2;
 }
 
 void	ft_list_sort(t_list_node **lst, int (*comp)(void*, void*), int is_rev)

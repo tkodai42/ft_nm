@@ -15,7 +15,7 @@ int		set_mmap(t_ft_nm *ft_nm, int fd)
 	if (ft_nm->file_size == -1)
 		return -1;
 	ft_nm->file_head = mmap(NULL, ft_nm->file_size, PROT_READ, MAP_SHARED, fd, 0);	
-	if ((int)ft_nm->file_head == -1)
+	if ((long long)ft_nm->file_head == -1)
 		return -1;
 	return 0;
 }
