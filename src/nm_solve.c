@@ -93,6 +93,7 @@ void	generate_symbol_list(t_ft_nm *ft_nm)
 	{
 		/* generate node */
 		t_sym_node64	*node = malloc(sizeof(t_sym_node64));
+		//check
 		/* set */
 		node->sym = sym;
 		node->shdr = get_section_by_sym(ft_nm, sym);

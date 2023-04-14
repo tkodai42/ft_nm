@@ -171,5 +171,6 @@ void	ft_list_sort(t_list_node **lst, int (*comp)(void*, void*), int is_rev)
 		index++;
 	}
 	*lst = ary[0];
+	free(ary);
 }
 

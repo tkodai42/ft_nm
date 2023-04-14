@@ -8,7 +8,9 @@ CC = gcc
 
 INCLUDES = includes
 
-CPPFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
+#SANITIZER = -g -fsanitize=address
+
+CPPFLAGS = -Wall -Werror -Wextra $(SANITIZER)
 CPPFLAGS += -I $(INCLUDES)
 
 #---------------#
@@ -49,7 +51,7 @@ all			: $(NAME)
 $(OBJS)		: $(INCLUDES)/ft_nm.h
 
 $(NAME)		: $(LIBFT_PATH)/$(LIBFT_NAME) $(OBJS)
-		$(CC) -g -fsanitize=address $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME)
+		$(CC) $(SANITIZER) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME)
 
 #.bonus:	$(NAME) $(OBJS_BONUS)
 #		ar rcs $(NAME) $(OBJS_BONUS)
