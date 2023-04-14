@@ -22,5 +22,6 @@ int		main(int argc, char *argv[])
 
 	execute_nm(&ft_nm);	
 
+	//system("leaks ft_nm");
 	return ft_nm.status;
 }

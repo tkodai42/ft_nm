@@ -28,7 +28,7 @@ char	get_symbol(t_sym_node64 *node)
 				return 'B';
 			return 'b';
 		}
-		if (1) //linux
+		if (NM_LINUX)
 		{
 			if (shdr_type == SHT_PROGBITS || shdr_type == SHT_DYNAMIC || shdr_type == SHT_INIT_ARRAY || shdr_type == SHT_FINI_ARRAY)
 			{
@@ -63,7 +63,7 @@ char	get_symbol(t_sym_node64 *node)
 			return 'U';
 		//return 'u';
 	}
-	if (1)//linux
+	if (NM_LINUX)
 	{
 		if (shdr_flag & SHF_MERGE && shdr_flag & SHF_STRINGS)
 			return 'n';
@@ -82,7 +82,7 @@ char	get_symbol(t_sym_node64 *node)
 			return 'T';
 		return 't';
 	}
-	if (1) //linux
+	if (NM_LINUX)
 	{
 		if ((shdr_flag == SHF_ALLOC) || (shdr_flag & SHF_ALLOC && shdr_flag & SHF_INFO_LINK))
 			return 'r';

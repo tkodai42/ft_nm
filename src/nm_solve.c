@@ -99,9 +99,8 @@ void	generate_symbol_list(t_ft_nm *ft_nm)
 		node->ft_nm = ft_nm;
 		node->sym_name_ptr = get_symbol_name(ft_nm, sym);
 		node->shdr_name_ptr = get_section_name(ft_nm, node->shdr);
-		if (1)//linux
+		if (NM_LINUX)
 		{
-
 			if (node->sym_name_ptr == NULL)
 			{
 				if (NM_OPTION_a(node->ft_nm->option.flag_bit))
