@@ -10,7 +10,10 @@ void	ft_prf_init(t_ft_printf *data, const char *format)
 
 void	put_buffer(t_ft_printf *data)
 {
-	data->wrote_len += write(1, g_ptf_buffer, data->buf_word_size);
+	if (data->specifiier_type == 's')
+		data->wrote_len += write(1, data->str, data->buf_word_size);
+	else
+		data->wrote_len += write(1, g_ptf_buffer, data->buf_word_size);
 }
 
 void	put_field(t_ft_printf *data, int c)
@@ -47,6 +50,15 @@ void	exec_d(t_ft_printf *data)
 
 	num = va_arg(data->ap, int);
 	data->buf_word_size = ft_setnbr(num, g_ptf_buffer);	
+	put_section(data);
+}
+
+void	exec_s(t_ft_printf *data)
+{
+	data->str = va_arg(data->ap, char*);
+	if (data->str == NULL)
+		data->str = "(null)";
+	data->buf_word_size = ft_strlen(data->str);	
 	put_section(data);
 }
 
@@ -106,6 +118,8 @@ void	exec_specifier(t_ft_printf *data)
 	data->specifiier_type = *data->format;//set format type
 	if (*data->format == 'c' || *data->format == '%')
 		exec_c(data);
+	if (*data->format == 's')
+		exec_s(data);
 	if (*data->format == 'd' || *data->format == 'i')
 		exec_d(data);
 	data->format++; //skip 'c' | 'd' etc.
@@ -144,7 +158,7 @@ int		ft_printf(const char *format, ...)
 	return data.wrote_len;
 }
 
-/*
+
 int		main()
 {
 	int ret1 = 0;
@@ -164,4 +178,9 @@ int		main()
    	ret2 = printf("[%05d] [%-10d] [%d] asdf\n", 3, -123, INT_MAX);
 
 	printf("--- %d %d ---\n", ret1, ret2);
-}*/
+
+	ret1 = ft_printf("[%5s] [%-10s] [%s] asdf\n", "123", "", NULL);
+   	ret2 = printf("[%5s] [%-10s] [%s] asdf\n", "123", "", NULL);
+
+	printf("--- %d %d ---\n", ret1, ret2);
+}

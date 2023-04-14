@@ -136,6 +136,7 @@ typedef struct	s_ft_printf
 	int			wrote_len;
 	va_list		ap;
 	const char	*format;
+	const char	*str;
 	int			specifiier_type;
 	int			buf_word_size;
 	int			field_size;
