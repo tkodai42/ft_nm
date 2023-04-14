@@ -148,8 +148,7 @@ void	display_symbol_node_64(void *content)
 		debug_print_symbol_type(ELF64_ST_TYPE(node->sym->st_info));
 		debug_print_section_type(node->shdr ? node->shdr->sh_type : SHN_ABS);
 		debug_print_section_flags(node->shdr ? node->shdr->sh_flags: 0);
-		printf("%13s |", get_section_name(node->ft_nm, node->shdr));
-		fflush(stdout);
+		ft_printf("%13s |", get_section_name(node->ft_nm, node->shdr));
 	}
 
 	//space => ' '

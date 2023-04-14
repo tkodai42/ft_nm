@@ -158,7 +158,7 @@ int		ft_printf(const char *format, ...)
 	return data.wrote_len;
 }
 
-
+/*
 int		main()
 {
 	int ret1 = 0;
@@ -183,4 +183,4 @@ int		main()
    	ret2 = printf("[%5s] [%-10s] [%s] asdf\n", "123", "", NULL);
 
 	printf("--- %d %d ---\n", ret1, ret2);
-}
+}*/
