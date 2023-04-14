@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <limits.h>
 
 /*******************************/
 /*********** COLOR *************/
@@ -55,6 +56,11 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strchr(const char *s, int c);
 char	**ft_split(char *str, char *charset);
 char	*ft_strtrim(const char *str, const char *set);
+int		ft_isnum(int c);
+int		ft_isdigit(int c);
+
+
+int		ft_setnbr(int num, char *buf);
 
 /****************************/
 /*********** BONUS **********/
@@ -119,13 +125,21 @@ void	queue_pop(t_queue *q);
 /*********** FT_PRINTF *********/
 /*******************************/
 
+#define FT_PTR_FLAG_NEG(x)	(x & (1 << 0))
+#define FT_PTF_FLAG_ZERO(x)	(x & (1 << 1))
 
+#define FT_PTR_FLAG_NEG_BIT		(1 << 0)
+#define FT_PTR_FLAG_ZERO_BIT	(1 << 1)
 
 typedef struct	s_ft_printf
 {
 	int			wrote_len;
 	va_list		ap;
 	const char	*format;
+	int			specifiier_type;
+	int			buf_word_size;
+	int			field_size;
+	int			flag;
 }				t_ft_printf;
 
 int		ft_printf(const char *format, ...);
