@@ -67,6 +67,7 @@ int		ft_setnbr(int num, char *buf);
 /****************************/
 
 void	ft_error_exit(int flag);
+void	ft_put_error_msg_exit(const char *msg);
 
 /*******************************/
 /*********** FT_LIST ***********/
@@ -107,7 +108,7 @@ typedef struct	s_queue
 	t_q_node	*head;
 	t_q_node	*tail;
 	int			size;
-	uint8_t		pad[4];
+	char		pad[4];
 }				t_queue;
 
 t_q_node	*ft_q_node_new(void *content);

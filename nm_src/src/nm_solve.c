@@ -93,6 +93,9 @@ void	generate_symbol_list(t_ft_nm *ft_nm)
 	{
 		/* generate node */
 		t_sym_node64	*node = malloc(sizeof(t_sym_node64));
+
+		if (node == NULL)
+			ft_put_error_msg_exit("malloc");
 		//check
 		/* set */
 		node->sym = sym;
@@ -117,6 +120,11 @@ void	generate_symbol_list(t_ft_nm *ft_nm)
 	}
 }
 
+void	free_sys_node64(void *content)
+{
+	free(content);
+}
+
 void	nm_solve(t_ft_nm *ft_nm)
 {
 	Elf64_Ehdr	*ehdr = (Elf64_Ehdr*)ft_nm->file_head;	
@@ -129,4 +137,5 @@ void	nm_solve(t_ft_nm *ft_nm)
 	/* sort */
 	ft_symbol_list_sort(ft_nm);
 	ft_list_show(ft_nm->symbol_list, display_symbol_node_64);
+	ft_list_clear(&ft_nm->symbol_list, free_sys_node64);
 }
