@@ -88,7 +88,6 @@ void	generate_symbol_list(t_ft_nm *ft_nm)
 	int			sym_index = 0;
 	int			sym_size = symbol_section->sh_size / sizeof(Elf64_Sym); 
 
-	ft_nm->symbol_list = NULL;
 	while (sym_index < sym_size)
 	{
 		/* generate node */
@@ -96,7 +95,6 @@ void	generate_symbol_list(t_ft_nm *ft_nm)
 
 		if (node == NULL)
 			ft_put_error_msg_exit("malloc");
-		//check
 		/* set */
 		node->sym = sym;
 		node->shdr = get_section_by_sym(ft_nm, sym);
@@ -113,7 +111,7 @@ void	generate_symbol_list(t_ft_nm *ft_nm)
 			if (node->sym_name_ptr == NULL)
 				node->sym_name_ptr = "";
 		}
-		//printf("%s\n", get_symbol_name(ft_nm, sym));
+		//ft_printf("%s\n", get_symbol_name(ft_nm, sym));
 		ft_list_add_back_raw(&ft_nm->symbol_list, (void*)node);
 		sym++;
 		sym_index++;
