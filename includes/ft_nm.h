@@ -20,7 +20,7 @@
 #include "libft.h"
 
 #define DEBUG_PRINT ft_printf("file: %s, func: %s (%d)\n", __FILE__, __func__, __LINE__);
-#define DEFAULT_ARG_FILE "./parse_files/ELF/hello"
+#define DEFAULT_ARG_FILE "a.out"
 
 #define NM_STATUS_0					0
 #define NM_MALLOC_ERROR 			1
