@@ -99,12 +99,16 @@ void	ft_list_clear(t_list_node **lst, void (*del)(void*))
 /* show function ptr */
 void	ft_list_show_func_ptr_int(void *c)
 {
-	printf("[%lld]", (long long)c);
+	//printf("[%lld]", (long long)c);
+	long long	n = (long long)c;
+	int			num = (int)n;
+
+	ft_printf("[%d]", num);
 }
 
 void	ft_list_show_func_ptr_str(void *c)
 {
-	printf("[%s]", (char*)c);
+	ft_printf("[%s]", (char*)c);
 }
 
 
