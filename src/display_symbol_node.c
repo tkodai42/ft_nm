@@ -51,7 +51,7 @@ char	get_symbol(t_sym_node64 *node)
 	{
 		return 'a';//65521 SHN_ABS
 	}
-	if (shdr_type == SHT_PROGBITS && shdr_flag == SHF_ALLOC)
+	if (shdr_type == SHT_PROGBITS && (shdr_flag == SHF_ALLOC || (shdr_flag & SHF_ALLOC && shdr_flag & SHF_MERGE)))
 	{
 		if (bind == STB_GLOBAL)
 			return 'R';
