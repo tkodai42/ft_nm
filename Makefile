@@ -89,7 +89,7 @@ delete:
 	-@yes | docker rm $(CONTAINER_NAME)
 	-@yes | docker rmi $(IMAGE_NAME)
 
-run: $(NAME) delete
+build: $(NAME) delete
 	docker build -t $(IMAGE_NAME) .
 	docker run --name $(CONTAINER_NAME) -it $(IMAGE_NAME) /bin/bash
 
