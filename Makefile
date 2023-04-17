@@ -79,19 +79,22 @@ re				: fclean all
 $(LIBFT_PATH)/$(LIBFT_NAME):
 	$(MAKE) -C $(LIBFT_PATH) bonus
 
-#define F
-#	@echo ====== TEST $(1) ======
-#	@gcc -I includes libft.a $(1)
-#	@./a.out
-#
-#endef
-#
-#xs := $(shell find main -type f -name "*.c")
-#
-#test			: all
-#	$(foreach x,$(xs),$(call F, $(x)))
 
-run: $(NAME)
-	./$(NAME) ./parse_files/ELF/hello
+#===== DOCKER =====#
+
+CONTAINER_NAME=nm_container
+IMAGE_NAME=nm:0.1
+
+delete:
+	-@yes | docker rm $(CONTAINER_NAME)
+	-@yes | docker rmi $(IMAGE_NAME)
+
+run: $(NAME) delete
+	docker build -t $(IMAGE_NAME) .
+	docker run --name $(CONTAINER_NAME) -it $(IMAGE_NAME) /bin/bash
+
+start:
+	docker start -i $(CONTAINER_NAME)
+
 
 .PHONY:	all clean fclean all
