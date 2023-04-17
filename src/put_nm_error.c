@@ -21,8 +21,23 @@ int		is_valid_offset(t_ft_nm *ft_nm, void *ptr)
 /*
  * FILE_ERROR
  */
+void	put_file_linux_error(const char *file_path)
+{
+	ft_putstr_fd("nm: ", 2);
+	ft_putstr_fd("'", 2);
+	ft_putstr_fd(file_path, 2);
+	ft_putstr_fd("'", 2);
+	ft_putstr_fd(": No such file\n", 2);
+	//nm: 'a': No such file
+}
+
 void	put_file_error(const char *file_path)
 {
+	if (NM_LINUX)
+	{
+		put_file_linux_error(file_path);
+		return ;
+	}
 	ft_putstr_fd(ES_WORD_RED, 2);	
 	ft_putstr_fd(ES_BOLD, 2);	
 	ft_putstr_fd("error: ", 2);	
@@ -45,8 +60,23 @@ void	put_nm_error_msg(const char *file_path, const char *msg)
 	ft_putstr_fd(".\n", 2);
 }
 
+void	put_nm_linux_error_msg(const char *file_name, const char *msg)
+{
+	ft_putstr_fd("nm: ", 2);
+	ft_putstr_fd(file_name, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd("\n", 2);
+}
+
 void	put_nm_error(t_ft_nm *ft_nm)
 {
+	if (NM_LINUX)
+	{
+		put_nm_linux_error_msg(ft_nm->file_name, "file format not recognized");
+		ft_nm->status = NM_STATUS_0;
+		return ;
+	}
 	//???
 	if (ft_nm->status == NM_MEM_SEGFALULT)
 		put_nm_error_msg(ft_nm->file_name, "section table goes past the end of file");
