@@ -22,6 +22,7 @@ int		set_mmap(t_ft_nm *ft_nm, int fd)
 
 void	execute_nm(t_ft_nm *ft_nm)
 {
+	int			node_num = ft_list_size(ft_nm->file_list);
 	t_list_node *node = ft_nm->file_list;
 	char		*file_path;
 	int			fd;
@@ -31,10 +32,6 @@ void	execute_nm(t_ft_nm *ft_nm)
 	{
 		file_path = (char*)node->content;
 		ft_nm->file_name = file_path;
-		/* header */
-		//ft_putstr("\n");
-		ft_putstr(file_path);
-		ft_putstr(":\n");
 		/* open */
 		fd = open(file_path, O_RDONLY);
 		if (fd == -1)
@@ -43,6 +40,10 @@ void	execute_nm(t_ft_nm *ft_nm)
 		}
 		else
 		{
+			/* header */
+			if (node_num >= 2)
+				ft_printf("\n%s:\n", file_path);
+
 			/* mmmap */
 			if (set_mmap(ft_nm, fd) != -1)
 			{
