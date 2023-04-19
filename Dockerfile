@@ -5,6 +5,7 @@ ARG		NM_DIR="/nm_dir"
 RUN		apt update && apt install -y \
 		vim \
 		gcc \
+		file \
 		make
 
 RUN		mkdir -p ${NM_DIR} && \

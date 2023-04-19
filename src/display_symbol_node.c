@@ -30,7 +30,8 @@ char	get_symbol(t_sym_node64 *node)
 		}
 		if (NM_LINUX)
 		{
-			if (shdr_type == SHT_PROGBITS || shdr_type == SHT_DYNAMIC || shdr_type == SHT_INIT_ARRAY || shdr_type == SHT_FINI_ARRAY)
+			if (shdr_type == SHT_PROGBITS || shdr_type == SHT_PREINIT_ARRAY
+				|| shdr_type == SHT_DYNAMIC || shdr_type == SHT_INIT_ARRAY || shdr_type == SHT_FINI_ARRAY)
 			{
 				if (bind == STB_GLOBAL)
 					return 'D';
@@ -134,7 +135,8 @@ void	display_symbol_node_64(void *content)
 		return ;
 
 	//address => "0000000000001135"
-	if (node->sym->st_value == 0 && (node->shdr && node->shdr->sh_type == SHT_NULL))
+	if (symbol_type == 'U' ||
+		(node->sym->st_value == 0 && (node->shdr && node->shdr->sh_type == SHT_NULL)))
 	{
 		for (int i = 0; i < 16; i++)
 			ft_putchar(' ');
