@@ -1,18 +1,35 @@
 #include "ft_nm.h"
 #include "../includes/elf.h"
 
-char	get_symbol(t_sym_node64 *node)
+char	get_symbol(t_sym_node *node)
 {
-	int	bind = ELF64_ST_BIND(node->sym->st_info);
-	int type = ELF64_ST_TYPE(node->sym->st_info);
+	int	bind;
+	int type;
 	int shdr_type = SHN_ABS;
 	int shdr_flag = 0;
 
-	if (node->shdr)
+
+	if (node->ft_nm->is_64)
 	{
-		shdr_type = node->shdr->sh_type;
-		shdr_flag = node->shdr->sh_flags;
+		bind = ELF64_ST_BIND(node->sym64->st_info);
+		type = ELF64_ST_TYPE(node->sym64->st_info);
+		if (node->shdr64)
+		{
+			shdr_type = node->shdr64->sh_type;
+			shdr_flag = node->shdr64->sh_flags;
+		}
 	}
+	else
+	{
+		bind = ELF32_ST_BIND(node->sym32->st_info);
+		type = ELF32_ST_TYPE(node->sym32->st_info);
+		if (node->shdr32)
+		{
+			shdr_type = node->shdr32->sh_type;
+			shdr_flag = node->shdr32->sh_flags;
+		}
+	}
+
 	
 	if (bind == STB_WEAK)
 	{
@@ -91,16 +108,36 @@ char	get_symbol(t_sym_node64 *node)
 	return '?';
 }
 
-int		is_hidden_symbol(t_sym_node64 *node)
+int		is_hidden_symbol(t_sym_node *node)
 {
 	char	symbol_type = get_symbol(node);
-	int		bind = ELF64_ST_BIND(node->sym->st_info);
-	int		type = ELF64_ST_TYPE(node->sym->st_info);
+	int		bind;
+	int		type;
 
+	if (node->ft_nm->is_64)
+	{
+		bind = ELF64_ST_BIND(node->sym64->st_info);
+		type = ELF64_ST_TYPE(node->sym64->st_info);
+	}
+	else
+	{
+		bind = ELF32_ST_BIND(node->sym32->st_info);
+		type = ELF32_ST_TYPE(node->sym32->st_info);
+	}
 
 	//delete (STB_LOCAL && STT_NOTYPE && SHT_NULL && U)
-	if (bind == STB_LOCAL && type == STT_NOTYPE && node->shdr && node->shdr->sh_type == SHT_NULL && symbol_type == 'U')
-		return 1;
+	if (node->ft_nm->is_64)
+	{
+		if (bind == STB_LOCAL && type == STT_NOTYPE
+			&& node->shdr64 && node->shdr64->sh_type == SHT_NULL && symbol_type == 'U')
+			return 1;
+	}
+	else
+	{
+		if (bind == STB_LOCAL && type == STT_NOTYPE
+			&& node->shdr32 && node->shdr32->sh_type == SHT_NULL && symbol_type == 'U')
+			return 1;
+	}
 
 	if (NM_OPTION_u(node->ft_nm->option.flag_bit))
 	{
@@ -127,7 +164,7 @@ int		is_hidden_symbol(t_sym_node64 *node)
 //0000000000001135 T main
 void	display_symbol_node_64(void *content)
 {
-	t_sym_node64	*node = (t_sym_node64 *)content;
+	t_sym_node		*node = (t_sym_node *)content;
 	char			symbol_type = get_symbol(node);
 	
 
@@ -135,22 +172,47 @@ void	display_symbol_node_64(void *content)
 		return ;
 
 	//address => "0000000000001135"
-	if (symbol_type == 'U' ||
-		(node->sym->st_value == 0 && (node->shdr && node->shdr->sh_type == SHT_NULL)))
+	if (node->ft_nm->is_64)
 	{
-		for (int i = 0; i < 16; i++)
-			ft_putchar(' ');
+		if (symbol_type == 'U' || (node->sym64->st_value == 0
+			&& (node->shdr64 && node->shdr64->sh_type == SHT_NULL)))
+		{
+			for (int i = 0; i < 16; i++)
+				ft_putchar(' ');
+		}
+		else
+			ft_puthex(node->sym64->st_value, 16, 0);
 	}
 	else
-		ft_puthex(node->sym->st_value, 16, 0);
+	{
+		if (symbol_type == 'U' || (node->sym32->st_value == 0
+			&& (node->shdr32 && node->shdr32->sh_type == SHT_NULL)))
+		{
+			for (int i = 0; i < 16; i++)
+				ft_putchar(' ');
+		}
+		else
+			ft_puthex(node->sym32->st_value, 16, 0);
+	}
 
 	if (NM_DEBUG)//debug
 	{
-		debug_print_symbol_bind(ELF64_ST_BIND(node->sym->st_info));
-		debug_print_symbol_type(ELF64_ST_TYPE(node->sym->st_info));
-		debug_print_section_type(node->shdr ? node->shdr->sh_type : SHN_ABS);
-		debug_print_section_flags(node->shdr ? node->shdr->sh_flags: 0);
-		ft_printf("%13s |", get_section_name(node->ft_nm, node->shdr));
+		if (node->ft_nm->is_64)
+		{
+			debug_print_symbol_bind(ELF64_ST_BIND(node->sym64->st_info));
+			debug_print_symbol_type(ELF64_ST_TYPE(node->sym64->st_info));
+			debug_print_section_type(node->shdr64 ? node->shdr64->sh_type : SHN_ABS);
+			debug_print_section_flags(node->shdr64 ? node->shdr64->sh_flags: 0);
+			ft_printf("%13s |", get_section_name(node->ft_nm, node->shdr64));
+		}
+		else
+		{
+			debug_print_symbol_bind(ELF32_ST_BIND(node->sym32->st_info));
+			debug_print_symbol_type(ELF32_ST_TYPE(node->sym32->st_info));
+			debug_print_section_type(node->shdr32 ? node->shdr32->sh_type : SHN_ABS);
+			debug_print_section_flags(node->shdr32 ? node->shdr32->sh_flags: 0);
+			ft_printf("%13s |", get_section_name(node->ft_nm, node->shdr32));
+		}
 	}
 
 	//space => ' '

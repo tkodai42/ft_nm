@@ -83,14 +83,17 @@ typedef struct		s_ft_nm
 
 }					t_ft_nm;
 
-typedef struct		s_sym_node64
+typedef struct		s_sym_node
 {
 	t_ft_nm		*ft_nm;
-	Elf64_Sym	*sym;
-	Elf64_Shdr	*shdr;
+	Elf64_Sym	*sym64;
+	Elf64_Shdr	*shdr64;
+	Elf32_Sym	*sym32;
+	Elf32_Shdr	*shdr32;
+
 	const char	*sym_name_ptr;
 	const char	*shdr_name_ptr;
-}					t_sym_node64;
+}					t_sym_node;
 
 //read_option
 void	read_option(t_ft_nm *ft_nm);
