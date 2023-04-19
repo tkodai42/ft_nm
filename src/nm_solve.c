@@ -83,24 +83,50 @@ void	scan_file_header(t_ft_nm *ft_nm, Elf64_Ehdr *ehdr_64)
 
 void	generate_symbol_list(t_ft_nm *ft_nm)
 {
-	Elf64_Shdr	*symbol_section = get_section_by_type(ft_nm, SHT_SYMTAB);
-	Elf64_Sym	*sym = ft_nm->file_head + symbol_section->sh_offset;
+	Elf64_Shdr	*symbol_section64;
+	Elf64_Sym	*sym64;
+	Elf32_Shdr	*symbol_section32;
+	Elf32_Sym	*sym32;
+	int			sym_size;
 	int			sym_index = 0;
-	int			sym_size = symbol_section->sh_size / sizeof(Elf64_Sym); 
+
+	if (ft_nm->is_64)
+	{
+		symbol_section64 = get_section_by_type(ft_nm, SHT_SYMTAB);
+		sym64 = ft_nm->file_head + symbol_section64->sh_offset;
+		sym_size = symbol_section64->sh_size / sizeof(Elf64_Sym); 
+	}
+	else
+	{
+		symbol_section32 = get_section_by_type(ft_nm, SHT_SYMTAB);
+		sym32 = ft_nm->file_head + symbol_section32->sh_offset;
+		sym_size = symbol_section32->sh_size / sizeof(Elf32_Sym); 
+	}
 
 	while (sym_index < sym_size)
 	{
 		/* generate node */
-		t_sym_node64	*node = malloc(sizeof(t_sym_node64));
+		t_sym_node	*node = malloc(sizeof(t_sym_node));
 
 		if (node == NULL)
 			ft_put_error_msg_exit("malloc");
 		/* set */
-		node->sym = sym;
-		node->shdr = get_section_by_sym(ft_nm, sym);
-		node->ft_nm = ft_nm;
-		node->sym_name_ptr = get_symbol_name(ft_nm, sym);
-		node->shdr_name_ptr = get_section_name(ft_nm, node->shdr);
+		if (ft_nm->is_64)
+		{
+			node->sym64 = sym64;
+			node->shdr64 = get_section_by_sym(ft_nm, sym64);
+			node->ft_nm = ft_nm;
+			node->sym_name_ptr = get_symbol_name(ft_nm, sym64);
+			node->shdr_name_ptr = get_section_name(ft_nm, node->shdr64);
+		}
+		else
+		{
+			node->sym32 = sym32;
+			node->shdr32 = get_section_by_sym(ft_nm, sym32);
+			node->ft_nm = ft_nm;
+			node->sym_name_ptr = get_symbol_name(ft_nm, sym32);
+			node->shdr_name_ptr = get_section_name(ft_nm, node->shdr32);
+		}
 		if (NM_LINUX)
 		{
 			if (node->sym_name_ptr == NULL)
@@ -113,12 +139,15 @@ void	generate_symbol_list(t_ft_nm *ft_nm)
 		}
 		//ft_printf("%s\n", get_symbol_name(ft_nm, sym));
 		ft_list_add_back_raw(&ft_nm->symbol_list, (void*)node);
-		sym++;
+		if (ft_nm->is_64)
+			sym64++;
+		else
+			sym32++;
 		sym_index++;
 	}
 }
 
-void	free_sys_node64(void *content)
+void	free_sys_node(void *content)
 {
 	free(content);
 }
@@ -135,5 +164,5 @@ void	nm_solve(t_ft_nm *ft_nm)
 	/* sort */
 	ft_symbol_list_sort(ft_nm);
 	ft_list_show(ft_nm->symbol_list, display_symbol_node_64);
-	ft_list_clear(&ft_nm->symbol_list, free_sys_node64);
+	ft_list_clear(&ft_nm->symbol_list, free_sys_node);
 }
