@@ -2,6 +2,6 @@
 
 ## makefile
 ### make delete
-### make run
+### make build
 ### make start
 

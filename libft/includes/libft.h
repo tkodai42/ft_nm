@@ -142,6 +142,7 @@ void	queue_pop(t_queue *q);
 
 typedef struct	s_ft_printf
 {
+	int			fd;
 	int			wrote_len;
 	va_list		ap;
 	const char	*format;
@@ -154,5 +155,6 @@ typedef struct	s_ft_printf
 }				t_ft_printf;
 
 int		ft_printf(const char *format, ...);
+int		ft_dprintf(int fd, const char *format, ...);
 
 #endif

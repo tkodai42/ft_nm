@@ -62,11 +62,12 @@ void	put_nm_error_msg(const char *file_path, const char *msg)
 
 void	put_nm_linux_error_msg(const char *file_name, const char *msg)
 {
-	ft_putstr_fd("nm: ", 2);
-	ft_putstr_fd(file_name, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(msg, 2);
-	ft_putstr_fd("\n", 2);
+	ft_dprintf(2, "nm: %s: %s\n", file_name, msg);
+	//ft_putstr_fd("nm: ", 2);
+	//ft_putstr_fd(file_name, 2);
+	//ft_putstr_fd(": ", 2);
+	//ft_putstr_fd(msg, 2);
+	//ft_putstr_fd("\n", 2);
 }
 
 void	put_nm_error(t_ft_nm *ft_nm)

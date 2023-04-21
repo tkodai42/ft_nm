@@ -2,24 +2,26 @@
 
 static char	g_ptf_buffer[1000 + 1];
 
-void	ft_prf_init(t_ft_printf *data, const char *format)
+void	ft_prf_init(t_ft_printf *data, const char *format, int fd)
 {
 	data->wrote_len = 0;
-	data->format = format; }
+	data->format = format;
+	data->fd = fd;
+}
 
 void	put_buffer(t_ft_printf *data)
 {
 	if (data->specifiier_type == 's')
-		data->wrote_len += write(1, data->str, data->buf_word_size);
+		data->wrote_len += write(data->fd, data->str, data->buf_word_size);
 	else
-		data->wrote_len += write(1, g_ptf_buffer, data->buf_word_size);
+		data->wrote_len += write(data->fd, g_ptf_buffer, data->buf_word_size);
 }
 
 void	put_field(t_ft_printf *data, int c)
 {
 	while (data->field_size > 0)
 	{
-		data->wrote_len += write(1, &c, 1);
+		data->wrote_len += write(data->fd, &c, 1);
 		data->field_size--;
 	}
 }
@@ -210,7 +212,7 @@ void	main_loop(t_ft_printf *data)
 		data->buf_word_size = 0;
 		if (*data->format != '%')
 		{
-			data->wrote_len += write(1, data->format, 1);
+			data->wrote_len += write(data->fd, data->format, 1);
 			data->format++;
 		}
 		else // *format == '%'
@@ -229,12 +231,26 @@ int		ft_printf(const char *format, ...)
 
 	if (format == NULL || *format == '\0')
 		return 0;
-	ft_prf_init(&data, format);
+	ft_prf_init(&data, format, 1);
 	va_start(data.ap, format);
 	main_loop(&data);
 	va_end(data.ap);
 	return data.wrote_len;
 }
+
+int		ft_dprintf(int fd, const char *format, ...)
+{
+	t_ft_printf	data;
+
+	if (format == NULL || *format == '\0')
+		return 0;
+	ft_prf_init(&data, format, fd);
+	va_start(data.ap, format);
+	main_loop(&data);
+	va_end(data.ap);
+	return data.wrote_len;
+}
+
 
 #if 0
 int		main()

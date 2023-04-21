@@ -85,16 +85,19 @@ $(LIBFT_PATH)/$(LIBFT_NAME):
 CONTAINER_NAME=nm_container
 IMAGE_NAME=nm:0.1
 
+.PHONY: delete
 delete:
 	-@yes | docker rm $(CONTAINER_NAME)
 	-@yes | docker rmi $(IMAGE_NAME)
 
+.PHONY: build
 build: $(NAME) delete
 	docker build -t $(IMAGE_NAME) .
 	docker run --name $(CONTAINER_NAME) -it $(IMAGE_NAME) /bin/bash
 
+.PHONY: start
 start:
 	docker start -i $(CONTAINER_NAME)
 
 
-.PHONY:	all clean fclean all
+.PHONY:	all clean fclean all re
