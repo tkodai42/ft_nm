@@ -12,6 +12,8 @@ int		nm_destructor(t_ft_nm *ft_nm)
 {
 	ft_list_clear(&ft_nm->file_list, NULL);
 	ft_list_clear(&ft_nm->symbol_list, NULL);
+	if (ft_nm->status != 0)
+		ft_nm->status = 1;
 	exit(ft_nm->status);
 	return ft_nm->status;
 }
@@ -33,7 +35,7 @@ int		main(int argc, char *argv[])
 	init_nm(&ft_nm, argc, argv);
 	read_option(&ft_nm);
 	if (ft_nm.status != NM_STATUS_0)
-		return 1;
+		return nm_destructor(&ft_nm);
 
 	execute_nm(&ft_nm);	
 	return nm_destructor(&ft_nm);
