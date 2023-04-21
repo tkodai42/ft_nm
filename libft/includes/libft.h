@@ -38,6 +38,10 @@
 
 #define DEBUG_POINT printf("\e[31m\e[1mDEBUG\e[0m %s %s:%d\n", __func__, __FILE__, __LINE__);
 
+#define EXIT_MALLOC		1
+
+char	*ft_malloc_error();
+
 /*******************************/
 /*********** LIBFT *************/
 /*******************************/

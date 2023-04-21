@@ -50,6 +50,7 @@ char **free_table(char **table, int size)
 		i++;
 	}
 	free(table);
+	ft_malloc_error();
 	return NULL;
 }
 
@@ -64,7 +65,10 @@ char **ft_split(char *str, char *charset)
 	tab_count = count_word(str, charset);
 	table = malloc(sizeof(char *) * (tab_count + 1));
 	if (table == NULL)
+	{
+		ft_malloc_error();
 		return NULL;
+	}
 
 	table[tab_count] = NULL;
 	while (i < tab_count)

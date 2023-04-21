@@ -6,7 +6,7 @@
 /*   By: tkodai <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:11:52 by tkodai            #+#    #+#             */
-/*   Updated: 2023/01/10 12:24:51 by tkodai           ###   ########.fr       */
+/*   Updated: 2023/04/22 02:34:55 by tkodai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_q_node	*ft_q_node_new(void *content)
 	t_q_node	*ret;
 
 	ret = malloc(sizeof(t_q_node));
+	if (ret == NULL)
+		ft_malloc_error();
 	if (ret != NULL)
 	{
 		ret->next = NULL;

@@ -9,7 +9,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 		return NULL;
 	dest = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (dest == NULL)
-		return NULL;
+		return ft_malloc_error();
 	save = dest;
 	while (*s1)
 		*dest++ = *s1++;

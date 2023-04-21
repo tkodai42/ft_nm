@@ -16,3 +16,12 @@ void	ft_error_exit(int flag)
 	(void)flag;
 	exit(0);
 }
+
+char	*ft_malloc_error()
+{
+	if (EXIT_MALLOC)
+	{
+		ft_put_error_msg_exit("malloc");
+	}
+	return NULL;
+}

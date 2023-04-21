@@ -9,7 +9,7 @@ char	*ft_strdup(const char *str)
 		return NULL;
 	dest = malloc(ft_strlen(str) + 1);
 	if (dest == NULL)
-		return NULL;
+		return ft_malloc_error();
 	save = dest;
 	while (*str)
 		*dest++ = *str++;

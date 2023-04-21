@@ -19,7 +19,7 @@ char	*ft_strtrim(const char *str, const char *set)
 	save = malloc(tail - head + 1);
 	dest = save;
 	if (save == NULL)
-		return NULL;
+		return ft_malloc_error();
 	while (head < tail)	
 		*dest++ = *head++;
 	*dest = '\0';

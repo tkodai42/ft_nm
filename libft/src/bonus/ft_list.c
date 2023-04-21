@@ -22,7 +22,10 @@ t_list_node	*ft_list_new(void *content)
 	t_list_node	*new_lst;
 
 	if (!(new_lst = malloc(sizeof(t_list_node))))
-		return (NULL);
+	{
+		ft_malloc_error();
+		return NULL;
+	}
 	new_lst->content = content;
 	new_lst->next = NULL;
 	new_lst->prev = NULL;
@@ -140,7 +143,10 @@ void	ft_list_sort(t_list_node **lst, int (*comp)(void*, void*), int is_rev)
 	size = ft_list_size(*lst);
 	ary = malloc(sizeof(t_list_node) * size);
 	if (ary == NULL)
+	{
+		ft_malloc_error();
 		return ;
+	}
 
 	//--- fill ---
 	tmp = *lst;
