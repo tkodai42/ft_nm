@@ -5,8 +5,7 @@ static char	g_ptf_buffer[1000 + 1];
 void	ft_prf_init(t_ft_printf *data, const char *format)
 {
 	data->wrote_len = 0;
-	data->format = format;
-}
+	data->format = format; }
 
 void	put_buffer(t_ft_printf *data)
 {
@@ -25,8 +24,39 @@ void	put_field(t_ft_printf *data, int c)
 	}
 }
 
+void	resize_precision(t_ft_printf *data)
+{
+	if (data->specifiier_type == 'x' || data->specifiier_type == 'X')
+	{
+		int		len = data->precision_size - data->buf_word_size;
+		char	*head = g_ptf_buffer;
+
+		ft_memmove(g_ptf_buffer + len, g_ptf_buffer, data->buf_word_size);
+		while (head != g_ptf_buffer + len)
+			*head++ = '0';
+		data->buf_word_size += len;
+	}
+	if (data->specifiier_type == 'p')
+	{
+		int		len = data->precision_size - data->buf_word_size;
+		char	*head = g_ptf_buffer;
+		//2 == "0x"
+		ft_memmove(g_ptf_buffer + len + 2, g_ptf_buffer + 2, data->buf_word_size - 2);
+		while (head + 2 != g_ptf_buffer + len + 2)
+			*head++ = '0';
+		data->buf_word_size += len;
+	}
+}
+
 void	put_section(t_ft_printf *data)
 {
+	if (FT_PTR_PRECISION(data->flag))
+	{
+		if (data->buf_word_size > data->precision_size)
+			data->buf_word_size = data->precision_size;
+		else if (data->buf_word_size < data->precision_size)
+			resize_precision(data);
+	}
 	data->field_size -= data->buf_word_size;
 
 	if (FT_PTR_FLAG_NEG(data->flag))
@@ -36,7 +66,7 @@ void	put_section(t_ft_printf *data)
 	}
 	else
 	{
-		if (FT_PTF_FLAG_ZERO(data->flag))
+		if (FT_PTR_FLAG_ZERO(data->flag))
 			put_field(data, '0');
 		else
 			put_field(data, ' ');
@@ -71,6 +101,33 @@ void	exec_c(t_ft_printf *data)
 	data->buf_word_size = 1;
 	put_section(data);
 }
+
+void	exec_x(t_ft_printf *data)
+{
+	int		num;
+
+	num = va_arg(data->ap, int);
+	if (*data->format == 'x')
+		data->buf_word_size = ft_sethex(num, 0, g_ptf_buffer);
+	else //'X'
+		data->buf_word_size = ft_sethex(num, 1, g_ptf_buffer);
+	data->str = g_ptf_buffer;
+	put_section(data);
+}
+
+void	exec_p(t_ft_printf *data)
+{
+	long long	num;
+
+	num = va_arg(data->ap, long long);
+	data->buf_word_size = ft_sethex(num, 0, g_ptf_buffer);
+	data->str = g_ptf_buffer;
+	ft_memmove(g_ptf_buffer + 2, g_ptf_buffer, data->buf_word_size);
+	ft_memmove(g_ptf_buffer, "0x", 2);
+	data->buf_word_size += 2;
+	put_section(data);
+}
+
 
 void	set_flag(t_ft_printf *data)
 {
@@ -107,10 +164,26 @@ void	set_field(t_ft_printf *data)
 	}
 }
 
+void	set_precision(t_ft_printf *data)
+{
+	data->precision_size = 0;
+	if (*data->format != '.')//exist precision
+		return ;
+	data->flag |= FT_PTR_FLAG_PRECISION_BIT;
+	data->format++;	
+	while (ft_isdigit(*data->format))
+	{
+		data->precision_size = data->precision_size * 10 + *data->format - '0';
+		data->format++;
+	}
+}
+
+
 void	exec_specifier(t_ft_printf *data)
 {
 	set_flag(data);
 	set_field(data);
+	set_precision(data);
 
 	//specifiier
 	if (*data->format == '\0')
@@ -122,7 +195,12 @@ void	exec_specifier(t_ft_printf *data)
 		exec_s(data);
 	if (*data->format == 'd' || *data->format == 'i')
 		exec_d(data);
-	data->format++; //skip 'c' | 'd' etc.
+	if (*data->format == 'x' || *data->format == 'X')
+		exec_x(data);
+	if (*data->format == 'p')
+		exec_p(data);
+	if (*data->format != '\0')
+		data->format++; //skip 'c' | 'd' | ... | specifiier
 }
 
 void	main_loop(t_ft_printf *data)
@@ -158,7 +236,7 @@ int		ft_printf(const char *format, ...)
 	return data.wrote_len;
 }
 
-/*
+#if 0
 int		main()
 {
 	int ret1 = 0;
@@ -183,4 +261,24 @@ int		main()
    	ret2 = printf("[%5s] [%-10s] [%s] asdf\n", "123", "", NULL);
 
 	printf("--- %d %d ---\n", ret1, ret2);
-}*/
+
+	
+	ret1 = ft_printf("[%5.s] [%-10.3s] [%s] [%2.5s]asdf\n", "123", "12345", NULL, "123");
+   	ret2 =    printf("[%5.s] [%-10.3s] [%s] [%2.5s]asdf\n", "123", "12345", NULL, "123");
+
+	printf("--- %d %d ---\n", ret1, ret2);
+
+	ret1 = ft_printf("[%016x] [%-10x] [%x] [%.4x] [%-10.4x]asdf\n", 3, 123, INT_MAX, 12, 12);
+   	ret2 =    printf("[%016x] [%-10x] [%x] [%.4x] [%-10.4x]asdf\n", 3, 123, INT_MAX, 12, 12);
+
+	printf("--- %d %d ---\n", ret1, ret2);
+
+	char	*p1 = "123";
+
+	ret1 = ft_printf("[%18p] [%-10p] [%20p] [%p] [%-10p]asdf\n", p1, &p1, p1, p1, p1);
+   	ret2 =    printf("[%18p] [%-10p] [%20p] [%p] [%-10p]asdf\n", p1, &p1, p1, p1, p1);
+
+	printf("--- %d %d ---\n", ret1, ret2);
+
+}
+#endif

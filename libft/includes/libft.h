@@ -50,7 +50,7 @@ char	*ft_itoa(int num);
 void	ft_putnbr(int num);
 char	*ft_strdup(const char *str);
 char	*ft_strjoin(const char *str, const char *s2);
-void	ft_puthex(int num, int digit, int big);
+void	ft_puthex(long long num, int digit, int big);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strchr(const char *s, int c);
@@ -58,9 +58,11 @@ char	**ft_split(char *str, char *charset);
 char	*ft_strtrim(const char *str, const char *set);
 int		ft_isnum(int c);
 int		ft_isdigit(int c);
+void	*ft_memmove(void *dst, const void *src, size_t len);
 
 
 int		ft_setnbr(int num, char *buf);
+int		ft_sethex(long long num, int big, char *buf);
 
 /****************************/
 /*********** BONUS **********/
@@ -127,10 +129,12 @@ void	queue_pop(t_queue *q);
 /*******************************/
 
 #define FT_PTR_FLAG_NEG(x)	(x & (1 << 0))
-#define FT_PTF_FLAG_ZERO(x)	(x & (1 << 1))
+#define FT_PTR_FLAG_ZERO(x)	(x & (1 << 1))
+#define FT_PTR_PRECISION(x)	(x & (1 << 2))
 
-#define FT_PTR_FLAG_NEG_BIT		(1 << 0)
-#define FT_PTR_FLAG_ZERO_BIT	(1 << 1)
+#define FT_PTR_FLAG_NEG_BIT			(1 << 0)
+#define FT_PTR_FLAG_ZERO_BIT		(1 << 1)
+#define FT_PTR_FLAG_PRECISION_BIT	(1 << 2)
 
 typedef struct	s_ft_printf
 {
@@ -141,6 +145,7 @@ typedef struct	s_ft_printf
 	int			specifiier_type;
 	int			buf_word_size;
 	int			field_size;
+	int			precision_size;
 	int			flag;
 }				t_ft_printf;
 
