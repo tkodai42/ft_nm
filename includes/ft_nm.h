@@ -76,6 +76,7 @@ typedef struct		s_ft_nm
 	t_option		option;
 
 	t_list_node		*file_list;
+	int				file_list_len;
 
 	int				file_size;
 	char			*file_name;
@@ -109,7 +110,7 @@ void	analyze_files(t_ft_nm *ft_nm);
 void	parse_elf_header(t_ft_nm *ft_nm);
 
 //error
-void	put_file_error(const char *f);
+void	put_file_error(t_ft_nm *ft, const char *f);
 void	set_end_offset(t_ft_nm *ft_nm);
 void	put_nm_error(t_ft_nm *ft_nm);
 int		is_valid_offset(t_ft_nm *f, void *ptr);

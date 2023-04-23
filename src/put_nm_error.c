@@ -21,22 +21,25 @@ int		is_valid_offset(t_ft_nm *ft_nm, void *ptr)
 /*
  * FILE_ERROR
  */
-void	put_file_linux_error(const char *file_path)
+void	put_file_linux_error(t_ft_nm *ft_nm, const char *file_path)
 {
-	ft_putstr_fd("nm: ", 2);
-	ft_putstr_fd("'", 2);
-	ft_putstr_fd(file_path, 2);
-	ft_putstr_fd("'", 2);
-	ft_dprintf(2, ": %s\n", strerror(errno));
+	ft_dprintf(2, "nm: '%s' : %s\n", file_path, ft_nm->status_msg);
+
+	//ft_putstr_fd("nm: ", 2);
+	//ft_putstr_fd("'", 2);
+	//ft_putstr_fd(file_path, 2);
+	//ft_putstr_fd("'", 2);
+	//ft_dprintf(2, ": %s\n", strerror(errno));
 	//ft_putstr_fd(": No such file\n", 2);
 	//nm: 'a': No such file
 }
 
-void	put_file_error(const char *file_path)
+
+void	put_file_error(t_ft_nm *ft_nm, const char *file_path)
 {
 	if (NM_LINUX)
 	{
-		put_file_linux_error(file_path);
+		put_file_linux_error(ft_nm, file_path);
 		return ;
 	}
 	ft_putstr_fd(ES_WORD_RED, 2);	

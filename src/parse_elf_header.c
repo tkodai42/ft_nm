@@ -184,6 +184,11 @@ void	parse_elf_header(t_ft_nm *ft_nm)
 		return ;
 	generate_symbol_list(ft_nm);
 
+
+	/* put header */
+	if (ft_nm->file_list_len >= 2)
+		ft_printf("\n%s:\n", ft_nm->file_name);
+
 	/* sort */
 	ft_symbol_list_sort(ft_nm);
 	ft_list_show(ft_nm->symbol_list, display_symbol_node_64);
