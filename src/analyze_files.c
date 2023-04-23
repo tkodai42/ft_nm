@@ -20,7 +20,7 @@ int		set_mmap(t_ft_nm *ft_nm, int fd)
 	return 0;
 }
 
-void	execute_nm(t_ft_nm *ft_nm)
+void	analyze_files(t_ft_nm *ft_nm)
 {
 	int			node_num = ft_list_size(ft_nm->file_list);
 	t_list_node *node = ft_nm->file_list;

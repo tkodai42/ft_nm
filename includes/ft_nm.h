@@ -103,7 +103,7 @@ typedef struct		s_sym_node
 void	read_option(t_ft_nm *ft_nm);
 
 //execute_nm
-void	execute_nm(t_ft_nm *ft_nm);
+void	analyze_files(t_ft_nm *ft_nm);
 
 //solve
 void	nm_solve(t_ft_nm *ft_nm);
