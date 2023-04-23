@@ -28,6 +28,7 @@
 #define NM_MEM_SEGFALULT			3
 #define NM_HDR_ERROR				4
 #define NM_ERROR_MSG				5
+#define NM_PUT_HELP					6
 
 #define NM_DEBUG					1
 #define NM_LINUX					1
@@ -38,7 +39,8 @@ enum	option_enum
 	OPTION_g,
 	OPTION_u,
 	OPTION_r,
-	OPTION_p
+	OPTION_p,
+	OPTION_h
 };
 
 #define OPTION_BIT_a	(1 << OPTION_a)
@@ -46,12 +48,14 @@ enum	option_enum
 #define OPTION_BIT_u	(1 << OPTION_u)
 #define OPTION_BIT_r	(1 << OPTION_r)
 #define OPTION_BIT_p	(1 << OPTION_p)
+#define OPTION_BIT_h	(1 << OPTION_h)
 
 #define NM_OPTION_a(i)	(i & OPTION_BIT_a)
 #define NM_OPTION_g(i)	(i & OPTION_BIT_g)
 #define NM_OPTION_u(i)	(i & OPTION_BIT_u)
 #define NM_OPTION_r(i)	(i & OPTION_BIT_r)
 #define NM_OPTION_p(i)	(i & OPTION_BIT_p)
+#define NM_OPTION_h(i)	(i & OPTION_BIT_h)
 
 typedef struct		s_option
 {
@@ -132,5 +136,8 @@ void	debug_print_section_flags(unsigned int flag);
 
 //sort
 void	ft_symbol_list_sort(t_ft_nm *n);
+
+//help
+void	put_help();
 
 #endif

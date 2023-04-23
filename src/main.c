@@ -34,6 +34,8 @@ int		main(int argc, char *argv[])
 
 	init_nm(&ft_nm, argc, argv);
 	read_option(&ft_nm);
+	if (ft_nm.status == NM_PUT_HELP)
+		put_help();
 	if (ft_nm.status != NM_STATUS_0)
 		return nm_destructor(&ft_nm);
 
