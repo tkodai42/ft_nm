@@ -27,7 +27,8 @@ void	put_file_linux_error(const char *file_path)
 	ft_putstr_fd("'", 2);
 	ft_putstr_fd(file_path, 2);
 	ft_putstr_fd("'", 2);
-	ft_putstr_fd(": No such file\n", 2);
+	ft_dprintf(2, ": %s\n", strerror(errno));
+	//ft_putstr_fd(": No such file\n", 2);
 	//nm: 'a': No such file
 }
 
