@@ -23,7 +23,7 @@ int		is_valid_offset(t_ft_nm *ft_nm, void *ptr)
  */
 void	put_file_linux_error(t_ft_nm *ft_nm, const char *file_path)
 {
-	ft_dprintf(2, "nm: '%s' : %s\n", file_path, ft_nm->status_msg);
+	ft_dprintf(2, "ft_nm: '%s' : %s\n", file_path, ft_nm->status_msg);
 
 	//ft_putstr_fd("nm: ", 2);
 	//ft_putstr_fd("'", 2);
@@ -71,7 +71,7 @@ void	put_nm_error_msg(const char *file_path, const char *msg)
 
 void	put_nm_linux_error_msg(const char *file_name, const char *msg)
 {
-	ft_dprintf(2, "nm: %s: %s\n", file_name, msg);
+	ft_dprintf(2, "ft_nm: %s: %s\n", file_name, msg);
 	//ft_putstr_fd("nm: ", 2);
 	//ft_putstr_fd(file_name, 2);
 	//ft_putstr_fd(": ", 2);
