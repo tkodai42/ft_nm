@@ -6,7 +6,7 @@
 /*   By: tkodai <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 20:21:33 by tkodai            #+#    #+#             */
-/*   Updated: 2023/04/14 03:37:36 by tkodai           ###   ########.fr       */
+/*   Updated: 2023/04/23 16:26:03 by tkodai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int		scan_arg_as_option(t_ft_nm *ft_nm, char *arg)
 			set_option_bit(ft_nm, OPTION_BIT_r, "-reverse-sort");
 		else if (*arg == 'p')
 			set_option_bit(ft_nm, OPTION_BIT_p, "-no-sort");
+		else if (*arg == 'h')
+			ft_nm->option.flag_bit |= OPTION_BIT_h;
 
 		else //unknown option
 			return 1;
@@ -102,6 +104,12 @@ void	set_option(t_ft_nm *ft_nm)
 void	read_option(t_ft_nm *ft_nm)
 {
 	set_option(ft_nm);
+
+	if (NM_OPTION_h(ft_nm->option.flag_bit))
+	{	
+		ft_nm->status = NM_PUT_HELP;
+		return ;
+	}
 
 	if (ft_nm->file_list == NULL)//no files -> default
 		scan_arg_as_file(ft_nm, DEFAULT_ARG_FILE);
