@@ -37,6 +37,7 @@ void	put_file_linux_error(t_ft_nm *ft_nm, const char *file_path)
 
 void	put_file_error(t_ft_nm *ft_nm, const char *file_path)
 {
+	ft_nm->ret_status = 1;
 	if (NM_LINUX)
 	{
 		put_file_linux_error(ft_nm, file_path);
@@ -51,6 +52,10 @@ void	put_file_error(t_ft_nm *ft_nm, const char *file_path)
 	ft_putstr_fd(strerror(errno), 2);
 	ft_putstr_fd(".\n", 2);
 }
+
+/*
+ * ERROR
+ */
 
 void	put_nm_error_msg(const char *file_path, const char *msg)
 {
@@ -76,6 +81,7 @@ void	put_nm_linux_error_msg(const char *file_name, const char *msg)
 
 void	put_nm_error(t_ft_nm *ft_nm)
 {
+	ft_nm->ret_status = 1;
 	if (NM_LINUX)
 	{
 		put_nm_linux_error_msg(ft_nm->file_name, "file format not recognized");

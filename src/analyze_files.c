@@ -76,10 +76,6 @@ void	analyze_files(t_ft_nm *ft_nm)
 			/* mmmap */
 			if (set_mmap(ft_nm, fd) != -1)
 			{
-				/* header */
-				//if (node_num >= 2)
-				//	ft_printf("\n%s:\n", file_path);
-
 				set_end_offset(ft_nm);
 				parse_elf_header(ft_nm);			
 				/* munmap */
@@ -88,9 +84,7 @@ void	analyze_files(t_ft_nm *ft_nm)
 					put_nm_error(ft_nm); //put error and reset error flag
 			}
 			else //error
-			{
-				;
-			}
+				ft_nm->ret_status = 1;
 		}
 		node = node->next;
 		close(fd);

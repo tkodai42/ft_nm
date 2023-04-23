@@ -6,7 +6,7 @@
 /*   By: tkodai <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 20:21:33 by tkodai            #+#    #+#             */
-/*   Updated: 2023/04/23 16:26:03 by tkodai           ###   ########.fr       */
+/*   Updated: 2023/04/24 04:13:12 by tkodai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,9 @@ void	set_option(t_ft_nm *ft_nm)
 void	read_option(t_ft_nm *ft_nm)
 {
 	set_option(ft_nm);
+
+	if (ft_nm->status != NM_STATUS_0)
+		ft_nm->ret_status = 1;
 
 	if (NM_OPTION_h(ft_nm->option.flag_bit))
 	{	

@@ -70,6 +70,7 @@ typedef struct		s_ft_nm
 	char			**argv;
 
 	int				status;
+	int				ret_status;
 	const char		*status_msg;
 	int				is_64;
 
