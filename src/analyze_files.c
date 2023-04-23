@@ -20,7 +20,7 @@ int		set_mmap(t_ft_nm *ft_nm, int fd)
 	return 0;
 }
 
-void	execute_nm(t_ft_nm *ft_nm)
+void	analyze_files(t_ft_nm *ft_nm)
 {
 	int			node_num = ft_list_size(ft_nm->file_list);
 	t_list_node *node = ft_nm->file_list;
@@ -48,7 +48,7 @@ void	execute_nm(t_ft_nm *ft_nm)
 			if (set_mmap(ft_nm, fd) != -1)
 			{
 				set_end_offset(ft_nm);
-				nm_solve(ft_nm);			
+				parse_elf_header(ft_nm);			
 				/* munmap */
 				munmap(ft_nm->file_head, ft_nm->file_size);
 				if (ft_nm->status != NM_STATUS_0)

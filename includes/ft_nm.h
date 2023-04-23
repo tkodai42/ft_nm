@@ -30,7 +30,7 @@
 #define NM_ERROR_MSG				5
 #define NM_PUT_HELP					6
 
-#define NM_DEBUG					1
+#define NM_DEBUG					0
 #define NM_LINUX					1
 
 enum	option_enum
@@ -102,11 +102,11 @@ typedef struct		s_sym_node
 //read_option
 void	read_option(t_ft_nm *ft_nm);
 
-//execute_nm
-void	execute_nm(t_ft_nm *ft_nm);
+//analyze_files
+void	analyze_files(t_ft_nm *ft_nm);
 
 //solve
-void	nm_solve(t_ft_nm *ft_nm);
+void	parse_elf_header(t_ft_nm *ft_nm);
 
 //error
 void	put_file_error(const char *f);

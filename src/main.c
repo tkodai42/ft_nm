@@ -39,6 +39,6 @@ int		main(int argc, char *argv[])
 	if (ft_nm.status != NM_STATUS_0)
 		return nm_destructor(&ft_nm);
 
-	execute_nm(&ft_nm);	
+	analyze_files(&ft_nm);	
 	return nm_destructor(&ft_nm);
 }
