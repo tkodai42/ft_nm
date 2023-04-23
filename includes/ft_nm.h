@@ -102,11 +102,11 @@ typedef struct		s_sym_node
 //read_option
 void	read_option(t_ft_nm *ft_nm);
 
-//execute_nm
+//analyze_files
 void	analyze_files(t_ft_nm *ft_nm);
 
 //solve
-void	nm_solve(t_ft_nm *ft_nm);
+void	parse_elf_header(t_ft_nm *ft_nm);
 
 //error
 void	put_file_error(const char *f);

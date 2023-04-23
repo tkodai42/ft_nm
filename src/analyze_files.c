@@ -48,7 +48,7 @@ void	analyze_files(t_ft_nm *ft_nm)
 			if (set_mmap(ft_nm, fd) != -1)
 			{
 				set_end_offset(ft_nm);
-				nm_solve(ft_nm);			
+				parse_elf_header(ft_nm);			
 				/* munmap */
 				munmap(ft_nm->file_head, ft_nm->file_size);
 				if (ft_nm->status != NM_STATUS_0)
