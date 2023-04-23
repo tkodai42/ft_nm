@@ -35,9 +35,15 @@ int		set_bit_format(t_ft_nm *ft_nm, Elf64_Ehdr *ehdr_64)
 
 int		check_section_offset(t_ft_nm *ft_nm)
 {
-	Elf64_Shdr	*shdr_64 = get_sections_offset(ft_nm);
+	Elf64_Shdr	*shdr_64;
+	Elf32_Shdr	*shdr_32;
 	int			section_size = get_sections_size(ft_nm);
 	int			section_index = 0;
+
+	if (ft_nm->is_64)
+		shdr_64 = get_sections_offset(ft_nm);
+	else
+		shdr_32 = get_sections_offset(ft_nm);
 
 	if (section_size < 0)
 	{
@@ -48,16 +54,33 @@ int		check_section_offset(t_ft_nm *ft_nm)
 	//check all section
 	while (section_index < section_size)
 	{
-		if (is_valid_offset(ft_nm, shdr_64) == 0)	
-			return 0;
-		//TODO
-		//セクションのオフセットの位置が有効？
-		//セクションのオフセットからimage sizeが有効？
+		if (ft_nm->is_64)
+		{
+			//セクションのオフセットの位置が有効？
+			if (is_valid_offset(ft_nm, (void*)shdr_64 + sizeof(Elf64_Shdr)) == 0)	
+				return 0;
+			//セクションのオフセットからimage sizeが有効？head+offset+image size
+			if (is_valid_offset(ft_nm, ft_nm->file_head
+						+ shdr_64->sh_offset + shdr_64->sh_size) == 0)
+				return 0;
+
+			shdr_64++;
+		}
+		else
+		{
+			if (is_valid_offset(ft_nm, (void*)shdr_32 + sizeof(Elf32_Shdr)) == 0)	
+				return 0;
+			if (is_valid_offset(ft_nm, ft_nm->file_head
+						+ shdr_32->sh_offset + shdr_32->sh_offset) == 0)
+				return 0;
+
+			shdr_32++;
+		}
+
 		//const char *ptr = get_section_name(ft_nm, shdr_64);
-		//printf("%s\n", ptr);
+		//ft_printf("%s\n", ptr);
 		//if (shdr_64->sh_type == SHT_STRTAB)
-		//	printf("tab\n");
-		shdr_64++;
+		//	ft_printf("tab\n");
 		section_index++;
 	}
 	return 1;
