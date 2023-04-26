@@ -30,7 +30,7 @@
 #define NM_ERROR_MSG				5
 #define NM_PUT_HELP					6
 
-#define NM_DEBUG					0
+#define NM_DEBUG					1
 #define NM_LINUX					1
 
 enum	option_enum
