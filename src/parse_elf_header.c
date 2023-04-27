@@ -32,7 +32,6 @@ int		set_bit_format(t_ft_nm *ft_nm, Elf64_Ehdr *ehdr_64)
 	return 1;
 }
 
-
 int		check_section_offset(t_ft_nm *ft_nm)
 {
 	Elf64_Shdr	*shdr_64;
@@ -60,9 +59,9 @@ int		check_section_offset(t_ft_nm *ft_nm)
 			if (is_valid_offset(ft_nm, (void*)shdr_64 + sizeof(Elf64_Shdr)) == 0)	
 				return 0;
 			//セクションのオフセットからimage sizeが有効？head+offset+image size
-			if (is_valid_offset(ft_nm, ft_nm->file_head
-						+ shdr_64->sh_offset + shdr_64->sh_size) == 0)
-				return 0;
+		//	if (is_valid_offset(ft_nm, ft_nm->file_head
+		//				+ shdr_64->sh_offset + shdr_64->sh_size) == 0)
+		//		return 0;
 
 			shdr_64++;
 		}
@@ -70,9 +69,24 @@ int		check_section_offset(t_ft_nm *ft_nm)
 		{
 			if (is_valid_offset(ft_nm, (void*)shdr_32 + sizeof(Elf32_Shdr)) == 0)	
 				return 0;
-			if (is_valid_offset(ft_nm, ft_nm->file_head
-						+ shdr_32->sh_offset + shdr_32->sh_size) == 0)
-				return 0;
+	//		if (is_valid_offset(ft_nm, ft_nm->file_head
+	//					+ shdr_32->sh_offset + shdr_32->sh_size) == 0)
+	//			return 0;
+	//
+	//	+------------------------------------------------------------------------------------------------------
+	//	|.soファイルの一部でファイルサイズよりsh_sizeの方が大きい謎の挙動
+	//	|
+	//	|	size == file_end - file_head; offset == shdr->sh_offset; shdr->sh_size;
+	//	|
+	//	|
+	//	|	i 26 size 38
+	//	|	size 3257688 offset 367580 size 8993032
+	//	|	DEBUG parse_elf_header src/parse_elf_header.c:207
+	//	|	ft_nm: /usr/lib/gcc/x86_64-linux-gnu/10/liblsan.so: file format not recognized
+	//	|	
+	//	|	root@f34f1b42c69c:/nm_dir# ls -la /usr/lib/gcc/x86_64-linux-gnu/10/../../../x86_64-linux-gnu/liblsan.so.0.0.0
+	//	|	-rw-r--r-- 1 root root 3257688 Jan 10  2021 /usr/lib/gcc/x86_64-linux-gnu/10/../../../x86_64-linux-gnu/liblsan.so.0.0.0
+	//	+-------------------------------------------------------------------------------------------------------------------------
 
 			shdr_32++;
 		}
@@ -121,12 +135,22 @@ void	generate_symbol_list(t_ft_nm *ft_nm)
 	if (ft_nm->is_64)
 	{
 		symbol_section64 = get_section_by_type(ft_nm, SHT_SYMTAB);
+		if (symbol_section64 == NULL)
+		{
+			ft_nm->status = NM_NO_SYMBOL;
+			return ;
+		}
 		sym64 = ft_nm->file_head + symbol_section64->sh_offset;
 		sym_size = symbol_section64->sh_size / sizeof(Elf64_Sym); 
 	}
 	else
 	{
 		symbol_section32 = get_section_by_type(ft_nm, SHT_SYMTAB);
+		if (symbol_section32 == NULL)
+		{
+			ft_nm->status = NM_NO_SYMBOL;
+			return ;	
+		}
 		sym32 = ft_nm->file_head + symbol_section32->sh_offset;
 		sym_size = symbol_section32->sh_size / sizeof(Elf32_Sym); 
 	}
@@ -190,6 +214,9 @@ void	parse_elf_header(t_ft_nm *ft_nm)
 		return ;
 	
 	generate_symbol_list(ft_nm);
+
+	if (ft_nm->status != NM_STATUS_0)
+		return ;
 
 	/* put header */
 	if (ft_nm->file_list_len >= 2)

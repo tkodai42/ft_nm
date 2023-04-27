@@ -84,6 +84,13 @@ void	put_nm_error(t_ft_nm *ft_nm)
 	ft_nm->ret_status = 1;
 	if (NM_LINUX)
 	{
+		if (ft_nm->status == NM_NO_SYMBOL)
+		{
+			ft_nm->ret_status = 0;
+			ft_nm->status = NM_STATUS_0;
+			put_nm_linux_error_msg(ft_nm->file_name, "no symbols");
+			return ;
+		}
 		put_nm_linux_error_msg(ft_nm->file_name, "file format not recognized");
 		ft_nm->status = NM_STATUS_0;
 		return ;
