@@ -59,9 +59,9 @@ int		check_section_offset(t_ft_nm *ft_nm)
 			if (is_valid_offset(ft_nm, (void*)shdr_64 + sizeof(Elf64_Shdr)) == 0)	
 				return 0;
 			//セクションのオフセットからimage sizeが有効？head+offset+image size
-			if (is_valid_offset(ft_nm, ft_nm->file_head
-						+ shdr_64->sh_offset + shdr_64->sh_size) == 0)
-				return 0;
+		//	if (is_valid_offset(ft_nm, ft_nm->file_head
+		//				+ shdr_64->sh_offset + shdr_64->sh_size) == 0)
+		//		return 0;
 
 			shdr_64++;
 		}
@@ -69,9 +69,24 @@ int		check_section_offset(t_ft_nm *ft_nm)
 		{
 			if (is_valid_offset(ft_nm, (void*)shdr_32 + sizeof(Elf32_Shdr)) == 0)	
 				return 0;
-			if (is_valid_offset(ft_nm, ft_nm->file_head
-						+ shdr_32->sh_offset + shdr_32->sh_size) == 0)
-				return 0;
+	//		if (is_valid_offset(ft_nm, ft_nm->file_head
+	//					+ shdr_32->sh_offset + shdr_32->sh_size) == 0)
+	//			return 0;
+	//
+	//	+------------------------------------------------------------------------------------------------------
+	//	|.soファイルの一部でファイルサイズよりsh_sizeの方が大きい謎の挙動
+	//	|
+	//	|	size == file_end - file_head; offset == shdr->sh_offset; shdr->sh_size;
+	//	|
+	//	|
+	//	|	i 26 size 38
+	//	|	size 3257688 offset 367580 size 8993032
+	//	|	DEBUG parse_elf_header src/parse_elf_header.c:207
+	//	|	ft_nm: /usr/lib/gcc/x86_64-linux-gnu/10/liblsan.so: file format not recognized
+	//	|	
+	//	|	root@f34f1b42c69c:/nm_dir# ls -la /usr/lib/gcc/x86_64-linux-gnu/10/../../../x86_64-linux-gnu/liblsan.so.0.0.0
+	//	|	-rw-r--r-- 1 root root 3257688 Jan 10  2021 /usr/lib/gcc/x86_64-linux-gnu/10/../../../x86_64-linux-gnu/liblsan.so.0.0.0
+	//	+-------------------------------------------------------------------------------------------------------------------------
 
 			shdr_32++;
 		}
