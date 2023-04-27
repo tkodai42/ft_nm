@@ -8,7 +8,7 @@ CC = gcc
 
 INCLUDES = includes
 
-#SANITIZER = -g -fsanitize=address
+SANITIZER = -g -fsanitize=address
 
 CPPFLAGS = -Wall -Werror -Wextra $(SANITIZER)
 CPPFLAGS += -I $(INCLUDES)
