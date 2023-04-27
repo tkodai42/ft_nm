@@ -71,7 +71,7 @@ int		check_section_offset(t_ft_nm *ft_nm)
 			if (is_valid_offset(ft_nm, (void*)shdr_32 + sizeof(Elf32_Shdr)) == 0)	
 				return 0;
 			if (is_valid_offset(ft_nm, ft_nm->file_head
-						+ shdr_32->sh_offset + shdr_32->sh_offset) == 0)
+						+ shdr_32->sh_offset + shdr_32->sh_size) == 0)
 				return 0;
 
 			shdr_32++;
@@ -185,10 +185,11 @@ void	parse_elf_header(t_ft_nm *ft_nm)
 	Elf64_Ehdr	*ehdr = (Elf64_Ehdr*)ft_nm->file_head;	
 
 	scan_file_header(ft_nm, ehdr);
+	
 	if (ft_nm->status != NM_STATUS_0)
 		return ;
+	
 	generate_symbol_list(ft_nm);
-
 
 	/* put header */
 	if (ft_nm->file_list_len >= 2)

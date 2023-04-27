@@ -36,7 +36,7 @@
 #define ES_BACK_CYAN	"\e[46m"
 #define ES_BACK_WHITE	"\e[47m"
 
-#define DEBUG_POINT printf("\e[31m\e[1mDEBUG\e[0m %s %s:%d\n", __func__, __FILE__, __LINE__);
+#define DEBUG_POINT ft_printf("\e[31m\e[1mDEBUG\e[0m %s %s:%d\n", __func__, __FILE__, __LINE__);
 
 #define EXIT_MALLOC		1
 
