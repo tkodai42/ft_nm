@@ -77,10 +77,10 @@ int		check_section_offset(t_ft_nm *ft_nm)
 			shdr_32++;
 		}
 
-		//const char *ptr = get_section_name(ft_nm, shdr_64);
-		//ft_printf("%s\n", ptr);
-		//if (shdr_64->sh_type == SHT_STRTAB)
-		//	ft_printf("tab\n");
+		const char *ptr = get_section_name(ft_nm, shdr_64);
+		ft_printf("%s\n", ptr);
+		if (shdr_64->sh_type == SHT_STRTAB)
+			ft_printf("tab\n");
 		section_index++;
 	}
 	return 1;
