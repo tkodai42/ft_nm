@@ -188,11 +188,11 @@ void	display_symbol_node_64(void *content)
 		if (symbol_type == 'U' || (node->sym32->st_value == 0
 			&& (node->shdr32 && node->shdr32->sh_type == SHT_NULL)))
 		{
-			for (int i = 0; i < 16; i++)
+			for (int i = 0; i < 8; i++)
 				ft_putchar(' ');
 		}
 		else
-			ft_puthex(node->sym32->st_value, 16, 0);
+			ft_puthex(node->sym32->st_value, 8, 0);
 	}
 
 	if (NM_DEBUG)//debug
