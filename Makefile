@@ -91,7 +91,7 @@ delete:
 	-@yes | docker rmi $(IMAGE_NAME)
 
 .PHONY: build
-build: $(NAME) delete
+build: delete fclean
 	docker build -t $(IMAGE_NAME) .
 	docker run --name $(CONTAINER_NAME) -it $(IMAGE_NAME) /bin/bash
 
@@ -99,5 +99,15 @@ build: $(NAME) delete
 start:
 	docker start -i $(CONTAINER_NAME)
 
+#===== DOCKER MAKE =====#
+
+REVIEW_DICT=review_files
+
+.PHONY: review
+review:
+	gcc      $(REVIEW_DICT)/easy_test.c -o $(REVIEW_DICT)/easy_test_64
+	gcc -m32 $(REVIEW_DICT)/easy_test.c -o $(REVIEW_DICT)/easy_test_32
+	gcc      $(REVIEW_DICT)/not_so_easy_test.c -o $(REVIEW_DICT)/not_so_easy_test_64
+	gcc -m32 $(REVIEW_DICT)/not_so_easy_test.c -o $(REVIEW_DICT)/not_so_easy_test_32
 
 .PHONY:	all clean fclean all re

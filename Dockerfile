@@ -6,6 +6,7 @@ RUN		apt update && apt install -y \
 		vim \
 		gcc \
 		file \
+		libc6-dev-i386 \
 		make
 
 RUN		mkdir -p ${NM_DIR} && \
