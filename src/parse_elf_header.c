@@ -32,7 +32,6 @@ int		set_bit_format(t_ft_nm *ft_nm, Elf64_Ehdr *ehdr_64)
 	return 1;
 }
 
-
 int		check_section_offset(t_ft_nm *ft_nm)
 {
 	Elf64_Shdr	*shdr_64;
@@ -121,12 +120,22 @@ void	generate_symbol_list(t_ft_nm *ft_nm)
 	if (ft_nm->is_64)
 	{
 		symbol_section64 = get_section_by_type(ft_nm, SHT_SYMTAB);
+		if (symbol_section64 == NULL)
+		{
+			ft_nm->status = NM_NO_SYMBOL;
+			return ;
+		}
 		sym64 = ft_nm->file_head + symbol_section64->sh_offset;
 		sym_size = symbol_section64->sh_size / sizeof(Elf64_Sym); 
 	}
 	else
 	{
 		symbol_section32 = get_section_by_type(ft_nm, SHT_SYMTAB);
+		if (symbol_section32 == NULL)
+		{
+			ft_nm->status = NM_NO_SYMBOL;
+			return ;	
+		}
 		sym32 = ft_nm->file_head + symbol_section32->sh_offset;
 		sym_size = symbol_section32->sh_size / sizeof(Elf32_Sym); 
 	}
@@ -190,6 +199,9 @@ void	parse_elf_header(t_ft_nm *ft_nm)
 		return ;
 	
 	generate_symbol_list(ft_nm);
+
+	if (ft_nm->status != NM_STATUS_0)
+		return ;
 
 	/* put header */
 	if (ft_nm->file_list_len >= 2)

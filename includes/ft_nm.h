@@ -29,6 +29,7 @@
 #define NM_HDR_ERROR				4
 #define NM_ERROR_MSG				5
 #define NM_PUT_HELP					6
+#define NM_NO_SYMBOL				7
 
 #define NM_DEBUG					0
 #define NM_LINUX					1
