@@ -9,12 +9,17 @@ void	main2()
 
 
 	// ===== PUSH =====
-	ft_list_add_back_raw(&head, (void *)4);
+	ft_list_add_back_raw(&head, (void *)14);
 	ft_list_add_back_raw(&head, (void *)1);
 	ft_list_add_back_raw(&head, (void *)6);
-	ft_list_add_back_raw(&head, (void *)6);
+	ft_list_add_back_raw(&head, (void *)16);
 	ft_list_add_back_raw(&head, (void *)3);
 	ft_list_add_back_raw(&head, (void *)9);
+	ft_list_add_back_raw(&head, (void *)10);
+	ft_list_add_back_raw(&head, (void *)6);
+	ft_list_add_back_raw(&head, (void *)12);
+	ft_list_add_back_raw(&head, (void *)4);
+	ft_list_add_back_raw(&head, (void *)5);
 
 	printf("list size: %d\n", ft_list_size(head));
 

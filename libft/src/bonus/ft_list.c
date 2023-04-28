@@ -127,14 +127,89 @@ void	ft_list_show(t_list_node *head, void (*show)(void*))
 /* comp function ptr */
 int		ft_list_comp_func_ptr_int(void *c1, void *c2)
 {
-	return (long long)c1 < (long long)c2;
+	return (long long)c1 - (long long)c2;
 }
+
+/*
+void	ft_swap(int *x, int *y)
+{
+	int		tmp;
+
+	tmp = *x;
+	*x = *y;
+	*y = tmp;
+}*/
+
+void	ft_swap(t_list_node **tab, int left, int right)
+{
+	t_list_node	*tmp;
+
+	tmp = tab[left];
+	tab[left] = tab[right];
+	tab[right] = tmp;
+}
+
+void	ft_quick_sort(t_list_node **tab, int (*comp)(void*, void*), int left, int right)
+{
+	t_list_node		*pivot;
+    int 			l;
+	int				r;
+
+    if (left >= right)
+        return;
+    pivot = tab[left];
+    l = left;
+    r = right;
+
+    while (1)
+	{
+        while (comp(tab[l]->content, pivot->content) < 0)
+            l++;
+        while (comp(tab[r]->content, pivot->content) > 0)
+            r--;
+        if (l >= r)
+            break;
+        ft_swap(tab, l, r);
+        l++;
+        r--;
+    }
+    ft_quick_sort(tab, comp, left, l - 1);
+    ft_quick_sort(tab, comp, r + 1, right);
+}
+
+void	ft_quick_sort_rev(t_list_node **tab, int (*comp)(void*, void*), int left, int right)
+{
+	t_list_node		*pivot;
+    int 			l;
+	int				r;
+
+    if (left >= right)
+        return;
+    pivot = tab[left];
+    l = left;
+    r = right;
+
+    while (1)
+	{
+        while (comp(tab[l]->content, pivot->content) > 0)
+            l++;
+        while (comp(tab[r]->content, pivot->content) < 0)
+            r--;
+        if (l >= r)
+            break;
+        ft_swap(tab, l, r);
+        l++;
+        r--;
+    }
+    ft_quick_sort_rev(tab, comp, left, l - 1);
+    ft_quick_sort_rev(tab, comp, r + 1, right);
+}
+
 
 void	ft_list_sort(t_list_node **lst, int (*comp)(void*, void*), int is_rev)
 {
 	int			size;
 	int			index = 0;
-	int			swap_flag = 0;
 	t_list_node	*tmp;
 	t_list_node **ary;
 
@@ -157,7 +232,15 @@ void	ft_list_sort(t_list_node **lst, int (*comp)(void*, void*), int is_rev)
 		tmp = tmp->next;
 	}
 	//--- sort ---
-	index = 0;
+#if 1
+	if (is_rev == 0)
+		ft_quick_sort(ary, comp, 0, size - 1);
+	else
+		ft_quick_sort_rev(ary, comp, 0, size - 1);
+#else 
+	int			swap_flag = 0;
+				index = 0;
+
 	while (index + 1 < size)
 	{
 		swap_flag = 0;
@@ -181,6 +264,8 @@ void	ft_list_sort(t_list_node **lst, int (*comp)(void*, void*), int is_rev)
 		}
 		index++;
 	}
+#endif
+
 	//--- refill ---
 	index = 0;
 	ary[0]->prev = NULL;
