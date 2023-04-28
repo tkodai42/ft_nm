@@ -29,11 +29,12 @@ char	get_symbol(t_sym_node *node)
 			shdr_flag = node->shdr32->sh_flags;
 		}
 	}
-
 	
 	if (bind == STB_WEAK)
 	{
-		if (shdr_type == SHT_PROGBITS)
+		if (type == STT_OBJECT)
+			return 'v';
+		if (shdr_type == SHT_PROGBITS || shdr_type == SHT_NOBITS)
 			return 'W';
 		return 'w';
 	}

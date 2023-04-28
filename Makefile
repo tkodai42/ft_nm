@@ -79,6 +79,7 @@ re				: fclean all
 $(LIBFT_PATH)/$(LIBFT_NAME):
 	$(MAKE) -C $(LIBFT_PATH) bonus
 
+.PHONY:	all clean fclean all re
 
 #===== DOCKER =====#
 
@@ -110,4 +111,3 @@ review:
 	gcc      $(REVIEW_DICT)/not_so_easy_test.c -o $(REVIEW_DICT)/not_so_easy_test_64
 	gcc -m32 $(REVIEW_DICT)/not_so_easy_test.c -o $(REVIEW_DICT)/not_so_easy_test_32
 
-.PHONY:	all clean fclean all re
