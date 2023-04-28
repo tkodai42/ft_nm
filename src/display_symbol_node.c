@@ -84,10 +84,14 @@ char	get_symbol(t_sym_node *node)
 	}
 	if (NM_LINUX)
 	{
-		if (shdr_flag & SHF_MERGE && shdr_flag & SHF_STRINGS)
+		if (strcmp(node->shdr_name_ptr, ".comment") == 0)
 			return 'n';
+		//if (shdr_flag & SHF_MERGE && shdr_flag & SHF_STRINGS)
+		//	return 'n';
+		if (type == STT_SECTION && shdr_type == SHT_PROGBITS && shdr_flag & SHF_MERGE && shdr_flag & SHF_STRINGS)
+			return 'N';
 		if (type == STT_SECTION && shdr_type == SHT_PROGBITS && shdr_flag == 0)
-			return 'n';
+			return 'N';
 	}
 	if (shdr_type == SHT_PROGBITS && shdr_flag & SHF_ALLOC && shdr_flag & SHF_EXECINSTR)
 	{
