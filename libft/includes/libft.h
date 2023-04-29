@@ -63,6 +63,8 @@ char	*ft_strtrim(const char *str, const char *set);
 int		ft_isnum(int c);
 int		ft_isdigit(int c);
 void	*ft_memmove(void *dst, const void *src, size_t len);
+void	*ft_calloc(size_t count, size_t size);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
 
 
 int		ft_setnbr(int num, char *buf);

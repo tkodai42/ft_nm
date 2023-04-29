@@ -1,5 +1,6 @@
 #include "libft.h"
 
+/*
 char	*ft_strtrim(const char *str, const char *set)
 {
 	const char	*head;
@@ -24,6 +25,26 @@ char	*ft_strtrim(const char *str, const char *set)
 		*dest++ = *head++;
 	*dest = '\0';
 	return save;
+}
+*/
+
+char	*ft_strtrim(const char *str, const char *set)
+{
+	const char	*head;
+	const char	*tail;
+	char		*dest;
+
+	if (set == NULL)
+		ft_strdup(str);
+	head = str;
+	tail = str + ft_strlen(str);
+	while (head != tail && ft_strchr(set, *head) != NULL)
+		head++;
+	while (head != tail && ft_strchr(set, *(tail - 1)) != NULL)
+		tail--;
+	dest = ft_calloc(tail - head + 1, sizeof(char));
+	ft_memcpy(dest, head, tail - head);
+	return dest;
 }
 
 /*
