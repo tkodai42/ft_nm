@@ -86,6 +86,15 @@ char	get_symbol(t_sym_node *node)
 	{
 		if (strcmp(node->shdr_name_ptr, ".comment") == 0)
 			return 'n';
+
+
+		if (bind == STB_LOCAL && type == STT_SECTION && shdr_type == SHT_PROGBITS && shdr_flag == 0)
+		{
+			if (strncmp(node->shdr_name_ptr, ".debug_", ft_strlen(".debug_")) == 0)
+				return 'N';
+			return 'n';
+		}
+
 		//if (shdr_flag & SHF_MERGE && shdr_flag & SHF_STRINGS)
 		//	return 'n';
 		if (type == STT_SECTION && shdr_type == SHT_PROGBITS && shdr_flag & SHF_MERGE && shdr_flag & SHF_STRINGS)
