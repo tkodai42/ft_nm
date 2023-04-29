@@ -22,7 +22,6 @@ char	*get_word(char **str, char *charset)
 {
 	char *head = *str;
 	char *tail;
-	char *save;
 	char *dest;
 
 	while (*head && ft_strchr(charset, *head))
@@ -30,14 +29,11 @@ char	*get_word(char **str, char *charset)
 	tail = head;
 	while (*tail && ft_strchr(charset, *tail) == NULL)
 		tail++;
-	save = malloc(tail - head + 1);
-	dest = save;
-	if (save == NULL)
+	dest = ft_calloc(tail - head + 1, sizeof(char));
+	if (dest == NULL)
 		return NULL;
-	while (head != tail)
-		*dest++ = *head++;
-	*dest = '\0';
-	return save;
+	ft_memcpy(dest, head, tail - head);
+	return dest;
 }
 
 char **free_table(char **table, int size)
