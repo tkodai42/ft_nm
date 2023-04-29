@@ -81,6 +81,20 @@ $(LIBFT_PATH)/$(LIBFT_NAME):
 
 .PHONY:	all clean fclean all re
 
+#===== TEST =====#
+
+define TEST_FUNC
+	@echo [ $(1) ]
+	-@./diff.sh $(1)
+
+endef
+
+TEST_FILES = $(shell find review_files -type f -name "*")
+
+.PHONY: test
+test:
+	$(foreach e, $(TEST_FILES), $(call TEST_FUNC, $(e)))
+
 #===== DOCKER =====#
 
 CONTAINER_NAME=nm_container
