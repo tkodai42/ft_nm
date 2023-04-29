@@ -6,7 +6,7 @@ then
 	FILE_NAME=$1
 fi
 
-nm $FILE_NAME > txt1 -a
-./ft_nm $FILE_NAME > txt2 -a
+nm $FILE_NAME > txt1
+./ft_nm $FILE_NAME > txt2
 
 diff txt1 txt2
