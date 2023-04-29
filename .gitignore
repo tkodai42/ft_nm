@@ -11,3 +11,5 @@ objs
 .DS_Store
 
 *.swp
+
+tmp
