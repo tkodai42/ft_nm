@@ -114,6 +114,10 @@ build: delete fclean
 start:
 	docker start -i $(CONTAINER_NAME)
 
+.PHONY: exec
+exec:
+	docker exec -it $(CONTAINER_NAME) /bin/bash
+
 #===== DOCKER MAKE =====#
 
 REVIEW_DICT=review_files
