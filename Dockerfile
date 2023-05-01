@@ -23,6 +23,7 @@ COPY	libft/			${NM_DIR}/libft/
 COPY	includes/		${NM_DIR}/includes/
 COPY	review_files/	${NM_DIR}/review_files/
 COPY	diff.sh			${NM_DIR}
+COPY	test.sh			${NM_DIR}
 
 RUN		chmod +x ${NM_DIR}/diff.sh
 
