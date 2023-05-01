@@ -155,7 +155,7 @@ int		is_hidden_symbol(t_sym_node *node)
 
 	if (NM_OPTION_u(node->ft_nm->option.flag_bit))
 	{
-		if (symbol_type == 'u' || symbol_type == 'U' || symbol_type == 'w')
+		if (symbol_type == 'u' || symbol_type == 'U' || symbol_type == 'w' || symbol_type == 'v')
 			;
 		else
 			return 1;
