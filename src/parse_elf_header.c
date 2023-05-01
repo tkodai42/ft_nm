@@ -44,7 +44,7 @@ int		check_section_offset(t_ft_nm *ft_nm)
 	else
 		shdr_32 = get_sections_offset(ft_nm);
 
-	if (section_size < 0)
+	if (section_size <= 0)
 	{
 		ft_nm->status_msg = "SECTION NUM IS INVALID";
 		ft_nm->status = NM_ERROR_MSG;
