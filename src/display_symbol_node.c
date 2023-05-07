@@ -84,13 +84,13 @@ char	get_symbol(t_sym_node *node)
 	}
 	if (NM_LINUX)
 	{
-		if (strcmp(node->shdr_name_ptr, ".comment") == 0)
+		if (ft_strcmp(node->shdr_name_ptr, ".comment") == 0)
 			return 'n';
 
 
 		if (bind == STB_LOCAL && type == STT_SECTION && shdr_type == SHT_PROGBITS && shdr_flag == 0)
 		{
-			if (strncmp(node->shdr_name_ptr, ".debug_", ft_strlen(".debug_")) == 0)
+			if (ft_strncmp(node->shdr_name_ptr, ".debug_", ft_strlen(".debug_")) == 0)
 				return 'N';
 			return 'n';
 		}
